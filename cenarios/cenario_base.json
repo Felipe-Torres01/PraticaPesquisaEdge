@@ -1,0 +1,50 @@
+{
+  "base_stations": [
+    {
+      "id": 1,
+      "coordinates": [10, 10],
+      "communication_range": 50
+    }
+  ],
+  "edge_servers": [
+    {
+      "id": 1,
+      "base_station": 1,
+      "cpu_capacity": 100,
+      "memory_capacity": 100,
+      "disk_capacity": 500
+    }
+  ],
+  "container_layers": [
+    {
+      "id": 1,
+      "name": "ubuntu_base_layer",
+      "size": 100
+    },
+    {
+      "id": 2,
+      "name": "cloud_gaming_layer",
+      "size": 250
+    }
+  ],
+  "container_images": [
+    {
+      "id": 1,
+      "name": "cloud_gaming_image",
+      "layers": [1, 2]
+    }
+  ],
+  "container_registries": [
+    {
+      "id": 1,
+      "server": 1
+    }
+  ],
+  "applications": [
+    {
+      "id": 1,
+      "name": "cloud_gaming",
+      "image": 1
+    }
+  ]
+}
