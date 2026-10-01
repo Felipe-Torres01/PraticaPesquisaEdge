@@ -216,3 +216,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+EdgeSimPy/
+thea/
+edgesimpy-tutorials/
+logs/
+__pycache__/
