@@ -1,21 +1,14 @@
-"""
-Experimento de reproducao: varre todas as posicoes possiveis do Container
-Registry (cada edge server) e mede o tempo de provisionamento dos servicos.
-Gera um CSV e um grafico comparativo.
-
-Cada cenario roda em um subprocesso isolado (estado limpo do EdgeSimPy).
-"""
 import json, subprocess, sys, csv, os
-
+ 
 DATASET = "cenarios/dataset_registries.json"
 AQUI = os.path.dirname(os.path.abspath(__file__))
-
-
+ 
+ 
 def ids_dos_servidores(dataset):
     d = json.load(open(dataset))
     return [s["attributes"]["id"] for s in d["EdgeServer"]]
-
-
+ 
+ 
 def rodar(server_id):
     out = subprocess.run(
         [sys.executable, os.path.join(AQUI, "run_cenario.py"), DATASET, str(server_id)],
@@ -26,21 +19,20 @@ def rodar(server_id):
             _, sid, ticks, prov = linha.split()
             return int(ticks), int(prov)
     return None, None
-
-
+ 
+ 
 def main():
     resultados = []
     for sid in ids_dos_servidores(DATASET):
         ticks, prov = rodar(sid)
         resultados.append((sid, ticks, prov))
         print(f"Registry no servidor {sid:>2}: {ticks} ticks ({prov} servicos provisionados)")
-
-    # salva CSV
+ 
     with open(os.path.join(AQUI, "resultados.csv"), "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["servidor_registry", "tempo_provisionamento_ticks", "servicos_provisionados"])
         w.writerows(resultados)
-
+ 
     validos = [(s, t) for s, t, p in resultados if t is not None]
     if validos:
         melhor = min(validos, key=lambda x: x[1])
@@ -50,8 +42,7 @@ def main():
         print(f"Pior posicao:   servidor {pior[0]} ({pior[1]} ticks)")
         if melhor[1] > 0:
             print(f"Diferenca: {pior[1]/melhor[1]:.1f}x mais lento na pior posicao")
-
-    # grafico
+ 
     try:
         import matplotlib
         matplotlib.use("Agg")
@@ -68,7 +59,8 @@ def main():
         print("\nGrafico salvo em grafico_provisionamento.png")
     except Exception as e:
         print("grafico nao gerado:", e)
-
-
+ 
+ 
 if __name__ == "__main__":
     main()
+ 
