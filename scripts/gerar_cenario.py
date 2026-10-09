@@ -11,8 +11,8 @@ N_NOS = 100
 N_LINKS = 242
 N_IMAGENS = 13
 TAMANHO_IMAGEM = 200
-BANDA_NO = 1000
-BANDA_REGISTRY = 10000
+BANDA_NO = 125
+BANDA_REGISTRY = 1250
  
 SECOES = [
     "NetworkSwitch", "NetworkLink", "BaseStation", "User", "ContainerLayer",
