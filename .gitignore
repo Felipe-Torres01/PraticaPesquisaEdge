@@ -222,3 +222,8 @@ thea/
 edgesimpy-tutorials/
 logs/
 __pycache__/
+
+resultados/teste*/
+resultados/*/*/cenarios/gerados/
+
+cenarios/gerados/
