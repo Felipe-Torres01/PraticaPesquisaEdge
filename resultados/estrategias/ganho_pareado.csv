@@ -1,0 +1,9 @@
+topologia,k,pares,ganho_medio_pct,ganho_dp_pct,ganho_mediano_pct,razao_das_medias,seeds_fluidc_venceu,p_valor_permutacao
+erdos_renyi,1,20,43.66,20.96,41.2,2.142,20,2e-06
+erdos_renyi,2,20,38.01,19.07,43.36,1.723,20,2e-06
+erdos_renyi,4,20,23.83,18.89,25.76,1.369,19,3.4e-05
+erdos_renyi,8,20,9.97,22.22,16.36,1.152,15,0.01733
+garr,1,20,54.09,28.97,64.71,2.646,18,8e-06
+garr,2,20,64.85,16.33,68.21,3.463,20,2e-06
+garr,4,20,65.98,13.07,67.61,3.413,20,2e-06
+garr,8,20,62.85,11.96,65.05,2.953,20,2e-06

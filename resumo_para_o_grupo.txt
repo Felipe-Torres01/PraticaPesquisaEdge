@@ -1,0 +1,148 @@
+ATUALIZACAO DO PROJETO - TOPOLOGIAS DO ARTIGO E NOVOS RESULTADOS
+Pratica em Pesquisa (PUCRS) - reproducao de Knob et al. (2021)
+====================================================================
+
+Pessoal, segue o que eu adicionei em cima do ultimo commit do Gerson (FluidC + GARR).
+Ainda nao commitei. Vou subir depois que voces derem uma olhada.
+
+
+1. RESUMO EM 4 LINHAS
+---------------------
+- Agora rodamos nas duas topologias do artigo: a GARR REAL (baixada do Topology Zoo)
+  e uma Erdos-Renyi G(n, p).
+- Comparamos comunidades (FluidC) com aleatorio para K = 1, 2, 4, 8, com 20 seeds e
+  media +- desvio-padrao.
+- O FluidC foi mais rapido em TODOS os casos, com diferenca estatisticamente significativa.
+- Na GARR o ganho ficou entre 54% e 66%. Na Erdos-Renyi ele cai de 44% (K=1) para 10% (K=8).
+
+
+2. O QUE FOI ADICIONADO
+-----------------------
+Scripts novos:
+  scripts/gerar_topologias.py    baixa a GARR do Topology Zoo e gera Erdos-Renyi G(n, p);
+                                 opcionalmente ja gera os datasets do EdgeSimPy
+  scripts/analise_estrategias.py junta as rodadas e calcula media, desvio-padrao, IC95%,
+                                 ganho por seed e teste de significancia; gera os graficos
+
+Scripts existentes (so extensoes; com os parametros padrao a saida e identica a de antes,
+eu conferi byte a byte):
+  topologia.py      + Erdos-Renyi G(n,p), leitor do GML do Topology Zoo, aproximacao da GARR
+  gerar_cenario.py  + --topologia erdos_renyi --prob P
+                    + --tamanho-imagem MB (padrao 200) ou --tamanho-faixa MIN,MAX
+                    + --segundos-por-tick (explicado na secao 4)
+  run_cenario.py    + o resumo tambem traz os tempos em segundos
+  experimento.py    + repassa as opcoes novas
+  .gitignore        + ignora as pastas de detalhe de cada simulacao (~108 MB); os CSVs e
+                      graficos de resumo continuam no git
+
+
+3. TOPOLOGIAS
+-------------
+GARR
+  - Fonte: Internet Topology Zoo, arquivo Garr201201.gml (mapa de nov/2011, a versao mais
+    recente que esta la). O topology-zoo.org estava fora do ar, entao o script pega o
+    arquivo pelo Wayback Machine. O arquivo original fica salvo em cenarios/garr/.
+  - Tem 61 nos (48 PoPs da GARR + 13 pontos de peering externos: GEANT, MIX, NAMEX,
+    Google...) e 75 links.
+  - ATENCAO: o artigo fala em 70 nos / 112 links, e nenhuma versao publica da GARR tem esse
+    tamanho (a maior tem 61/75). Nao sei de onde vem o numero do artigo. Por isso o script
+    precisa de --ignorar-contagem com esse arquivo.
+  - Opcoes: --so-internos tira os 13 nos externos; --banda-real usa a banda real de cada
+    link em vez de 1 Gbps em todos.
+
+Erdos-Renyi
+  - G(100, 0.049): com 100 nos e p = 0,049 da em media ~242 links, o mesmo tamanho da
+    topologia aleatoria do artigo.
+  - Se o sorteio sair desconexo, o gerador sorteia de novo. Cada seed e um grafo diferente
+    (nas 20 seeds: de 207 a 272 links).
+
+
+4. IMAGENS, BANDA E O "TICK"
+----------------------------
+- Imagens: 13 imagens de 200 MB, como na Tabela II do artigo. Links de 1 Gbps; acesso ao
+  registry de 10 Gbps.
+- O EdgeSimPy trata a banda como "MB por tick", nao MB por segundo. Criei o
+  --segundos-por-tick: com 0.1, por exemplo, 1 Gbps vira 12,5 MB por tick, e o tempo em
+  segundos = ticks x 0,1.
+- Testei tick de 1 s, 0,1 s e 0,02 s: o resultado praticamente nao muda (o tick de 1 s erra
+  ~2%). Ou seja, com imagens de tamanho real o tempo ja dava para medir, sem precisar
+  inflar o tamanho das imagens. Nos experimentos usei 0,1 s.
+
+
+5. COMO O EXPERIMENTO FOI FEITO
+-------------------------------
+- Metodos: comunidades (FluidC + no de maior centralidade de autovetor) x aleatorio.
+- K = 1, 2, 4, 8 registries; 60 servicos; scheduler aleatorio.
+- 20 seeds por combinacao, 320 simulacoes no total (~15 min em 12 nucleos).
+- A comparacao e PAREADA: na mesma seed os dois metodos tem o mesmo grafo, os mesmos
+  servicos e as mesmas imagens. So muda onde ficam os registries (eu conferi nos datasets).
+- Metrica: tempo medio de provisionamento dos 60 servicos, em segundos.
+- Significancia: teste de permutacao pareado exato (nao precisa de scipy).
+
+
+6. RESULTADOS
+-------------
+Tempo medio de provisionamento: media +- desvio-padrao das 20 seeds.
+"Ganho" = quanto o FluidC foi mais rapido que o aleatorio, calculado seed a seed.
+
+GARR
+  K   FluidC (s)     Aleatorio (s)   Ganho    FluidC venceu   p
+  1   26,5 +- 3,1    70,1 +- 22,9    54%      18/20           < 0,001
+  2   11,4 +- 2,3    39,5 +- 18,8    65%      20/20           < 0,001
+  4    6,4 +- 1,0    21,9 +-  9,1    66%      20/20           < 0,001
+  8    3,7 +- 0,4    10,9 +-  3,6    63%      20/20           < 0,001
+
+Erdos-Renyi G(100, 0.049)
+  K   FluidC (s)     Aleatorio (s)   Ganho    FluidC venceu   p
+  1   13,2 +- 2,4    28,2 +- 16,3    44%      20/20           < 0,001
+  2    8,7 +- 1,5    14,9 +-  4,1    38%      20/20           < 0,001
+  4    6,0 +- 1,0     8,2 +-  2,1    24%      19/20           < 0,001
+  8    3,9 +- 0,6     4,5 +-  1,0    10%      15/20           0,017
+
+Como eu leio:
+- O FluidC ganha sempre e tambem varia muito menos entre seeds (o desvio-padrao e de 1,8x
+  a 9x menor que o do aleatorio).
+- Na GARR (quase uma arvore, com poucos hubs) o ganho fica alto para qualquer K: se um
+  registry cai numa "folha", congestiona os poucos caminhos que existem.
+- Na Erdos-Renyi (mais densa e homogenea) o ganho cai conforme K cresce: com 8 registries,
+  ate a posicao aleatoria ja fica perto de quase todo mundo.
+- K=1 so testa "no central x no sorteado", porque com uma comunidade so o FluidC vira
+  apenas a centralidade. Nas 2 seeds em que perdeu na GARR, o sorteio caiu num no melhor
+  para aquela distribuicao de servicos.
+- A anomalia de K=3 da rodada antiga nao foi testada aqui (usamos K = 1, 2, 4, 8).
+
+Graficos:
+  resultados/estrategias/tempo_medio_por_k.png   tempo x K, media +- desvio
+  resultados/estrategias/ganho_por_seed.png      ganho de cada seed, por K
+Mais detalhes (CDF, saturacao de links intra/inter-comunidade):
+  resultados/garr/ e resultados/erdos_renyi/
+
+
+7. COMO RODAR (a partir da raiz do repositorio)
+-----------------------------------------------
+  python scripts/gerar_topologias.py --garr --er
+
+  python scripts/experimento.py --topologia garr --garr-arquivo cenarios/garr/garr.gml \
+      --ignorar-contagem --ks 1,2,4,8 --seeds 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 \
+      --segundos-por-tick 0.1 --max-ticks 36000 --jobs 6 --nome garr
+
+  python scripts/experimento.py --topologia erdos_renyi --nos 100 --prob 0.049 \
+      --ks 1,2,4,8 --seeds 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 \
+      --segundos-por-tick 0.1 --max-ticks 36000 --jobs 6 --nome erdos_renyi
+
+  python scripts/analise_estrategias.py resultados/garr resultados/erdos_renyi \
+      --saida resultados/estrategias
+
+(o README tem a mesma explicacao, mais completa)
+
+
+8. PONTOS EM ABERTO - PRECISO DA OPINIAO DE VOCES
+-------------------------------------------------
+1) GARR 61/75 x 70/112 do artigo: aceitamos a versao do Topology Zoo e explicamos a
+   diferenca no relatorio? Ou alguem tem acesso a outra fonte?
+2) Os 13 nos externos da GARR (GEANT, Google...) estao hospedando servicos como nos
+   normais. Tiramos (--so-internos) ou mantemos?
+3) 60 servicos foi o padrao que ja estava no script. Alguem confirma quantos o artigo usa?
+4) Vale testar K=3 de novo para fechar a historia da anomalia?
+5) Vale rodar tambem com --banda-real (banda real de cada link da GARR) e com imagens de
+   tamanhos variados (--tamanho-faixa)?

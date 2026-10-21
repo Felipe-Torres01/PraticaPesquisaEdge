@@ -227,3 +227,6 @@ resultados/teste*/
 resultados/*/*/cenarios/gerados/
 
 cenarios/gerados/
+
+# detalhe por execucao do experimento.py (ticks/links/fluxos, ~0.5 MB cada); os resumos ficam versionados
+resultados/*/*_k*_s*/

@@ -18,7 +18,9 @@ Definicao de comunidade (a MESMA particao para FluidC e aleatorio, para a compar
     Link "inter"  = extremos em comunidades diferentes.
     Link "acesso" = liga um registry (10 Gbps) ao seu no da rede.
 
-Unidades: capacidade em MB/s; utilizacao = demanda / capacidade (0 a 1); tempo em ticks (1 tick = 1 s).
+Unidades: capacidade em MB/tick; utilizacao = demanda / capacidade (0 a 1); tempo em ticks.
+    A duracao do tick e o "segundos_por_tick" do <cenario>.info.json (padrao 1 s, quando capacidade
+    em MB/tick = MB/s); o resumo traz tambem "tempo_provisionamento_s", ja convertido para segundos.
 """
 import argparse
 import csv
@@ -263,6 +265,9 @@ def main():
         por_registry[f["registry"]] = por_registry.get(f["registry"], 0) + 1
     tt = coletor.ticks
 
+    spt = float(info.get("segundos_por_tick", 1))
+
+    def em_segundos(v): return round(v * spt, 3) if v is not None else None
     def pico(chave): return max((r[chave] for r in tt), default=0)
     def soma(chave): return sum(r[chave] for r in tt)
 
@@ -277,6 +282,12 @@ def main():
             "media": round(statistics.mean(tempos), 3) if tempos else None,
             "p50": percentil(tempos, 50), "p90": percentil(tempos, 90),
             "p99": percentil(tempos, 99), "max": max(tempos) if tempos else None},
+        "segundos_por_tick": spt,
+        "tempo_provisionamento_s": {
+            "media": round(statistics.mean(tempos) * spt, 3) if tempos else None,
+            "p50": em_segundos(percentil(tempos, 50)), "p90": em_segundos(percentil(tempos, 90)),
+            "p99": em_segundos(percentil(tempos, 99)), "max": em_segundos(max(tempos) if tempos else None),
+            "makespan": em_segundos(sim.schedule.steps)},
         "downloads_por_registry": por_registry,
         "downloads_que_cruzam_comunidade": sum(1 for f in fluxos if f["cruza_comunidade"]),
         "downloads_total": len(fluxos),

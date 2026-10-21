@@ -90,6 +90,58 @@ def grafo_aleatorio(n_nos, n_links, semente, banda=BANDA_PADRAO):
         s += 1000
 
 
+def grafo_erdos_renyi(n_nos, prob, semente, banda=BANDA_PADRAO, max_tentativas=10000):
+    """Erdos-Renyi G(n, p) conexo: cada par de nos ganha uma aresta com probabilidade p.
+    Se o grafo sorteado sair desconexo, sorteia de novo com outra semente (nao corta nos)."""
+    s = semente
+    for _ in range(max_tentativas):
+        g = nx.gnp_random_graph(n_nos, prob, seed=s)
+        if nx.is_connected(g):
+            for _, _, d in g.edges(data=True):
+                d["bandwidth"] = float(banda)
+            g.graph["semente_grafo"] = s
+            return g
+        s += 1000
+    raise SystemExit(f"G({n_nos}, {prob}) nao gerou grafo conexo em {max_tentativas} tentativas; aumente p.")
+
+
+def ler_gml_topology_zoo(caminho):
+    """Le um .gml do Internet Topology Zoo. Esses arquivos tem arestas paralelas sem declarar
+    'multigraph 1', o que faz o nx.read_gml falhar; o cabecalho e inserido antes do parse."""
+    texto = open(caminho, encoding="utf-8").read()
+    if "multigraph" not in texto.split("node [", 1)[0]:
+        texto = texto.replace("graph [", "graph [\n  multigraph 1", 1)
+    return nx.parse_gml(texto, label="id")
+
+
+def velocidade_zoo_MBps(d):
+    """Banda de uma aresta do Topology Zoo (LinkSpeedRaw, em bit/s) em MB/s. None se ausente."""
+    bruto = d.get("LinkSpeedRaw")
+    return float(bruto) / 8e6 if bruto not in (None, "") else None
+
+
+def aproximacao_garr(n_nos=61, n_links=75, semente=1, banda=BANDA_PADRAO):
+    """Aproximacao parametrizavel da GARR, para quando o arquivo real nao estiver disponivel.
+
+    Redes academicas nacionais como a GARR sao quase arvores (grau medio ~2.5) com poucos hubs de
+    grau alto. Isso e reproduzido com uma arvore de anexacao preferencial (Barabasi-Albert, m=1)
+    completada ate n_links com atalhos que ligam preferencialmente nos de grau alto."""
+    import random
+    if n_links < n_nos - 1:
+        raise SystemExit("aproximacao_garr: n_links precisa ser >= n_nos - 1 (grafo conexo)")
+    rng = random.Random(semente)
+    g = nx.barabasi_albert_graph(n_nos, 1, seed=semente)
+    while g.number_of_edges() < n_links:
+        pesos = [g.degree(n) for n in g.nodes]
+        u, v = rng.choices(list(g.nodes), weights=pesos, k=2)
+        if u != v and not g.has_edge(u, v):
+            g.add_edge(u, v)
+    for _, _, d in g.edges(data=True):
+        d["bandwidth"] = float(banda)
+    g.graph["aproximacao"] = True
+    return g
+
+
 def verificar(g, esperado_nos=None, esperado_links=None, ignorar_contagem=False):
     problemas = []
     if esperado_nos is not None and g.number_of_nodes() != esperado_nos:

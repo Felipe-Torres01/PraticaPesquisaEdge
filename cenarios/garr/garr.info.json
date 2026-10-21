@@ -1,0 +1,18 @@
+{
+ "fonte": "Internet Topology Zoo",
+ "versao": "Garr201201",
+ "origem": "cenarios\\garr\\Garr201201_zoo.gml",
+ "arquivo_bruto": "cenarios\\garr\\Garr201201_zoo.gml",
+ "nos_bruto": 61,
+ "arestas_bruto": 89,
+ "aproximacao": false,
+ "arquivo": "cenarios\\garr\\garr.gml",
+ "nos": 61,
+ "links": 75,
+ "so_internos": false,
+ "banda_real": false,
+ "banda_min_MBps": 125.0,
+ "banda_max_MBps": 125.0,
+ "grau_medio": 2.459,
+ "diametro": 8
+}

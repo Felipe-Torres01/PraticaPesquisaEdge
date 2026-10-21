@@ -4,6 +4,10 @@ Exemplos (a partir da raiz do repositorio):
     # Teste rapido do pipeline SEM o arquivo GARR (grafo aleatorio 70 nos / 112 links)
     python scripts/experimento.py --topologia aleatoria --nos 70 --links 112 --seeds 1,2 --ks 1,4
 
+    # Erdos-Renyi G(n, p), tick de 0.1 s (banda reescalada para MB/tick) e 20 seeds
+    python scripts/experimento.py --topologia erdos_renyi --nos 100 --prob 0.049 --segundos-por-tick 0.1 \
+        --max-ticks 36000 --ks 1,2,4,8 --seeds 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 --jobs 6
+
     # Experimento do artigo na GARR (K = 1, 2, 4, 8; FluidC x aleatorio; 10 seeds)
     python scripts/experimento.py --topologia garr --garr-arquivo cenarios/garr/garr.gml \
         --ks 1,2,4,8 --metodos fluidc,aleatorio --seeds 1,2,3,4,5,6,7,8,9,10 --jobs 4
@@ -47,10 +51,15 @@ def uma_execucao(a, k, metodo, seed, raiz):
         gerar += ["--garr-arquivo", a.garr_arquivo]
         if a.ignorar_contagem:
             gerar += ["--ignorar-contagem"]
+    elif a.topologia == "erdos_renyi":
+        gerar += ["--nos", str(a.nos), "--prob", str(a.prob)]
     else:
         gerar += ["--nos", str(a.nos), "--links", str(a.links)]
     if a.banda_link:
         gerar += ["--banda-link", str(a.banda_link)]
+    gerar += ["--segundos-por-tick", str(a.segundos_por_tick), "--tamanho-imagem", str(a.tamanho_imagem)]
+    if a.tamanho_faixa:
+        gerar += ["--tamanho-faixa", a.tamanho_faixa]
     code, out, err = executar(gerar, 600)
     if code != 0:
         return nome, None, "gerar_cenario: " + (err or out)[-400:]
@@ -69,11 +78,14 @@ def linha_resumo(a, k, metodo, seed, r):
     s = r["saturacao"]
     down = r["downloads_total"] or 1
     por_reg = list(r["downloads_por_registry"].values()) or [0]
+    ts = r.get("tempo_provisionamento_s") or {}
     return {
         "topologia": a.topologia, "metodo": metodo, "k": k, "seed": seed,
         "ticks_totais": r["ticks_totais"], "nao_iniciados": r["nao_iniciados"],
         "tempo_medio": t["media"], "tempo_p50": t["p50"], "tempo_p90": t["p90"],
         "tempo_p99": t["p99"], "tempo_max": t["max"],
+        "segundos_por_tick": r.get("segundos_por_tick", 1), "tempo_medio_s": ts.get("media"),
+        "tempo_p90_s": ts.get("p90"), "tempo_max_s": ts.get("max"), "makespan_s": ts.get("makespan"),
         "link_ticks_sat_intra": s["link_ticks_saturados_intra"],
         "link_ticks_sat_inter": s["link_ticks_saturados_inter"],
         "link_ticks_sat_acesso": s["link_ticks_saturados_acesso"],
@@ -94,15 +106,16 @@ def comparar(linhas):
     grupos = {}
     for l in linhas:
         grupos.setdefault((l["metodo"], l["k"]), []).append(l)
-    campos = ["tempo_medio", "tempo_p90", "tempo_max", "ticks_totais", "nao_iniciados",
+    campos = ["tempo_medio", "tempo_p90", "tempo_max", "tempo_medio_s", "makespan_s", "ticks_totais", "nao_iniciados",
               "link_ticks_sat_intra", "link_ticks_sat_inter", "link_ticks_sat_acesso",
               "pct_downloads_cruzam_comunidade", "pct_registry_na_comunidade"]
     saida = []
     for (metodo, k), ls in sorted(grupos.items(), key=lambda x: (x[0][1], x[0][0])):
         row = {"metodo": metodo, "k": k, "execucoes": len(ls)}
         for c in campos:
-            row[c] = media([l[c] for l in ls])
-            row[c + "_dp"] = (round(statistics.stdev([l[c] for l in ls]), 3) if len(ls) > 1 else 0.0)
+            vals = [l[c] for l in ls if l.get(c) is not None]
+            row[c] = media(vals)
+            row[c + "_dp"] = (round(statistics.stdev(vals), 3) if len(vals) > 1 else 0.0)
         saida.append(row)
     # razao baseline / fluidc (>1 = FluidC melhor)
     ref = {(r["metodo"], r["k"]): r for r in saida}
@@ -199,10 +212,15 @@ def lista(txt, tipo=str):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--topologia", choices=["garr", "aleatoria"], default="garr")
+    p.add_argument("--topologia", choices=["garr", "aleatoria", "erdos_renyi"], default="garr")
     p.add_argument("--garr-arquivo")
     p.add_argument("--nos", type=int, default=70)
     p.add_argument("--links", type=int, default=112)
+    p.add_argument("--prob", type=float, default=0.049, help="so erdos_renyi: probabilidade de aresta p")
+    p.add_argument("--segundos-por-tick", type=float, default=1.0,
+                   help="resolucao temporal; a banda e reescalada para MB/tick (ver gerar_cenario.py)")
+    p.add_argument("--tamanho-imagem", type=float, default=200, help="MB por imagem (artigo: 200)")
+    p.add_argument("--tamanho-faixa", help="MIN,MAX em MB: sorteia o tamanho de cada imagem")
     p.add_argument("--banda-link", type=float, default=None, help="MB/s dos links sem banda propria (padrao 125)")
     p.add_argument("--ignorar-contagem", action="store_true")
     p.add_argument("--ks", default="1,2,4,8")

@@ -13,7 +13,16 @@ Exemplos (rodar a partir da raiz do repositorio):
     # Topologia aleatoria do artigo (100 nos, 242 links)
     python scripts/gerar_cenario.py --topologia aleatoria --registries 4
 
+    # Erdos-Renyi G(n, p), imagens de 100 a 500 MB sorteadas por imagem, tick de 0.1 s
+    python scripts/gerar_cenario.py --topologia erdos_renyi --nos 100 --prob 0.049 \
+        --tamanho-faixa 100,500 --segundos-por-tick 0.1 --registries 4
+
 Unidades: banda em MB/s (125 = 1 Gbps, 1250 = 10 Gbps); tamanho das camadas em MB.
+
+Resolucao temporal (--segundos-por-tick): o EdgeSimPy desconta `bandwidth` MB de cada fluxo por tick,
+sem olhar o tick_duration. Por isso a banda gravada no dataset e banda_MBps * segundos_por_tick
+(ex.: 0.1 s/tick -> 1 Gbps = 12.5 MB/tick). Com isso da para medir tempos curtos (K grande) com
+resolucao abaixo de 1 s. Tempo em segundos = ticks * segundos_por_tick (gravado no .info.json).
 """
 import argparse
 import copy
@@ -29,7 +38,7 @@ import fluidc_placement
 import topologia
 
 N_IMAGENS = 13          # Tabela II do artigo
-TAMANHO_IMAGEM = 200    # MB, Tabela II
+TAMANHO_IMAGEM = 200    # MB, Tabela II (padrao de --tamanho-imagem)
 BANDA_REGISTRY = 1250   # MB/s = 10 Gbps, Tabela II
 
 SECOES = [
@@ -63,8 +72,23 @@ def montar_grafo(args):
             raise SystemExit("--topologia garr exige --garr-arquivo (ex: cenarios/garr/garr.gml)")
         return topologia.carregar_garr(args.garr_arquivo, banda_padrao=args.banda_link,
                                        ignorar_contagem=args.ignorar_contagem)
+    if args.topologia == "erdos_renyi":
+        g = topologia.grafo_erdos_renyi(args.nos, args.prob, args.seed, banda=args.banda_link)
+        return topologia.verificar(g)
     g = topologia.grafo_aleatorio(args.nos, args.links, args.seed, banda=args.banda_link)
     return topologia.verificar(g)
+
+
+def tamanhos_imagens(args):
+    """Tamanho (MB) de cada imagem. Com --tamanho-faixa MIN,MAX sorteia uniformemente por imagem,
+    com gerador proprio da seed: FluidC e aleatorio veem exatamente as mesmas imagens."""
+    if not args.tamanho_faixa:
+        return [numero(args.tamanho_imagem)] * args.imagens
+    minimo, maximo = (float(x) for x in args.tamanho_faixa.split(","))
+    if not 0 < minimo <= maximo:
+        raise SystemExit("--tamanho-faixa precisa ser MIN,MAX com 0 < MIN <= MAX")
+    rng = random.Random(f"imagens-{args.seed}")
+    return [round(rng.uniform(minimo, maximo), 1) for _ in range(args.imagens)]
 
 
 def gerar(args):
@@ -72,6 +96,7 @@ def gerar(args):
     rng = random.Random(args.seed)          # usado so para servicos/usuarios (igual entre metodos)
     g = montar_grafo(args)
     n_nos = g.number_of_nodes()
+    tamanhos = tamanhos_imagens(args)
     k = args.registries
 
     if args.posicoes:
@@ -132,11 +157,13 @@ def gerar(args):
         srv["relationships"]["container_registries"] = []
         D["EdgeServer"].append(srv)
 
-    # Links: arestas do grafo (banda por aresta) + 1 link de acesso por registry (10 Gbps)
-    arestas = [(a + 1, b + 1, numero(d["bandwidth"])) for a, b, d in g.edges(data=True)]
+    # Links: arestas do grafo (banda por aresta) + 1 link de acesso por registry (10 Gbps).
+    # A banda vai para o dataset em MB/tick (ver --segundos-por-tick).
+    spt = args.segundos_por_tick
+    arestas = [(a + 1, b + 1, numero(round(d["bandwidth"] * spt, 6))) for a, b, d in g.edges(data=True)]
     n_links_rede = len(arestas)
     for j, pos in enumerate(posicoes):
-        arestas.append((n_nos + j + 1, pos, numero(args.banda_registry)))
+        arestas.append((n_nos + j + 1, pos, numero(round(args.banda_registry * spt, 6))))
     for lid, (a, b, banda) in enumerate(arestas, start=1):
         link = copy.deepcopy(m["NetworkLink"])
         link["attributes"]["id"] = lid
@@ -163,7 +190,7 @@ def gerar(args):
             camada = copy.deepcopy(m["ContainerLayer"])
             camada["attributes"].update(
                 id=layer_id, digest=digest(f"camada-{i}"),
-                size=TAMANHO_IMAGEM, instruction=f"ADD imagem-{i}")
+                size=tamanhos[i], instruction=f"ADD imagem-{i}")
             camada["relationships"]["server"] = ref("EdgeServer", host)
             D["ContainerLayer"].append(camada)
             imagem = copy.deepcopy(m["ContainerImage"])
@@ -225,7 +252,13 @@ def gerar(args):
                         if colocacao.get("comunidades") else None),
         "desvio_banda": colocacao.get("desvio_banda"),
         "comunidades_referencia": referencia,
-        "servicos": args.servicos, "imagens": args.imagens, "tamanho_imagem_mb": TAMANHO_IMAGEM,
+        "servicos": args.servicos, "imagens": args.imagens,
+        "tamanho_imagem_mb": (tamanhos[0] if len(set(tamanhos)) == 1 else None),
+        "tamanhos_imagens_mb": tamanhos,
+        "banda_link_MBps": args.banda_link, "banda_registry_MBps": args.banda_registry,
+        "segundos_por_tick": spt,
+        "prob": (args.prob if args.topologia == "erdos_renyi" else None),
+        "semente_grafo": g.graph.get("semente_grafo"),
     }
     return D, info
 
@@ -260,14 +293,18 @@ def nome_padrao(args):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--topologia", choices=["garr", "aleatoria"], default="garr")
+    p.add_argument("--topologia", choices=["garr", "aleatoria", "erdos_renyi"], default="garr")
     p.add_argument("--garr-arquivo", help="grafo GARR (.gml/.graphml/.csv/.json), 70 nos e 112 links")
     p.add_argument("--nos", type=int, default=100, help="so topologia aleatoria (artigo: 100)")
     p.add_argument("--links", type=int, default=242, help="so topologia aleatoria (artigo: 242)")
+    p.add_argument("--prob", type=float, default=0.049,
+                   help="so erdos_renyi: probabilidade de aresta p (0.049 ~ 242 links esperados com 100 nos)")
     p.add_argument("--banda-link", type=float, default=topologia.BANDA_PADRAO,
                    help="MB/s dos links sem banda propria no arquivo (125 = 1 Gbps)")
     p.add_argument("--banda-registry", type=float, default=BANDA_REGISTRY,
                    help="MB/s do link de acesso do registry (1250 = 10 Gbps)")
+    p.add_argument("--segundos-por-tick", type=float, default=1.0,
+                   help="resolucao temporal: a banda gravada vira MB/tick (padrao 1 = MB/s)")
     p.add_argument("--registries", type=int, default=1, help="K, numero de registries")
     p.add_argument("--metodo", choices=["fluidc", "aleatorio", "topk_global"], default="fluidc")
     p.add_argument("--centralidade", choices=["eigenvector", "betweenness", "degree"],
@@ -275,6 +312,8 @@ def main():
     p.add_argument("--posicoes", help="ids dos nos (1..N) dos registries, ex: 10,57 (ignora --metodo)")
     p.add_argument("--servicos", type=int, default=60)
     p.add_argument("--imagens", type=int, default=N_IMAGENS)
+    p.add_argument("--tamanho-imagem", type=float, default=TAMANHO_IMAGEM, help="MB por imagem (artigo: 200)")
+    p.add_argument("--tamanho-faixa", help="MIN,MAX em MB: sorteia o tamanho de cada imagem (ignora --tamanho-imagem)")
     p.add_argument("--seed", type=int, default=1)
     p.add_argument("--ignorar-contagem", action="store_true",
                    help="aceita GARR com contagem de nos/links diferente de 70/112")
@@ -294,7 +333,9 @@ def main():
     print(f"  {info['n_nos']} nos + {info['k']} hospedeiro(s) de registry, "
           f"{info['links_rede']} links de rede + {info['k']} de acesso")
     print(f"  metodo {info['metodo']}: registries nos nos {info['posicoes']}")
-    print(f"  {info['imagens']} imagens de {TAMANHO_IMAGEM} MB, {info['servicos']} servicos")
+    tam = info["tamanhos_imagens_mb"]
+    print(f"  {info['imagens']} imagens de {min(tam)}-{max(tam)} MB "
+          f"(total {sum(tam):.0f} MB), {info['servicos']} servicos")
 
 
 if __name__ == "__main__":
