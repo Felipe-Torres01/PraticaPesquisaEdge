@@ -245,6 +245,7 @@ def main():
         dump_interval=float("inf"),
     )
     sim.initialize(input_file=a.dataset)
+    sim.monitor = lambda: None
 
     for service in es.Service.all():
         service._available = False
