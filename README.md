@@ -35,7 +35,7 @@ Todos os comandos abaixo rodam a partir da raiz do repositório.
 |---|---|---|---|---|---|
 | GARR do artigo | 70 | 111 | 3,17 | 9 | `cenarios/garr/garr-topology.json` (enviado pelo professor) |
 | GARR do Topology Zoo | 61 | 75 | 2,46 | 8 | `cenarios/garr/garr.gml` |
-| Erdős-Rényi G(n, p) | 100 | ~244 | ~4,9 | ~5 | `--topologia erdos_renyi --nos 100 --prob 0.049` |
+| Erdős-Rényi G(n, p) | 100 | ~244 | ~4,9 | 5 a 7 | `--topologia erdos_renyi --nos 100 --prob 0.049` |
 | Hexagonal (celular) | 100 | 261 | 5,22 | 14 | `--topologia hexagonal --hex-x 10 --hex-y 10` |
 
 **GARR do artigo (principal).** É a versão usada pelo Knob, com nome e posição de cada nó e banda por
@@ -56,7 +56,7 @@ do artigo. Se o grafo sair desconexo, o gerador sorteia de novo; cada seed gera 
 cada nó (estação-base + servidor) se liga às até 6 células vizinhas. Segue a mesma convenção do gerador
 do EdgeSimPy (`dataset_generator.map.hexagonal_grid` + `partially_connected_hexagonal_mesh`); conferimos
 que os links são idênticos. Tem o mesmo número de nós da Erdős-Rényi, mas é uma rede "longa": o diâmetro
-é 14 saltos, contra ~5 da Erdős-Rényi.
+é 14 saltos, contra 5 a 7 da Erdős-Rényi.
 
 ## Imagens
 

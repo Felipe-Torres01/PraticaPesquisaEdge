@@ -34,7 +34,7 @@ a) Topologia hexagonal (sugestao do professor)
    - Usa a mesma convencao do gerador do proprio EdgeSimPy (hexagonal_grid +
      partially_connected_hexagonal_mesh). Conferimos: mesmos 100 nos e os mesmos 261 links.
    - Tem o mesmo tamanho da Erdos-Renyi (100 nos), mas e uma rede "longa": diametro de 14
-     saltos, contra ~5 da Erdos-Renyi e 9 da GARR do artigo.
+     saltos, contra 5 a 7 da Erdos-Renyi e 9 da GARR do artigo.
 
 b) Top 50 imagens do Docker Hub no gerador de cenarios
    - Nova opcao: --imagens-dockerhub cenarios/dockerhub_top50.json (usa o arquivo que o
