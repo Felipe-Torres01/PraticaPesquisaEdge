@@ -44,13 +44,47 @@ def _ler_csv(caminho):
     return g
 
 
+def _ponta(x, nomes):
+    if isinstance(x, dict):
+        x = x.get("name", x.get("id"))
+    if isinstance(x, int) and nomes and x < len(nomes) and x not in nomes:
+        return nomes[x]
+    return x
+
+
+def _banda_MBps(bw):
+    if bw in (None, ""):
+        return None
+    if isinstance(bw, (int, float)):
+        return float(bw)
+    t = str(bw).strip().lower().replace("bps", "").replace("b", "")
+    mult = {"k": 1e-3, "m": 1.0, "g": 1e3, "t": 1e6}
+    if t and t[-1] in mult:
+        return float(t[:-1]) * mult[t[-1]] / 8
+    return float(t)
+
+
 def _ler_json(caminho):
     d = json.load(open(caminho))
     g = nx.Graph()
+    nomes = []
     for n in d.get("nodes", []):
-        g.add_node(n)
+        if isinstance(n, dict):
+            nome = n.get("name", n.get("id"))
+            g.add_node(nome, label=nome, pos=n.get("pos"))
+        else:
+            nome = n
+            g.add_node(nome)
+        nomes.append(nome)
     for e in d["edges"]:
-        g.add_edge(e[0], e[1], bandwidth=(e[2] if len(e) > 2 else None))
+        if isinstance(e, dict):
+            u = e.get("source", e.get("u", e.get("from")))
+            v = e.get("target", e.get("v", e.get("to")))
+            bw = _banda_MBps(e.get("bandwidth"))
+        else:
+            u, v = e[0], e[1]
+            bw = e[2] if len(e) > 2 else None
+        g.add_edge(_ponta(u, nomes), _ponta(v, nomes), bandwidth=bw)
     return g
 
 

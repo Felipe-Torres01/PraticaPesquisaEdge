@@ -1,0 +1,2078 @@
+{
+    "nodes": [
+        {
+            "type": "netabs",
+            "name": "AG",
+            "pos": [
+                13.7136485,
+                37.2975602
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "AN",
+            "pos": [
+                13.5012048,
+                43.5865761
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "AND",
+            "pos": [
+                16.2950997,
+                41.2192274
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "AV",
+            "pos": [
+                14.7796425,
+                40.9116215
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "FUC",
+            "pos": [
+                13.5122016,
+                41.990309
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "BA1",
+            "pos": [
+                16.8820985,
+                41.0913175
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "BN",
+            "pos": [
+                14.7410826,
+                41.143854
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "BO3",
+            "pos": [
+                11.3340191,
+                44.5172981
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "BO1",
+            "pos": [
+                11.3376611,
+                44.5016476
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "BS",
+            "pos": [
+                10.1886594,
+                45.5436018
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "BR",
+            "pos": [
+                17.8498741,
+                40.5879201
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "CA1",
+            "pos": [
+                9.1081956,
+                39.2289185
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "CE",
+            "pos": [
+                14.3283894,
+                41.0679167
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "CT1",
+            "pos": [
+                15.0678188,
+                37.5244893
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "CZ",
+            "pos": [
+                16.5704265,
+                38.8846715
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "CS",
+            "pos": [
+                16.1912891,
+                39.3591305
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "FE",
+            "pos": [
+                11.5952645,
+                44.8337012
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "FI5",
+            "pos": [
+                11.2510515,
+                43.7500602
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "FI2",
+            "pos": [
+                11.2448976,
+                43.8098928
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "FI4",
+            "pos": [
+                11.2579509,
+                43.7713343
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "FI3",
+            "pos": [
+                11.2581299,
+                43.7783451
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "FI1",
+            "pos": [
+                11.185509,
+                43.8320428
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "FG",
+            "pos": [
+                15.5661135,
+                41.44862
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "FRA",
+            "pos": [
+                12.6705709,
+                41.8190775
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "GE3",
+            "pos": [
+                8.967733,
+                44.4020157
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "GE2",
+            "pos": [
+                8.9669331,
+                44.4071548
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "GE1",
+            "pos": [
+                8.921314,
+                44.4141623
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "AQ1",
+            "pos": [
+                13.35053,
+                42.3676324
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "LE",
+            "pos": [
+                18.2395165,
+                40.4278263
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "MC",
+            "pos": [
+                13.4535561,
+                43.3000757
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "MAR",
+            "pos": [
+                17.3188727,
+                40.6994348
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "MT",
+            "pos": [
+                16.7030342,
+                40.6494009
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "MAZ",
+            "pos": [
+                12.5922558,
+                37.6594064
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "ME2",
+            "pos": [
+                15.535952,
+                38.1631319
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "ME",
+            "pos": [
+                15.5508229,
+                38.1891915
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "MI4",
+            "pos": [
+                9.1500127,
+                45.5061129
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "MI5",
+            "pos": [
+                9.1863579,
+                45.4725235
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "MI2",
+            "pos": [
+                9.0961034,
+                45.4667984
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "MI3",
+            "pos": [
+                9.1929159,
+                45.4810309
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "MI6",
+            "pos": [
+                9.1916166,
+                45.4603563
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "MI1",
+            "pos": [
+                9.1796164,
+                45.4946274
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "NA2",
+            "pos": [
+                14.2442868,
+                40.8340545
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "NA1",
+            "pos": [
+                14.2012755,
+                40.8417663
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "NA6",
+            "pos": [
+                14.3225156,
+                40.8173187
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "PD1",
+            "pos": [
+                11.881868,
+                45.4034088
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "PD2",
+            "pos": [
+                11.9293765,
+                45.3870839
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "PA1",
+            "pos": [
+                13.3701232,
+                38.1117874
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "PV",
+            "pos": [
+                9.1410368,
+                45.1979375
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "PG",
+            "pos": [
+                12.3856726,
+                43.110477
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "PI1",
+            "pos": [
+                10.3976686,
+                43.7178499
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "PZ",
+            "pos": [
+                15.8014465,
+                40.6519678
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "RG",
+            "pos": [
+                14.6364451,
+                36.7702483
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "RC",
+            "pos": [
+                15.6582803,
+                38.1202196
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "RM5",
+            "pos": [
+                12.4252004,
+                41.8742685
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "RM1",
+            "pos": [
+                12.5122497,
+                41.9037626
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "RM2",
+            "pos": [
+                12.5112232,
+                41.8991109
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "RM4",
+            "pos": [
+                12.6116075,
+                41.8477177
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "SA1",
+            "pos": [
+                14.7576367,
+                40.6747384
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "SA",
+            "pos": [
+                14.7936255,
+                40.7726268
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "SS",
+            "pos": [
+                8.5579926,
+                40.7250854
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "SR",
+            "pos": [
+                15.2698417,
+                37.091018
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "SOV",
+            "pos": [
+                16.5457185,
+                38.6868969
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "TA1",
+            "pos": [
+                17.1802921,
+                40.4390447
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "TO1",
+            "pos": [
+                7.6803496,
+                45.0520679
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "TP",
+            "pos": [
+                12.5035831,
+                38.0173969
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "TN",
+            "pos": [
+                11.1117723,
+                46.0639712
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "TN1",
+            "pos": [
+                11.1528353,
+                46.0645687
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "TS1",
+            "pos": [
+                13.7957587,
+                45.659683
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "UR",
+            "pos": [
+                12.6361481,
+                43.7261568
+            ]
+        },
+        {
+            "type": "netabs",
+            "name": "VE",
+            "pos": [
+                12.3188422,
+                45.4325527
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "from": "AN",
+            "to": "BO1",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "BO1",
+            "to": "AN",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "GE3",
+            "to": "GE1",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "GE1",
+            "to": "GE3",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "GE2",
+            "to": "GE3",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "GE3",
+            "to": "GE2",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "GE2",
+            "to": "GE1",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "GE1",
+            "to": "GE2",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "MC",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "MC",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "BO3",
+            "to": "BO1",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "BO1",
+            "to": "BO3",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "BS",
+            "to": "MI3",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "MI3",
+            "to": "BS",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "CA1",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "CA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "FI2",
+            "to": "FI3",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "FI3",
+            "to": "FI2",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "FI3",
+            "to": "FI4",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "FI4",
+            "to": "FI3",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "FI4",
+            "to": "FI5",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "FI5",
+            "to": "FI4",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "FUC",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "FUC",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "ME2",
+            "to": "ME",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "ME",
+            "to": "ME2",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "MI5",
+            "to": "MI6",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "MI6",
+            "to": "MI5",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "MT",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "MT",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "MT",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "MT",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "PV",
+            "to": "MI2",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "MI2",
+            "to": "PV",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "RM1",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "RM1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RM5",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "RM5",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "SS",
+            "to": "CA1",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "CA1",
+            "to": "SS",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "TS1",
+            "to": "MI2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "MI2",
+            "to": "TS1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "UR",
+            "to": "BO1",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "BO1",
+            "to": "UR",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "VE",
+            "to": "PD2",
+            "bidirectional": true,
+            "bandwidth": "3.0Gb"
+        },
+        {
+            "from": "PD2",
+            "to": "VE",
+            "bidirectional": true,
+            "bandwidth": "3.0Gb"
+        },
+        {
+            "from": "MAZ",
+            "to": "CT1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "CT1",
+            "to": "MAZ",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "TP",
+            "to": "CT1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "CT1",
+            "to": "TP",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "TP",
+            "to": "PA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "PA1",
+            "to": "TP",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "AG",
+            "to": "CT1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "CT1",
+            "to": "AG",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "AG",
+            "to": "PA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "PA1",
+            "to": "AG",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "AV",
+            "to": "NA2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA2",
+            "to": "AV",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "AV",
+            "to": "NA6",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA6",
+            "to": "AV",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BN",
+            "to": "NA2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA2",
+            "to": "BN",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BN",
+            "to": "NA6",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA6",
+            "to": "BN",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "CE",
+            "to": "NA2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA2",
+            "to": "CE",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "CE",
+            "to": "NA6",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA6",
+            "to": "CE",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "MAZ",
+            "to": "PA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "PA1",
+            "to": "MAZ",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RG",
+            "to": "CT1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "CT1",
+            "to": "RG",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RG",
+            "to": "PA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "PA1",
+            "to": "RG",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "SA1",
+            "to": "SA",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "SA",
+            "to": "SA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "SR",
+            "to": "CT1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "CT1",
+            "to": "SR",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "SR",
+            "to": "PA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "PA1",
+            "to": "SR",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "TA1",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "TA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "TA1",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "TA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "FE",
+            "to": "BO1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BO1",
+            "to": "FE",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "PG",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "PG",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "PZ",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "3.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "PZ",
+            "bidirectional": true,
+            "bandwidth": "3.0Gb"
+        },
+        {
+            "from": "AQ1",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "AQ1",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "FRA",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "FRA",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "GE1",
+            "to": "TO1",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "TO1",
+            "to": "GE1",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "RM4",
+            "to": "RM1",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "RM1",
+            "to": "RM4",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "RM4",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "RM4",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "TN",
+            "to": "MI1",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "MI1",
+            "to": "TN",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "TN1",
+            "to": "TN",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "TN",
+            "to": "TN1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "TN1",
+            "to": "MI2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "MI2",
+            "to": "TN1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "FE",
+            "to": "BO3",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BO3",
+            "to": "FE",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "PZ",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "PZ",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "AN",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "AN",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "AQ1",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "AQ1",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "FRA",
+            "to": "BO1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BO1",
+            "to": "FRA",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "GE1",
+            "to": "PI1",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "PI1",
+            "to": "GE1",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "PG",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "PG",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RM4",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "RM4",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "BO1",
+            "to": "MI1",
+            "bidirectional": true,
+            "bandwidth": "60.0Gb"
+        },
+        {
+            "from": "MI1",
+            "to": "BO1",
+            "bidirectional": true,
+            "bandwidth": "60.0Gb"
+        },
+        {
+            "from": "BO1",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "30.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "BO1",
+            "bidirectional": true,
+            "bandwidth": "30.0Gb"
+        },
+        {
+            "from": "BO3",
+            "to": "MI1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "MI1",
+            "to": "BO3",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BR",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "BR",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BR",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "BR",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "CA1",
+            "to": "MI2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "MI2",
+            "to": "CA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "CS",
+            "to": "CT1",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "CT1",
+            "to": "CS",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "CS",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "CS",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "CT1",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "CT1",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "CZ",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "CZ",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "CZ",
+            "to": "PA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "PA1",
+            "to": "CZ",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "FG",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "FG",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "FG",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "FG",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "FI1",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "FI1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "FI1",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "FI1",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "FI1",
+            "to": "BO1",
+            "bidirectional": true,
+            "bandwidth": "22.0Gb"
+        },
+        {
+            "from": "BO1",
+            "to": "FI1",
+            "bidirectional": true,
+            "bandwidth": "22.0Gb"
+        },
+        {
+            "from": "LE",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "LE",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "LE",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "LE",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "ME",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "ME",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "ME",
+            "to": "PA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "PA1",
+            "to": "ME",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "MI2",
+            "to": "MI1",
+            "bidirectional": true,
+            "bandwidth": "30.0Gb"
+        },
+        {
+            "from": "MI1",
+            "to": "MI2",
+            "bidirectional": true,
+            "bandwidth": "30.0Gb"
+        },
+        {
+            "from": "MI3",
+            "to": "MI2",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "MI2",
+            "to": "MI3",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "MI4",
+            "to": "MI1",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "MI1",
+            "to": "MI4",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "MI4",
+            "to": "MI2",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "MI2",
+            "to": "MI4",
+            "bidirectional": true,
+            "bandwidth": "2.0Gb"
+        },
+        {
+            "from": "NA2",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "NA2",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "NA2",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "NA2",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "NA6",
+            "to": "NA2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA2",
+            "to": "NA6",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA6",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "NA6",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "PA1",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "PA1",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "PD1",
+            "to": "PD2",
+            "bidirectional": true,
+            "bandwidth": "11.0Gb"
+        },
+        {
+            "from": "PD2",
+            "to": "PD1",
+            "bidirectional": true,
+            "bandwidth": "11.0Gb"
+        },
+        {
+            "from": "PD1",
+            "to": "MI1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "MI1",
+            "to": "PD1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "PD2",
+            "to": "BO1",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "BO1",
+            "to": "PD2",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "PI1",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "PI1",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "PI1",
+            "to": "MI2",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "MI2",
+            "to": "PI1",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "RC",
+            "to": "CT1",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "CT1",
+            "to": "RC",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "RC",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "RC",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RC",
+            "to": "PA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "PA1",
+            "to": "RC",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RM1",
+            "to": "MI2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "MI2",
+            "to": "RM1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RM1",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "RM1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "MI2",
+            "bidirectional": true,
+            "bandwidth": "30.0Gb"
+        },
+        {
+            "from": "MI2",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "30.0Gb"
+        },
+        {
+            "from": "SA",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "SA",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "SA",
+            "to": "NA2",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "NA2",
+            "to": "SA",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "TO1",
+            "to": "MI2",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "MI2",
+            "to": "TO1",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "TO1",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "TO1",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "TS1",
+            "to": "MI1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "MI1",
+            "to": "TS1",
+            "bidirectional": true,
+            "bandwidth": "10.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "BO1",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "BO1",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "BO1",
+            "to": "MI1",
+            "bidirectional": true,
+            "bandwidth": "60.0Gb"
+        },
+        {
+            "from": "MI1",
+            "to": "BO1",
+            "bidirectional": true,
+            "bandwidth": "60.0Gb"
+        },
+        {
+            "from": "BO1",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "30.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "BO1",
+            "bidirectional": true,
+            "bandwidth": "30.0Gb"
+        },
+        {
+            "from": "CT1",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "100.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "CT1",
+            "bidirectional": true,
+            "bandwidth": "100.0Gb"
+        },
+        {
+            "from": "MI2",
+            "to": "MI1",
+            "bidirectional": true,
+            "bandwidth": "30.0Gb"
+        },
+        {
+            "from": "MI1",
+            "to": "MI2",
+            "bidirectional": true,
+            "bandwidth": "30.0Gb"
+        },
+        {
+            "from": "MI3",
+            "to": "MI1",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "MI1",
+            "to": "MI3",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "60.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "60.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "100.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "100.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "100.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "100.0Gb"
+        },
+        {
+            "from": "PA1",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "100.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "PA1",
+            "bidirectional": true,
+            "bandwidth": "100.0Gb"
+        },
+        {
+            "from": "PA1",
+            "to": "CT1",
+            "bidirectional": true,
+            "bandwidth": "100.0Gb"
+        },
+        {
+            "from": "CT1",
+            "to": "PA1",
+            "bidirectional": true,
+            "bandwidth": "100.0Gb"
+        },
+        {
+            "from": "PD2",
+            "to": "MI1",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "MI1",
+            "to": "PD2",
+            "bidirectional": true,
+            "bandwidth": "20.0Gb"
+        },
+        {
+            "from": "RM2",
+            "to": "MI2",
+            "bidirectional": true,
+            "bandwidth": "30.0Gb"
+        },
+        {
+            "from": "MI2",
+            "to": "RM2",
+            "bidirectional": true,
+            "bandwidth": "30.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "NA1",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "NA1",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "40.0Gb"
+        },
+        {
+            "from": "MAR",
+            "to": "TA1",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "TA1",
+            "to": "MAR",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "SOV",
+            "to": "CZ",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "CZ",
+            "to": "SOV",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "AND",
+            "to": "BA1",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "BA1",
+            "to": "AND",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "FI1",
+            "to": "FI2",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "FI2",
+            "to": "FI1",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "MI4",
+            "to": "MI5",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        },
+        {
+            "from": "MI5",
+            "to": "MI4",
+            "bidirectional": true,
+            "bandwidth": "1.0Gb"
+        }
+    ]
+}

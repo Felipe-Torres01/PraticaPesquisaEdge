@@ -1,0 +1,5 @@
+topologia,k,pares,ganho_medio_pct,ganho_dp_pct,ganho_mediano_pct,razao_das_medias,seeds_fluidc_venceu,p_valor_permutacao
+garr,1,20,26.17,41.06,0.0,3.2,6,0.03125
+garr,2,20,38.74,28.51,39.95,2.46,18,8e-06
+garr,4,20,42.77,25.07,40.99,2.348,19,8e-06
+garr,8,20,43.14,27.17,35.12,2.558,20,2e-06
