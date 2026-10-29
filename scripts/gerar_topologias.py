@@ -19,6 +19,7 @@ Exemplos (a partir da raiz do repositorio):
     python scripts/gerar_topologias.py --garr
     python scripts/gerar_topologias.py --garr --banda-real            # banda real de cada link da GARR
     python scripts/gerar_topologias.py --er --nos 100 --prob 0.049 --seed 1
+    python scripts/gerar_topologias.py --hex --hex-x 10 --hex-y 10     # malha hexagonal (rede celular)
     python scripts/gerar_topologias.py --garr --er --datasets --ks 1,2,4,8 --metodos fluidc,aleatorio
 
 Unidades: banda em MB/s (125 = 1 Gbps). O garr.gml so grava banda nas arestas com --banda-real;
@@ -44,6 +45,7 @@ GARR_URLS = [
 ]
 PASTA_GARR = os.path.join("cenarios", "garr")
 PASTA_ER = os.path.join("cenarios", "erdos_renyi")
+PASTA_HEX = os.path.join("cenarios", "hexagonal")
 
 
 # ----------------------------------------------------------------------------- GARR
@@ -136,16 +138,30 @@ def gerar_er(a):
           f"diametro {nx.diameter(g)} (semente do grafo {g.graph['semente_grafo']})")
 
 
+# ----------------------------------------------------------------------------- hexagonal
+def gerar_hex(a):
+    os.makedirs(PASTA_HEX, exist_ok=True)
+    g = topologia.grade_hexagonal(a.hex_x, a.hex_y, banda=a.banda_link)
+    saida = os.path.join(PASTA_HEX, f"hexagonal_{a.hex_x}x{a.hex_y}.gml")
+    h = nx.Graph()
+    for n, d in g.nodes(data=True):
+        h.add_node(n, x=d["coordenadas"][0], y=d["coordenadas"][1])
+    h.add_edges_from(g.edges())
+    nx.write_gml(h, saida)
+    print(f"Hexagonal {a.hex_x}x{a.hex_y} -> {saida}: {topologia.resumo(g)}, diametro {nx.diameter(g)}")
+
+
 # ----------------------------------------------------------------------------- datasets EdgeSimPy
 def args_cenario(a, topo, k, metodo, garr_arquivo):
     """Namespace equivalente a linha de comando do gerar_cenario.py."""
     return SimpleNamespace(
         topologia=topo, garr_arquivo=garr_arquivo, ignorar_contagem=True,
-        nos=a.nos, links=242, prob=a.prob, banda_link=a.banda_link,
+        nos=a.nos, links=242, prob=a.prob, hex_x=a.hex_x, hex_y=a.hex_y, banda_link=a.banda_link,
         banda_registry=gerar_cenario.BANDA_REGISTRY, segundos_por_tick=a.segundos_por_tick,
         registries=k, metodo=metodo, centralidade="eigenvector", posicoes=None,
         servicos=a.servicos, imagens=gerar_cenario.N_IMAGENS,
         tamanho_imagem=a.tamanho_imagem, tamanho_faixa=a.tamanho_faixa, seed=a.seed,
+        imagens_dockerhub=a.imagens_dockerhub, top_imagens=0, popularidade=a.popularidade, zipf_s=1.0,
         template=os.path.join("cenarios", "dataset_registries.json"))
 
 
@@ -177,6 +193,9 @@ def main():
     p.add_argument("--er", action="store_true", help="gera um grafo Erdos-Renyi G(n, p)")
     p.add_argument("--nos", type=int, default=100)
     p.add_argument("--prob", type=float, default=0.049)
+    p.add_argument("--hex", action="store_true", help="gera a malha hexagonal (rede celular)")
+    p.add_argument("--hex-x", type=int, default=10)
+    p.add_argument("--hex-y", type=int, default=10)
     p.add_argument("--banda-link", type=float, default=topologia.BANDA_PADRAO, help="MB/s (125 = 1 Gbps)")
     p.add_argument("--seed", type=int, default=1)
     p.add_argument("--datasets", action="store_true", help="tambem gera os datasets EdgeSimPy (.json)")
@@ -185,11 +204,13 @@ def main():
     p.add_argument("--servicos", type=int, default=60)
     p.add_argument("--tamanho-imagem", type=float, default=gerar_cenario.TAMANHO_IMAGEM)
     p.add_argument("--tamanho-faixa", help="MIN,MAX em MB por imagem")
+    p.add_argument("--imagens-dockerhub", help="JSON do coletar_dockerhub.py (imagens reais)")
+    p.add_argument("--popularidade", choices=["uniforme", "zipf"], default="uniforme")
     p.add_argument("--segundos-por-tick", type=float, default=1.0)
     p.add_argument("--pasta-datasets", default=os.path.join("cenarios", "gerados"))
     a = p.parse_args()
-    if not (a.garr or a.er):
-        p.error("escolha --garr e/ou --er")
+    if not (a.garr or a.er or a.hex):
+        p.error("escolha --garr, --er e/ou --hex")
 
     topologias = []
     if a.garr:
@@ -197,6 +218,9 @@ def main():
     if a.er:
         gerar_er(a)
         topologias.append(("erdos_renyi", None))
+    if a.hex:
+        gerar_hex(a)
+        topologias.append(("hexagonal", None))
     if a.datasets:
         gerar_datasets(a, topologias)
 

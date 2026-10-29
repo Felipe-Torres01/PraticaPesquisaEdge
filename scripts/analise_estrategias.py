@@ -24,6 +24,7 @@ import math
 import os
 import random
 import statistics
+import sys
 
 # t de Student bicaudal 95% por graus de liberdade (evita depender do scipy)
 T95 = {1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262,
@@ -34,17 +35,27 @@ T95 = {1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447, 7: 2.365, 8:
 # paleta categorica de referencia (slots 1 e 2), validada para daltonismo
 CORES = {"fluidc": "#2a78d6", "aleatorio": "#eb6834"}
 NOMES = {"fluidc": "Comunidades (FluidC)", "aleatorio": "Aleatória"}
+# metrica -> (coluna do resumo_experimento.csv, rotulo do eixo y)
+METRICAS = {"tempo": ("tempo_medio_s", "tempo médio de provisionamento (s)"),
+            "nao_iniciadas": ("pct_nao_iniciadas", "requisições não iniciadas no prazo (%)")}
+EIXO_Y = METRICAS["tempo"][1]
 TITULOS = {"garr": "GARR (Topology Zoo, 61 nós)", "erdos_renyi": "Erdős-Rényi G(100, 0.049)",
+           "hexagonal": "Hexagonal 10×10 (100 células)",
            "aleatoria": "Aleatória G(n, m)"}
 TINTA, TINTA_2, GRADE, FUNDO = "#0b0b0b", "#52514e", "#e4e3dd", "#fcfcfb"
 
 
-def ler(pasta):
+def ler(pasta, rotulo=None, coluna="tempo_medio_s"):
+    """rotulo substitui o nome da topologia (ex.: separar GARR de 61 e de 70 nos, ambas 'garr')."""
     linhas = list(csv.DictReader(open(os.path.join(pasta, "resumo_experimento.csv"))))
     for l in linhas:
         l["k"] = int(l["k"])
         l["seed"] = int(l["seed"])
-        v = l.get("tempo_medio_s") or l["tempo_medio"]
+        if rotulo:
+            l["topologia"] = rotulo
+        v = l.get(coluna)
+        if v in ("", None) and coluna == "tempo_medio_s":
+            v = l["tempo_medio"]                # experimentos antigos, sem a coluna em segundos
         l["tempo"] = float(v) if v not in ("", None) else None
     return linhas
 
@@ -113,7 +124,9 @@ def ganhos(linhas):
             "ganho_mediano_pct": round(statistics.median(g), 2),
             "razao_das_medias": round(statistics.mean(a for _, _, a in pares) /
                                       statistics.mean(f for _, f, _ in pares), 3),
-            "seeds_fluidc_venceu": sum(1 for _, f, a in pares if f < a),
+            "seeds_fluidc_venceu": sum(1 for _, f, a in pares if f < a - 1e-9),
+            "seeds_empate": sum(1 for _, f, a in pares if abs(f - a) <= 1e-9),
+            "seeds_fluidc_perdeu": sum(1 for _, f, a in pares if f > a + 1e-9),
             "p_valor_permutacao": round(permutacao_pareada([a - f for _, f, a in pares]), 6),
         })
     return resumo, por_seed
@@ -122,7 +135,7 @@ def ganhos(linhas):
 def escrever_csv(caminho, linhas):
     if not linhas:
         return
-    with open(caminho, "w", newline="") as f:
+    with open(caminho, "w", newline="", encoding="utf-8") as f:   # rotulos podem ter acento (Erdős)
         w = csv.DictWriter(f, fieldnames=list(linhas[0].keys()))
         w.writeheader()
         w.writerows(linhas)
@@ -172,7 +185,7 @@ def graficos(saida, est, por_seed, topologias):
         ax.set_xlabel("K (número de registries)")
         ax.set_title(TITULOS.get(topo, topo), loc="left")
         estilo(ax)
-    eixos[0][0].set_ylabel("tempo médio de provisionamento (s)")
+    eixos[0][0].set_ylabel(EIXO_Y)
     eixos[0][0].legend(frameon=False, fontsize=9)
     n = max((r["n"] for r in est), default=0)
     fig.text(0.01, 0.01, f"Pontos: média de {n} seeds (valor ao lado); barras: ±1 desvio-padrão.",
@@ -217,9 +230,18 @@ def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("pastas", nargs="+", help="pastas de resultados do experimento.py")
     p.add_argument("--saida", default=os.path.join("resultados", "estrategias"))
+    p.add_argument("--rotulos", help="nomes das topologias nos graficos, um por pasta, separados por virgula")
+    p.add_argument("--metrica", choices=list(METRICAS), default="tempo",
+                   help="tempo (s) ou nao_iniciadas (%%, modo carga de trabalho)")
     a = p.parse_args()
 
-    linhas = list(itertools.chain.from_iterable(ler(x) for x in a.pastas))
+    global EIXO_Y
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")   # terminal do Windows (cp1252) nao tem 'ő'
+    coluna, EIXO_Y = METRICAS[a.metrica]
+    rotulos = a.rotulos.split(",") if a.rotulos else [None] * len(a.pastas)
+    if len(rotulos) != len(a.pastas):
+        p.error("--rotulos precisa ter um nome por pasta")
+    linhas = list(itertools.chain.from_iterable(ler(x, r, coluna) for x, r in zip(a.pastas, rotulos)))
     topologias = list(dict.fromkeys(l["topologia"] for l in linhas))
     os.makedirs(a.saida, exist_ok=True)
     est = estatisticas(linhas)
@@ -229,15 +251,19 @@ def main():
     escrever_csv(os.path.join(a.saida, "ganho_por_seed.csv"), por_seed)
     graficos(a.saida, est, por_seed, topologias)
 
-    print(f"{'topologia':<12} {'K':>2} {'FluidC (s)':>15} {'Aleatorio (s)':>15} {'ganho %':>13} "
-          f"{'venceu':>7} {'p':>8}")
+    print(f"metrica: {EIXO_Y}")
+    larg = max([12] + [len(g["topologia"]) for g in resumo])
+    print(f"{'topologia':<{larg}} {'K':>2} {'FluidC':>15} {'Aleatorio':>15} {'ganho %':>13} "
+          f"{'V/E/D':>9} {'p':>8}")
     for g in resumo:
         chave = (g["topologia"], g["k"])
         f = next(r for r in est if (r["topologia"], r["k"], r["metodo"]) == chave + ("fluidc",))
         r = next(r for r in est if (r["topologia"], r["k"], r["metodo"]) == chave + ("aleatorio",))
-        print(f"{g['topologia']:<12} {g['k']:>2} {f['media_s']:>7.2f} ± {f['dp_s']:<5.2f} "
+        ved = f"{g['seeds_fluidc_venceu']}/{g['seeds_empate']}/{g['seeds_fluidc_perdeu']}"
+        print(f"{g['topologia']:<{larg}} {g['k']:>2} {f['media_s']:>7.2f} ± {f['dp_s']:<5.2f} "
               f"{r['media_s']:>7.2f} ± {r['dp_s']:<5.2f} {g['ganho_medio_pct']:>6.1f} ± {g['ganho_dp_pct']:<5.1f}"
-              f"{g['seeds_fluidc_venceu']:>3}/{g['pares']:<3} {g['p_valor_permutacao']:>8.4f}")
+              f"{ved:>9} {g['p_valor_permutacao']:>8.4f}")
+    print("V/E/D = seeds em que o FluidC venceu / empatou / perdeu")
     print(f"\nArquivos em {a.saida}/")
 
 

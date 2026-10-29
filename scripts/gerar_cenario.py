@@ -13,6 +13,10 @@ Exemplos (rodar a partir da raiz do repositorio):
     # Topologia aleatoria do artigo (100 nos, 242 links)
     python scripts/gerar_cenario.py --topologia aleatoria --registries 4
 
+    # Malha hexagonal 10 x 10 (100 celulas, rede celular) com as top 50 imagens do Docker Hub
+    python scripts/gerar_cenario.py --topologia hexagonal --hex-x 10 --hex-y 10 \
+        --imagens-dockerhub cenarios/dockerhub_top50.json --registries 4
+
     # Erdos-Renyi G(n, p), imagens de 100 a 500 MB sorteadas por imagem, tick de 0.1 s
     python scripts/gerar_cenario.py --topologia erdos_renyi --nos 100 --prob 0.049 \
         --tamanho-faixa 100,500 --segundos-por-tick 0.1 --registries 4
@@ -75,6 +79,8 @@ def montar_grafo(args):
     if args.topologia == "erdos_renyi":
         g = topologia.grafo_erdos_renyi(args.nos, args.prob, args.seed, banda=args.banda_link)
         return topologia.verificar(g)
+    if args.topologia == "hexagonal":
+        return topologia.verificar(topologia.grade_hexagonal(args.hex_x, args.hex_y, banda=args.banda_link))
     g = topologia.grafo_aleatorio(args.nos, args.links, args.seed, banda=args.banda_link)
     return topologia.verificar(g)
 
@@ -91,12 +97,55 @@ def tamanhos_imagens(args):
     return [round(rng.uniform(minimo, maximo), 1) for _ in range(args.imagens)]
 
 
+CAMADA_MINIMA_MB = 0.001   # camadas de 0 MB (manifestos vazios) viram 1 KB para nao gerar fluxo vazio
+
+
+def catalogo_imagens(args):
+    """Lista de imagens que os registries guardam: [{nome, digest, camadas: [(digest, MB, instrucao)]}].
+
+    Padrao: as 13 imagens ficticias do artigo, cada uma com UMA camada (tamanho de tamanhos_imagens).
+    Com --imagens-dockerhub: imagens reais do Docker Hub (scripts/coletar_dockerhub.py), com as camadas
+    reais. Camadas com o mesmo digest sao a MESMA camada: o registry guarda uma copia so e o EdgeSimPy
+    nao baixa de novo uma camada que o servidor ja tem (ex.: base debian compartilhada)."""
+    if not args.imagens_dockerhub:
+        return [{"nome": f"imagem-{i}", "digest": digest(f"imagem-{i}"),
+                 "camadas": [(digest(f"camada-{i}"), tam, f"ADD imagem-{i}")]}
+                for i, tam in enumerate(tamanhos_imagens(args))]
+
+    dados = json.load(open(args.imagens_dockerhub))
+    imagens = dados["imagens"][:args.top_imagens] if args.top_imagens else dados["imagens"]
+    catalogo = []
+    for img in imagens:
+        nome = f"{img['nome']}:{img['tag']}"
+        # Digest repetido na mesma imagem (ex.: a camada vazia 4f4fb700ef54) entra uma vez so. Repetido, o
+        # EdgeSimPy baixa duas copias para o servidor, e outra imagem que use a mesma camada nunca termina
+        # de provisionar (Service.step compara a contagem de camadas baixadas com len(layers_digests)).
+        unicas = {c["digest"]: c for c in img["camadas"]}.values()
+        camadas = [(c["digest"], max(round(c["tamanho_MB"], 3), CAMADA_MINIMA_MB), f"camada de {nome}")
+                   for c in unicas]
+        if not camadas:  # coleta sem lista de camadas: imagem vira uma camada unica com o tamanho total
+            camadas = [(digest(f"camada-unica:{nome}"), max(img["tamanho_MB"], CAMADA_MINIMA_MB),
+                        f"camada unica de {nome}")]
+        catalogo.append({"nome": nome, "digest": digest(f"imagem:{nome}"), "camadas": camadas})
+    return catalogo
+
+
+def pesos_popularidade(args, catalogo):
+    """Peso de cada imagem no sorteio dos servicos. None = uniforme (como no artigo).
+    zipf: peso 1 / posicao^s, com a posicao no ranking de downloads do Docker Hub."""
+    if args.popularidade == "uniforme":
+        return None
+    return [1 / (i + 1) ** args.zipf_s for i in range(len(catalogo))]
+
+
 def gerar(args):
     m = carregar_modelos(args.template)
     rng = random.Random(args.seed)          # usado so para servicos/usuarios (igual entre metodos)
     g = montar_grafo(args)
     n_nos = g.number_of_nodes()
-    tamanhos = tamanhos_imagens(args)
+    catalogo = catalogo_imagens(args)
+    tamanhos = [round(sum(c[1] for c in img["camadas"]), 3) for img in catalogo]
+    pesos = pesos_popularidade(args, catalogo)
     k = args.registries
 
     if args.posicoes:
@@ -184,33 +233,37 @@ def gerar(args):
         D["ContainerRegistry"].append(reg)
         rel = D["EdgeServer"][host - 1]["relationships"]
         rel["container_registries"].append(ref("ContainerRegistry", j + 1))
-        for i in range(args.imagens):
-            layer_id += 1
+        vistas = set()
+        for img in catalogo:                 # cada camada distinta uma vez por registry
+            for dig, tam, instrucao in img["camadas"]:
+                if dig in vistas:
+                    continue
+                vistas.add(dig)
+                layer_id += 1
+                camada = copy.deepcopy(m["ContainerLayer"])
+                camada["attributes"].update(id=layer_id, digest=dig, size=tam, instruction=instrucao)
+                camada["relationships"]["server"] = ref("EdgeServer", host)
+                D["ContainerLayer"].append(camada)
+                rel["container_layers"].append(ref("ContainerLayer", layer_id))
+        for img in catalogo:
             image_id += 1
-            camada = copy.deepcopy(m["ContainerLayer"])
-            camada["attributes"].update(
-                id=layer_id, digest=digest(f"camada-{i}"),
-                size=tamanhos[i], instruction=f"ADD imagem-{i}")
-            camada["relationships"]["server"] = ref("EdgeServer", host)
-            D["ContainerLayer"].append(camada)
+            nome, sep, tag = img["nome"].rpartition(":")
             imagem = copy.deepcopy(m["ContainerImage"])
             imagem["attributes"].update(
-                id=image_id, name=f"imagem-{i}", tag="latest",
-                digest=digest(f"imagem-{i}"),
-                layers_digests=[digest(f"camada-{i}")], architecture="")
+                id=image_id, name=(nome if sep else img["nome"]), tag=(tag if sep else "latest"),
+                digest=img["digest"], layers_digests=[c[0] for c in img["camadas"]], architecture="")
             imagem["relationships"]["server"] = ref("EdgeServer", host)
             D["ContainerImage"].append(imagem)
-            rel["container_layers"].append(ref("ContainerLayer", layer_id))
             rel["container_images"].append(ref("ContainerImage", image_id))
 
-    # Servicos: imagem sorteada entre as 13 e estacao-base (zona operacional) sorteada entre as N zonas
+    # Servicos: imagem sorteada do catalogo e estacao-base (zona operacional) sorteada entre as N zonas
     for i in range(1, args.servicos + 1):
-        img = rng.randrange(args.imagens)
+        img = rng.randrange(len(catalogo)) if pesos is None else rng.choices(range(len(catalogo)), pesos)[0]
         estacao = rng.randint(1, n_nos)
 
         svc = copy.deepcopy(m["Service"])
         svc["attributes"].update(id=i, label=f"Servico {i}",
-                                 image_digest=digest(f"imagem-{img}"))
+                                 image_digest=catalogo[img]["digest"])
         svc["relationships"]["application"] = ref("Application", i)
         svc["relationships"]["server"] = None
         D["Service"].append(svc)
@@ -252,7 +305,12 @@ def gerar(args):
                         if colocacao.get("comunidades") else None),
         "desvio_banda": colocacao.get("desvio_banda"),
         "comunidades_referencia": referencia,
-        "servicos": args.servicos, "imagens": args.imagens,
+        "servicos": args.servicos, "imagens": len(catalogo),
+        "fonte_imagens": args.imagens_dockerhub or "ficticias (Tabela II do artigo)",
+        "popularidade": args.popularidade,
+        "nomes_imagens": [img["nome"] for img in catalogo],
+        "camadas_distintas": len({c[0] for img in catalogo for c in img["camadas"]}),
+        "catalogo_MB": round(sum({c[0]: c[1] for img in catalogo for c in img["camadas"]}.values()), 3),
         "tamanho_imagem_mb": (tamanhos[0] if len(set(tamanhos)) == 1 else None),
         "tamanhos_imagens_mb": tamanhos,
         "banda_link_MBps": args.banda_link, "banda_registry_MBps": args.banda_registry,
@@ -293,12 +351,14 @@ def nome_padrao(args):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--topologia", choices=["garr", "aleatoria", "erdos_renyi"], default="garr")
+    p.add_argument("--topologia", choices=["garr", "aleatoria", "erdos_renyi", "hexagonal"], default="garr")
     p.add_argument("--garr-arquivo", help="grafo GARR (.gml/.graphml/.csv/.json), 70 nos e 112 links")
     p.add_argument("--nos", type=int, default=100, help="so topologia aleatoria (artigo: 100)")
     p.add_argument("--links", type=int, default=242, help="so topologia aleatoria (artigo: 242)")
     p.add_argument("--prob", type=float, default=0.049,
                    help="so erdos_renyi: probabilidade de aresta p (0.049 ~ 242 links esperados com 100 nos)")
+    p.add_argument("--hex-x", type=int, default=10, help="so hexagonal: celulas por linha")
+    p.add_argument("--hex-y", type=int, default=10, help="so hexagonal: numero de linhas")
     p.add_argument("--banda-link", type=float, default=topologia.BANDA_PADRAO,
                    help="MB/s dos links sem banda propria no arquivo (125 = 1 Gbps)")
     p.add_argument("--banda-registry", type=float, default=BANDA_REGISTRY,
@@ -314,6 +374,12 @@ def main():
     p.add_argument("--imagens", type=int, default=N_IMAGENS)
     p.add_argument("--tamanho-imagem", type=float, default=TAMANHO_IMAGEM, help="MB por imagem (artigo: 200)")
     p.add_argument("--tamanho-faixa", help="MIN,MAX em MB: sorteia o tamanho de cada imagem (ignora --tamanho-imagem)")
+    p.add_argument("--imagens-dockerhub", help="JSON do coletar_dockerhub.py (ex: cenarios/dockerhub_top50.json); "
+                   "usa as imagens e camadas reais no lugar das 13 ficticias")
+    p.add_argument("--top-imagens", type=int, default=0, help="com --imagens-dockerhub: usa so as N primeiras (0 = todas)")
+    p.add_argument("--popularidade", choices=["uniforme", "zipf"], default="uniforme",
+                   help="sorteio da imagem de cada servico: uniforme (artigo) ou zipf pelo ranking de downloads")
+    p.add_argument("--zipf-s", type=float, default=1.0, help="expoente da zipf (peso = 1 / posicao^s)")
     p.add_argument("--seed", type=int, default=1)
     p.add_argument("--ignorar-contagem", action="store_true",
                    help="aceita GARR com contagem de nos/links diferente de 70/112")
@@ -334,8 +400,8 @@ def main():
           f"{info['links_rede']} links de rede + {info['k']} de acesso")
     print(f"  metodo {info['metodo']}: registries nos nos {info['posicoes']}")
     tam = info["tamanhos_imagens_mb"]
-    print(f"  {info['imagens']} imagens de {min(tam)}-{max(tam)} MB "
-          f"(total {sum(tam):.0f} MB), {info['servicos']} servicos")
+    print(f"  {info['imagens']} imagens de {min(tam)}-{max(tam)} MB, {info['camadas_distintas']} camadas distintas "
+          f"(catalogo {info['catalogo_MB']:.0f} MB), {info['servicos']} servicos")
 
 
 if __name__ == "__main__":

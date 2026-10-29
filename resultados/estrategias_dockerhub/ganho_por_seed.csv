@@ -1,0 +1,241 @@
+topologia,k,seed,ganho_pct
+Erdős-Rényi (100 nós),1,1,46.36
+Erdős-Rényi (100 nós),1,2,76.62
+Erdős-Rényi (100 nós),1,3,36.66
+Erdős-Rényi (100 nós),1,4,15.86
+Erdős-Rényi (100 nós),1,5,78.73
+Erdős-Rényi (100 nós),1,6,55.88
+Erdős-Rényi (100 nós),1,7,49.39
+Erdős-Rényi (100 nós),1,8,63.63
+Erdős-Rényi (100 nós),1,9,38.42
+Erdős-Rényi (100 nós),1,10,7.49
+Erdős-Rényi (100 nós),1,11,12.68
+Erdős-Rényi (100 nós),1,12,34.33
+Erdős-Rényi (100 nós),1,13,66.86
+Erdős-Rényi (100 nós),1,14,50.03
+Erdős-Rényi (100 nós),1,15,32.18
+Erdős-Rényi (100 nós),1,16,17.0
+Erdős-Rényi (100 nós),1,17,43.78
+Erdős-Rényi (100 nós),1,18,61.74
+Erdős-Rényi (100 nós),1,19,11.11
+Erdős-Rényi (100 nós),1,20,8.91
+Erdős-Rényi (100 nós),2,1,53.39
+Erdős-Rényi (100 nós),2,2,69.34
+Erdős-Rényi (100 nós),2,3,40.73
+Erdős-Rényi (100 nós),2,4,17.9
+Erdős-Rényi (100 nós),2,5,31.32
+Erdős-Rényi (100 nós),2,6,41.87
+Erdős-Rényi (100 nós),2,7,44.14
+Erdős-Rényi (100 nós),2,8,47.35
+Erdős-Rényi (100 nós),2,9,46.47
+Erdős-Rényi (100 nós),2,10,10.95
+Erdős-Rényi (100 nós),2,11,2.75
+Erdős-Rényi (100 nós),2,12,21.99
+Erdős-Rényi (100 nós),2,13,53.8
+Erdős-Rényi (100 nós),2,14,37.35
+Erdős-Rényi (100 nós),2,15,15.36
+Erdős-Rényi (100 nós),2,16,3.3
+Erdős-Rényi (100 nós),2,17,14.29
+Erdős-Rényi (100 nós),2,18,16.48
+Erdős-Rényi (100 nós),2,19,19.58
+Erdős-Rényi (100 nós),2,20,55.31
+Erdős-Rényi (100 nós),4,1,18.89
+Erdős-Rényi (100 nós),4,2,35.55
+Erdős-Rényi (100 nós),4,3,20.58
+Erdős-Rényi (100 nós),4,4,28.28
+Erdős-Rényi (100 nós),4,5,-0.48
+Erdős-Rényi (100 nós),4,6,35.75
+Erdős-Rényi (100 nós),4,7,43.29
+Erdős-Rényi (100 nós),4,8,21.98
+Erdős-Rényi (100 nós),4,9,29.83
+Erdős-Rényi (100 nós),4,10,21.4
+Erdős-Rényi (100 nós),4,11,7.56
+Erdős-Rényi (100 nós),4,12,19.43
+Erdős-Rényi (100 nós),4,13,14.52
+Erdős-Rényi (100 nós),4,14,0.71
+Erdős-Rényi (100 nós),4,15,19.7
+Erdős-Rényi (100 nós),4,16,-4.73
+Erdős-Rényi (100 nós),4,17,-24.43
+Erdős-Rényi (100 nós),4,18,20.43
+Erdős-Rényi (100 nós),4,19,10.25
+Erdős-Rényi (100 nós),4,20,28.8
+Erdős-Rényi (100 nós),8,1,12.53
+Erdős-Rényi (100 nós),8,2,-7.19
+Erdős-Rényi (100 nós),8,3,40.99
+Erdős-Rényi (100 nós),8,4,18.9
+Erdős-Rényi (100 nós),8,5,-8.83
+Erdős-Rényi (100 nós),8,6,-26.08
+Erdős-Rényi (100 nós),8,7,16.4
+Erdős-Rényi (100 nós),8,8,-4.85
+Erdős-Rényi (100 nós),8,9,10.13
+Erdős-Rényi (100 nós),8,10,12.05
+Erdős-Rényi (100 nós),8,11,-38.85
+Erdős-Rényi (100 nós),8,12,22.51
+Erdős-Rényi (100 nós),8,13,4.48
+Erdős-Rényi (100 nós),8,14,12.1
+Erdős-Rényi (100 nós),8,15,8.65
+Erdős-Rényi (100 nós),8,16,8.37
+Erdős-Rényi (100 nós),8,17,8.09
+Erdős-Rényi (100 nós),8,18,14.81
+Erdős-Rényi (100 nós),8,19,11.3
+Erdős-Rényi (100 nós),8,20,6.76
+GARR artigo (70 nós),1,1,0.0
+GARR artigo (70 nós),1,2,0.0
+GARR artigo (70 nós),1,3,0.0
+GARR artigo (70 nós),1,4,0.0
+GARR artigo (70 nós),1,5,0.0
+GARR artigo (70 nós),1,6,79.72
+GARR artigo (70 nós),1,7,0.0
+GARR artigo (70 nós),1,8,88.88
+GARR artigo (70 nós),1,9,89.33
+GARR artigo (70 nós),1,10,0.0
+GARR artigo (70 nós),1,11,0.0
+GARR artigo (70 nós),1,12,0.0
+GARR artigo (70 nós),1,13,87.86
+GARR artigo (70 nós),1,14,0.0
+GARR artigo (70 nós),1,15,89.25
+GARR artigo (70 nós),1,16,0.0
+GARR artigo (70 nós),1,17,0.92
+GARR artigo (70 nós),1,18,0.0
+GARR artigo (70 nós),1,19,0.0
+GARR artigo (70 nós),1,20,88.54
+GARR artigo (70 nós),2,1,-6.57
+GARR artigo (70 nós),2,2,32.89
+GARR artigo (70 nós),2,3,32.63
+GARR artigo (70 nós),2,4,63.21
+GARR artigo (70 nós),2,5,0.69
+GARR artigo (70 nós),2,6,52.65
+GARR artigo (70 nós),2,7,42.46
+GARR artigo (70 nós),2,8,73.18
+GARR artigo (70 nós),2,9,40.82
+GARR artigo (70 nós),2,10,16.54
+GARR artigo (70 nós),2,11,41.32
+GARR artigo (70 nós),2,12,18.64
+GARR artigo (70 nós),2,13,68.57
+GARR artigo (70 nós),2,14,1.69
+GARR artigo (70 nós),2,15,87.3
+GARR artigo (70 nós),2,16,0.33
+GARR artigo (70 nós),2,17,30.29
+GARR artigo (70 nós),2,18,-4.88
+GARR artigo (70 nós),2,19,33.75
+GARR artigo (70 nós),2,20,86.31
+GARR artigo (70 nós),4,1,16.85
+GARR artigo (70 nós),4,2,35.09
+GARR artigo (70 nós),4,3,-13.48
+GARR artigo (70 nós),4,4,49.4
+GARR artigo (70 nós),4,5,73.51
+GARR artigo (70 nós),4,6,61.48
+GARR artigo (70 nós),4,7,57.11
+GARR artigo (70 nós),4,8,33.24
+GARR artigo (70 nós),4,9,17.46
+GARR artigo (70 nós),4,10,57.97
+GARR artigo (70 nós),4,11,61.71
+GARR artigo (70 nós),4,12,25.4
+GARR artigo (70 nós),4,13,33.8
+GARR artigo (70 nós),4,14,41.99
+GARR artigo (70 nós),4,15,80.99
+GARR artigo (70 nós),4,16,7.4
+GARR artigo (70 nós),4,17,15.9
+GARR artigo (70 nós),4,18,27.01
+GARR artigo (70 nós),4,19,28.53
+GARR artigo (70 nós),4,20,45.02
+GARR artigo (70 nós),8,1,16.85
+GARR artigo (70 nós),8,2,1.12
+GARR artigo (70 nós),8,3,81.62
+GARR artigo (70 nós),8,4,13.42
+GARR artigo (70 nós),8,5,67.5
+GARR artigo (70 nós),8,6,46.09
+GARR artigo (70 nós),8,7,24.82
+GARR artigo (70 nós),8,8,36.63
+GARR artigo (70 nós),8,9,-4.48
+GARR artigo (70 nós),8,10,47.26
+GARR artigo (70 nós),8,11,32.16
+GARR artigo (70 nós),8,12,74.0
+GARR artigo (70 nós),8,13,14.88
+GARR artigo (70 nós),8,14,39.67
+GARR artigo (70 nós),8,15,77.28
+GARR artigo (70 nós),8,16,7.11
+GARR artigo (70 nós),8,17,11.92
+GARR artigo (70 nós),8,18,10.16
+GARR artigo (70 nós),8,19,25.49
+GARR artigo (70 nós),8,20,73.56
+Hexagonal (100 nós),1,1,31.17
+Hexagonal (100 nós),1,2,31.32
+Hexagonal (100 nós),1,3,42.33
+Hexagonal (100 nós),1,4,51.38
+Hexagonal (100 nós),1,5,52.58
+Hexagonal (100 nós),1,6,24.55
+Hexagonal (100 nós),1,7,21.99
+Hexagonal (100 nós),1,8,37.76
+Hexagonal (100 nós),1,9,51.01
+Hexagonal (100 nós),1,10,41.0
+Hexagonal (100 nós),1,11,10.61
+Hexagonal (100 nós),1,12,62.44
+Hexagonal (100 nós),1,13,32.11
+Hexagonal (100 nós),1,14,33.14
+Hexagonal (100 nós),1,15,1.65
+Hexagonal (100 nós),1,16,2.3
+Hexagonal (100 nós),1,17,14.45
+Hexagonal (100 nós),1,18,34.08
+Hexagonal (100 nós),1,19,59.38
+Hexagonal (100 nós),1,20,53.42
+Hexagonal (100 nós),2,1,-20.49
+Hexagonal (100 nós),2,2,41.85
+Hexagonal (100 nós),2,3,34.15
+Hexagonal (100 nós),2,4,24.46
+Hexagonal (100 nós),2,5,-4.99
+Hexagonal (100 nós),2,6,36.29
+Hexagonal (100 nós),2,7,7.98
+Hexagonal (100 nós),2,8,38.88
+Hexagonal (100 nós),2,9,63.28
+Hexagonal (100 nós),2,10,30.44
+Hexagonal (100 nós),2,11,-11.03
+Hexagonal (100 nós),2,12,18.67
+Hexagonal (100 nós),2,13,-31.08
+Hexagonal (100 nós),2,14,37.45
+Hexagonal (100 nós),2,15,20.37
+Hexagonal (100 nós),2,16,3.64
+Hexagonal (100 nós),2,17,19.73
+Hexagonal (100 nós),2,18,27.32
+Hexagonal (100 nós),2,19,27.16
+Hexagonal (100 nós),2,20,27.98
+Hexagonal (100 nós),4,1,-4.28
+Hexagonal (100 nós),4,2,25.93
+Hexagonal (100 nós),4,3,12.24
+Hexagonal (100 nós),4,4,-2.19
+Hexagonal (100 nós),4,5,26.53
+Hexagonal (100 nós),4,6,43.84
+Hexagonal (100 nós),4,7,2.3
+Hexagonal (100 nós),4,8,49.07
+Hexagonal (100 nós),4,9,19.06
+Hexagonal (100 nós),4,10,35.43
+Hexagonal (100 nós),4,11,19.71
+Hexagonal (100 nós),4,12,17.54
+Hexagonal (100 nós),4,13,-4.65
+Hexagonal (100 nós),4,14,48.55
+Hexagonal (100 nós),4,15,17.61
+Hexagonal (100 nós),4,16,25.56
+Hexagonal (100 nós),4,17,30.74
+Hexagonal (100 nós),4,18,6.01
+Hexagonal (100 nós),4,19,6.69
+Hexagonal (100 nós),4,20,61.02
+Hexagonal (100 nós),8,1,-17.75
+Hexagonal (100 nós),8,2,0.58
+Hexagonal (100 nós),8,3,-1.27
+Hexagonal (100 nós),8,4,1.72
+Hexagonal (100 nós),8,5,22.24
+Hexagonal (100 nós),8,6,5.51
+Hexagonal (100 nós),8,7,8.72
+Hexagonal (100 nós),8,8,7.76
+Hexagonal (100 nós),8,9,-0.53
+Hexagonal (100 nós),8,10,20.61
+Hexagonal (100 nós),8,11,-10.59
+Hexagonal (100 nós),8,12,16.36
+Hexagonal (100 nós),8,13,7.49
+Hexagonal (100 nós),8,14,25.64
+Hexagonal (100 nós),8,15,29.67
+Hexagonal (100 nós),8,16,10.72
+Hexagonal (100 nós),8,17,-5.87
+Hexagonal (100 nós),8,18,-12.15
+Hexagonal (100 nós),8,19,26.69
+Hexagonal (100 nós),8,20,4.27

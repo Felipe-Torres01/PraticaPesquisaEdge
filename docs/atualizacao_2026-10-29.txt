@@ -1,0 +1,202 @@
+ATUALIZACAO DO PROJETO - 29/10/2026
+Topologia hexagonal, imagens do Docker Hub, carga de trabalho do artigo e novos resultados
+Pratica em Pesquisa (PUCRS) - reproducao e extensao de Knob et al. (2021)
+==========================================================================================
+
+Pessoal, segue o que foi feito nesta rodada, em cima do que o Gerson e o Felipe subiram
+(GARR do artigo com 70 nos, coleta do Docker Hub e o ajuste de memoria do EdgeSimPy).
+Esta tudo no commit junto com este arquivo.
+
+
+1. RESUMO RAPIDO
+----------------
+- Topologia hexagonal (rede celular) implementada e testada. E identica ao gerador oficial
+  do EdgeSimPy.
+- As top 50 imagens do Docker Hub agora entram nos cenarios, com as camadas reais e
+  compartilhamento de camadas entre imagens.
+- Carga de trabalho do artigo implementada: chegadas de Poisson, deadline, cache LRU de
+  600 MB e contagem de requisicoes nao iniciadas.
+- Rodamos 640 simulacoes novas no modo "rajada" (60 servicos de uma vez) + uma varredura da
+  carga do artigo com 5, 10 e 20 requisicoes/s.
+- Resultado principal: o FluidC continua mais rapido que o aleatorio em TODAS as 28
+  combinacoes de topologia, imagens e K (diferenca significativa em todas). Com as imagens
+  reais do Docker Hub o ganho relativo quase nao muda.
+- Achamos e contornamos 2 armadilhas do EdgeSimPy (secao 6) que afetariam qualquer
+  experimento com imagens reais.
+
+
+2. O QUE FOI FEITO
+------------------
+a) Topologia hexagonal (sugestao do professor)
+   - Nova opcao: --topologia hexagonal --hex-x 10 --hex-y 10 (gerar_cenario.py,
+     experimento.py e gerar_topologias.py --hex).
+   - Cada no e uma celula (estacao-base + servidor) ligada as ate 6 celulas vizinhas.
+   - Usa a mesma convencao do gerador do proprio EdgeSimPy (hexagonal_grid +
+     partially_connected_hexagonal_mesh). Conferimos: mesmos 100 nos e os mesmos 261 links.
+   - Tem o mesmo tamanho da Erdos-Renyi (100 nos), mas e uma rede "longa": diametro de 14
+     saltos, contra ~5 da Erdos-Renyi e 9 da GARR do artigo.
+
+b) Top 50 imagens do Docker Hub no gerador de cenarios
+   - Nova opcao: --imagens-dockerhub cenarios/dockerhub_top50.json (usa o arquivo que o
+     Gerson coletou).
+   - Cada imagem entra com as suas camadas reais. Camada com o mesmo digest e a mesma camada:
+     o registry guarda uma copia so, e o servidor nao baixa de novo o que ja tem. Sao 290
+     camadas distintas; o catalogo ocupa 5,0 GB sem repetir camadas (os 6,0 GB contavam as
+     camadas compartilhadas mais de uma vez).
+   - Opcao --popularidade uniforme (padrao, como no artigo) ou zipf (imagens mais baixadas
+     sao pedidas com mais frequencia).
+   - Resolvemos as 3 entradas estranhas: hello-world (0,002 MB) e percona (0,04 MB) ficam
+     como estao (camadas de 0 MB viram 1 KB); a v2tec/watchtower, que veio sem camadas,
+     vira uma camada unica de 3,3 MB. Talvez valha recoletar a percona (secao 7).
+
+c) Carga de trabalho do artigo (modo novo do run_cenario.py: --chegadas)
+   - Requisicoes chegam por um processo de Poisson (--chegadas req/s, --duracao s).
+   - Deadline de 25 s (--deadline-min/--deadline-max). A metrica e a % de requisicoes cujo
+     container nao estava rodando ate o deadline ("nao iniciadas"), como no artigo.
+   - Cache de camadas de 600 MB por servidor com politica LRU (--cache-mb 600).
+   - SUPOSICAO NOSSA: o container roda 30 s e libera o servidor (--tempo-vida). Sem isso os
+     servidores lotam em poucos minutos (cada servidor aceita 4 containers). O artigo nao
+     diz isso.
+   - Codigo em scripts/carga_trabalho.py; sem --chegadas, o run_cenario continua igual
+     (conferimos byte a byte).
+
+d) Analise
+   - analise_estrategias.py ganhou --rotulos (para separar GARR 61 e GARR 70) e passou a
+     contar vitorias/empates/derrotas (V/E/D) por seed.
+   - Novo analise_carga.py para a varredura de taxa de chegada.
+   - README atualizado com tudo isso.
+
+
+3. RESULTADOS - MODO RAJADA (60 servicos de uma vez, 20 seeds)
+-------------------------------------------------------------
+Formato: FluidC x aleatorio, tempo medio de provisionamento em segundos
+(ganho medio do FluidC; V/E/D = seeds em que o FluidC venceu/empatou/perdeu).
+
+Imagens ficticias do artigo (13 x 200 MB)
+  Topologia             K=1                     K=2                  K=4                  K=8
+  GARR artigo (70)      9,3 x 29,9 (26%,6/14/0)  5,0 x 12,2 (39%)     3,1 x 7,4 (43%)      2,3 x 5,8 (43%)
+  GARR Zoo (61)         26,5 x 70,1 (54%)        11,4 x 39,5 (65%)    6,4 x 21,9 (66%)     3,7 x 10,9 (63%)
+  Erdos-Renyi (100)     13,2 x 28,2 (44%)        8,7 x 14,9 (38%)     6,0 x 8,2 (24%)      3,9 x 4,5 (10%)
+  Hexagonal (100)       18,1 x 30,2 (35%)        10,6 x 14,8 (22%)    6,1 x 8,6 (25%)      3,7 x 4,1 (9%)
+
+Top 50 do Docker Hub
+  Topologia             K=1                     K=2                  K=4                  K=8
+  GARR artigo (70)      3,1 x 10,1 (26%,7/13/0)  1,8 x 4,2 (36%)      1,3 x 2,4 (38%)      1,0 x 2,0 (35%)
+  Erdos-Renyi (100)     4,8 x 9,7 (40%)          3,4 x 5,3 (32%)      2,5 x 3,0 (17%)      1,8 x 1,9 (6%)
+  Hexagonal (100)       6,5 x 10,6 (34%)         4,1 x 5,5 (20%)      2,5 x 3,4 (22%)      1,7 x 1,9 (7%)
+
+Como ler:
+- O FluidC e mais rapido em media em todas as 28 combinacoes, com p < 0,05 em todas.
+- Nas duas GARR o ganho fica alto para qualquer K (35-66%): a rede tem nucleo e periferia, e
+  um registry sorteado na periferia congestiona os poucos caminhos.
+- Na Erdos-Renyi e na hexagonal o ganho cai quando K cresce (~40% -> ~8%): com 8 registries
+  em 100 nos ate o sorteio fica perto de todo mundo.
+- GARR do artigo com K=1: em 13-14 seeds o sorteio cai num no do nucleo de 10 Gbps e EMPATA
+  com o FluidC; nas outras 6-7 cai num no ruim e perde por ~85-90%. Por isso a media (26%)
+  tem desvio enorme. E bom mostrar isso no artigo (grafico de ganho por seed).
+- Docker Hub x ficticias: os tempos caem para 33-47% (imagens reais sao menores e as camadas
+  compartilhadas nao sao baixadas de novo), mas o ganho relativo do FluidC muda pouco. A
+  conclusao do Knob resiste a imagens realistas. Isso e um resultado nosso.
+
+Graficos:
+  resultados/estrategias_ficticias/tempo_medio_por_k.png e ganho_por_seed.png
+  resultados/estrategias_dockerhub/tempo_medio_por_k.png e ganho_por_seed.png
+
+
+4. RESULTADOS - CARGA DO ARTIGO (GARR 70 nos, Docker Hub, 10 seeds)
+-------------------------------------------------------------------
+Configuracao: deadline 25 s, cache LRU de 600 MB por servidor, container roda 30 s,
+10 minutos de chegadas por simulacao, 10 seeds, 240 simulacoes.
+Metrica: % de requisicoes NAO iniciadas no prazo (media das seeds).
+"Diferenca" = aleatorio - FluidC em pontos percentuais, seed a seed (V/E/D e p como antes).
+
+  Chegadas  K   FluidC     Aleatorio    Diferenca (V/E/D)     p
+  5 req/s   1    0,0 %      27,7 %       27,7 pp (3/7/0)      0,25
+  5 req/s   2    0,0 %       2,2 %        2,2 pp (3/7/0)      0,25
+  5 req/s   4    0,0 %       1,9 %        1,9 pp (3/7/0)      0,25
+  5 req/s   8    0,0 %       2,6 %        2,6 pp (2/8/0)      0,50
+  10 req/s  1   31,3 %      51,5 %       20,1 pp (7/0/3)      0,08
+  10 req/s  2   22,1 %      38,0 %       15,9 pp (9/0/1)      0,006
+  10 req/s  4   20,3 %      36,4 %       16,1 pp (10/0/0)     0,002
+  10 req/s  8   20,0 %      32,5 %       12,5 pp (8/0/2)      0,018
+  20 req/s  1   88,5 %      91,6 %        3,2 pp (8/0/2)      0,018
+  20 req/s  2   85,0 %      88,3 %        3,3 pp (10/0/0)     0,002
+  20 req/s  4   82,1 %      87,0 %        4,9 pp (9/0/1)      0,004
+  20 req/s  8   80,6 %      85,1 %        4,6 pp (9/0/1)      0,004
+
+Como ler:
+- 5 req/s (a carga do artigo): o FluidC NAO perdeu nenhuma requisicao em nenhuma seed. O
+  aleatorio e "8 ou 80": na maioria das seeds tambem zera, mas em 2-3 de cada 10 o registry
+  cai atras de um link fraco e as perdas vao de 0,1% a 18% (K >= 2) ou de 87% a 95% (K = 1).
+  ATENCAO: com 10 seeds isso ainda NAO e estatisticamente significativo (p = 0,25), porque so
+  3 seeds diferem. Precisamos de mais seeds aqui (secao 7, item 1).
+- 10 req/s: ja passa da capacidade de computacao (~9 req/s com containers de 30 s). Os dois
+  perdem requisicoes, mas o FluidC perde 12-20 pontos a menos (significativo para K >= 2).
+- 20 req/s: a computacao satura e os dois perdem mais de 80%; o FluidC ainda fica 3-5 pontos
+  melhor.
+- O acerto do cache de 600 MB fica em 11-15% nos dois metodos (50 imagens sorteadas de modo
+  uniforme; o cache comporta poucas imagens por servidor).
+- Mensagem para o artigo: a vantagem do FluidC nao e so a media; ele elimina o risco de uma
+  configuracao catastrofica (registry atras de um gargalo).
+
+Grafico: resultados/carga_garr70/carga_por_taxa.png
+
+
+5. ONDE ESTA CADA COISA
+-----------------------
+  cenarios/garr/garr-topology.json      GARR do artigo (professor)
+  cenarios/dockerhub_top50.json         top 50 imagens (Gerson)
+  cenarios/hexagonal/                   malha hexagonal 10x10 (para inspecao)
+  scripts/carga_trabalho.py             carga de trabalho do artigo
+  scripts/analise_carga.py              analise da varredura de carga
+  resultados/hexagonal/                 rajada, hexagonal, imagens ficticias
+  resultados/dh_garr70/, dh_erdos_renyi/, dh_hexagonal/   rajada com Docker Hub
+  resultados/carga_garr70_l5/, _l10/, _l20/               carga do artigo
+  resultados/estrategias_ficticias/     consolidado das 4 topologias (ficticias)
+  resultados/estrategias_dockerhub/     consolidado das 3 topologias (Docker Hub)
+  resultados/carga_garr70/              consolidado da carga
+  Os comandos para reproduzir tudo estao no README.
+
+
+6. ARMADILHAS DO EDGESIMPY QUE ENCONTRAMOS (importante para quem for mexer)
+-------------------------------------------------------------------------
+1) Imagem com a mesma camada repetida trava OUTRA imagem.
+   Duas imagens do Docker Hub listam a mesma camada duas vezes (a "camada vazia"
+   4f4fb700ef54). O EdgeSimPy baixa duas copias dela para o servidor, e outra imagem que use
+   a mesma camada no mesmo servidor nunca termina de provisionar (ele compara a contagem de
+   camadas). Achamos isso porque 1 servico ficou preso ate o fim da simulacao. Corrigido no
+   gerar_cenario.py (repeticoes sao removidas).
+2) Com imagens reais, tick de 1 s nao serve.
+   Quase toda camada baixa dentro do primeiro tick, e o tempo medido vira so o overhead fixo
+   do simulador (~2 ticks). Nesse caso FluidC e aleatorio dao resultados IDENTICOS. Todos os
+   experimentos usam 0,1 s por tick (--segundos-por-tick 0.1).
+3) Em simulacao longa, as listas internas de agentes so crescem (fluxos terminados, copias
+   de camadas) e cada tick fica mais lento. No modo carga, os fluxos terminados e as camadas
+   removidas do cache sao retirados dessas listas.
+
+
+7. O QUE AINDA FALTA (frentes para dividir)
+-------------------------------------------
+0) MAIS SEEDS NA CARGA DE 5 req/s (prioridade). Com 10 seeds o resultado nao e
+   significativo (p = 0,25). Com ~30 seeds deve ficar claro. Mesmo comando do README,
+   so trocando --seeds para 1,...,30 (as 10 primeiras ja estao prontas e sao
+   reaproveitadas). Leva ~1 h na maquina com 12 nucleos.
+1) PESS scheduler (ref. [25]) - aguardando resposta do professor. O lugar no codigo e a
+   funcao criar_escalonador do run_cenario.py; no modo carga, o metodo _colocar de
+   carga_trabalho.py. Serve para a Fig. 3b (FluidC funciona com outro escalonador?).
+2) Carga do artigo com 1 hora completa. Rodamos 10 minutos por simulacao (cada uma leva
+   ~4 min a 0,1 s/tick; 1 hora levaria ~25 min por simulacao). Vale rodar 1 hora pelo
+   menos para o ponto principal (5 req/s) antes de fechar o artigo.
+3) Confirmar com o professor as suposicoes da carga: tempo de vida do container (usamos
+   30 s), deadline fixo de 25 s ou sorteado acima de 25 s, e capacidade dos servidores
+   (usamos 4 containers por servidor, do template).
+4) Recoletar a imagem percona (veio com 0,04 MB, provavelmente um manifesto errado) e
+   revisar as tags estranhas da coleta (ex.: "merge-1263-ubi", "1.32.0-rc.0", "dev",
+   "head"): o ideal e sempre pegar a "latest" ou a versao estavel mais recente.
+5) Escrita do artigo: metodologia e resultados ja dao para escrever com o que temos
+   (4 topologias, 2 conjuntos de imagens, carga). Sugestao de figuras: tempo x K (as 4
+   topologias), ganho por seed (mostra o caso bimodal da GARR com K=1) e % nao iniciadas x
+   taxa de chegada.
+6) Opcional: rodar com --popularidade zipf (imagens populares pedidas mais vezes; deve
+   aumentar o acerto de cache) e com 1 Gbps em todos os links da GARR do artigo, para
+   comparar com a Tabela II.
