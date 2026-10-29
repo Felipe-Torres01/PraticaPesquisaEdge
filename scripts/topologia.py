@@ -139,6 +139,25 @@ def grafo_erdos_renyi(n_nos, prob, semente, banda=BANDA_PADRAO, max_tentativas=1
     raise SystemExit(f"G({n_nos}, {prob}) nao gerou grafo conexo em {max_tentativas} tentativas; aumente p.")
 
 
+def grade_hexagonal(x_size, y_size, banda=BANDA_PADRAO):
+    """Malha hexagonal no estilo de rede celular: cada no e uma celula (estacao-base + servidor de borda)
+    ligada as ate 6 celulas vizinhas. Mesma convencao do gerador do EdgeSimPy
+    (dataset_generator.map.hexagonal_grid + network_topologies.partially_connected_hexagonal_mesh,
+    adaptados de Aral et al. / Zilic et al.): coordenadas (x, y) com x de 0 a 2*x_size-1 e x % 2 == y % 2;
+    vizinhos em (x+-2, y) e (x+-1, y+-1). x_size = y_size = 10 da 100 nos e 261 links."""
+    coords = [(x, y) for y in range(y_size) for x in range(2 * x_size) if x % 2 == y % 2]
+    indice = {c: i for i, c in enumerate(coords)}
+    g = nx.Graph()
+    for i, c in enumerate(coords):
+        g.add_node(i, coordenadas=c)
+    for (x, y), i in indice.items():
+        for viz in ((x + 2, y), (x + 1, y + 1), (x - 1, y + 1)):  # metade dos 6 vizinhos basta (grafo nao dirigido)
+            if viz in indice:
+                g.add_edge(i, indice[viz], bandwidth=float(banda))
+    g.graph["coordenadas"] = coords
+    return g
+
+
 def ler_gml_topology_zoo(caminho):
     """Le um .gml do Internet Topology Zoo. Esses arquivos tem arestas paralelas sem declarar
     'multigraph 1', o que faz o nx.read_gml falhar; o cabecalho e inserido antes do parse."""

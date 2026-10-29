@@ -38,14 +38,15 @@ def executar(cmd, timeout):
 
 def uma_execucao(a, k, metodo, seed, raiz):
     nome = f"{a.topologia}_{metodo}_k{k}_s{seed}"
-    cenario = os.path.join("cenarios", "gerados", nome + ".json")
+    # subpasta por experimento: duas varreduras simultaneas na mesma topologia nao sobrescrevem os cenarios
+    cenario = os.path.join("cenarios", "gerados", os.path.basename(raiz), nome + ".json")
     pasta = os.path.join(raiz, nome)
     if os.path.exists(os.path.join(pasta, "resumo.json")) and not a.refazer:
         return nome, json.load(open(os.path.join(pasta, "resumo.json"))), None
 
     gerar = [sys.executable, os.path.join(AQUI, "gerar_cenario.py"),
              "--topologia", a.topologia, "--registries", str(k), "--metodo", metodo,
-             "--centralidade", a.centralidade, "--seed", str(seed), "--servicos", str(a.servicos),
+             "--centralidade", a.centralidade, "--seed", str(seed), "--servicos", str(servicos_dataset(a)),
              "--saida", cenario]
     if a.topologia == "garr":
         gerar += ["--garr-arquivo", a.garr_arquivo]
@@ -53,6 +54,8 @@ def uma_execucao(a, k, metodo, seed, raiz):
             gerar += ["--ignorar-contagem"]
     elif a.topologia == "erdos_renyi":
         gerar += ["--nos", str(a.nos), "--prob", str(a.prob)]
+    elif a.topologia == "hexagonal":
+        gerar += ["--hex-x", str(a.hex_x), "--hex-y", str(a.hex_y)]
     else:
         gerar += ["--nos", str(a.nos), "--links", str(a.links)]
     if a.banda_link:
@@ -60,6 +63,8 @@ def uma_execucao(a, k, metodo, seed, raiz):
     gerar += ["--segundos-por-tick", str(a.segundos_por_tick), "--tamanho-imagem", str(a.tamanho_imagem)]
     if a.tamanho_faixa:
         gerar += ["--tamanho-faixa", a.tamanho_faixa]
+    if a.imagens_dockerhub:
+        gerar += ["--imagens-dockerhub", a.imagens_dockerhub, "--popularidade", a.popularidade]
     code, out, err = executar(gerar, 600)
     if code != 0:
         return nome, None, "gerar_cenario: " + (err or out)[-400:]
@@ -67,10 +72,23 @@ def uma_execucao(a, k, metodo, seed, raiz):
     rodar = [sys.executable, os.path.join(AQUI, "run_cenario.py"), cenario, "--saida", pasta,
              "--scheduler", a.scheduler, "--seed", str(seed), "--taxa", str(a.taxa),
              "--max-ticks", str(a.max_ticks)]
+    if a.sem_detalhe_links:
+        rodar += ["--sem-detalhe-links"]
+    if a.chegadas:
+        rodar += ["--chegadas", str(a.chegadas), "--duracao", str(a.duracao),
+                  "--deadline-min", str(a.deadline_min), "--deadline-max", str(a.deadline_max),
+                  "--tempo-vida", str(a.tempo_vida), "--cache-mb", str(a.cache_mb),
+                  "--popularidade", a.popularidade]
     code, out, err = executar(rodar, a.timeout)
     if code != 0 or not os.path.exists(os.path.join(pasta, "resumo.json")):
         return nome, None, "run_cenario: " + (err or out)[-400:]
     return nome, json.load(open(os.path.join(pasta, "resumo.json"))), None
+
+
+def servicos_dataset(a):
+    """No modo carga, os Services do dataset sao o pool de slots: precisa cobrir a capacidade total
+    (4 containers por servidor no template). 120 servidores x 4 = 480 cobre todas as topologias usadas."""
+    return max(a.servicos, 480) if a.chegadas else a.servicos
 
 
 def linha_resumo(a, k, metodo, seed, r):
@@ -94,7 +112,16 @@ def linha_resumo(a, k, metodo, seed, r):
         "pct_downloads_cruzam_comunidade": round(100 * r["downloads_que_cruzam_comunidade"] / down, 2),
         "pct_registry_na_comunidade": round(100 * r["downloads_com_registry_na_comunidade"] / down, 2),
         "maior_parcela_de_um_registry_pct": round(100 * max(por_reg) / down, 2),
-    }
+    } | linha_carga(r.get("carga"))
+
+
+def linha_carga(c):
+    """Colunas extras do modo carga de trabalho (vazio no modo antigo)."""
+    if not c:
+        return {}
+    return {"taxa_req_s": c["taxa_req_s"], "requisicoes": c["requisicoes"],
+            "pct_nao_iniciadas": c["pct_nao_iniciadas"], "descartadas_na_fila": c["descartadas_na_fila"],
+            "taxa_acerto_cache": c["cache"]["taxa_acerto_MB"], "trafego_baixado_MB": c["cache"]["misses_MB"]}
 
 
 def media(v):
@@ -108,12 +135,15 @@ def comparar(linhas):
         grupos.setdefault((l["metodo"], l["k"]), []).append(l)
     campos = ["tempo_medio", "tempo_p90", "tempo_max", "tempo_medio_s", "makespan_s", "ticks_totais", "nao_iniciados",
               "link_ticks_sat_intra", "link_ticks_sat_inter", "link_ticks_sat_acesso",
-              "pct_downloads_cruzam_comunidade", "pct_registry_na_comunidade"]
+              "pct_downloads_cruzam_comunidade", "pct_registry_na_comunidade",
+              "pct_nao_iniciadas", "taxa_acerto_cache"]
     saida = []
     for (metodo, k), ls in sorted(grupos.items(), key=lambda x: (x[0][1], x[0][0])):
         row = {"metodo": metodo, "k": k, "execucoes": len(ls)}
         for c in campos:
             vals = [l[c] for l in ls if l.get(c) is not None]
+            if not vals and c in ("pct_nao_iniciadas", "taxa_acerto_cache"):
+                continue                       # coluna so existe no modo carga
             row[c] = media(vals)
             row[c + "_dp"] = (round(statistics.stdev(vals), 3) if len(vals) > 1 else 0.0)
         saida.append(row)
@@ -212,15 +242,27 @@ def lista(txt, tipo=str):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--topologia", choices=["garr", "aleatoria", "erdos_renyi"], default="garr")
+    p.add_argument("--topologia", choices=["garr", "aleatoria", "erdos_renyi", "hexagonal"], default="garr")
     p.add_argument("--garr-arquivo")
     p.add_argument("--nos", type=int, default=70)
     p.add_argument("--links", type=int, default=112)
     p.add_argument("--prob", type=float, default=0.049, help="so erdos_renyi: probabilidade de aresta p")
+    p.add_argument("--hex-x", type=int, default=10, help="so hexagonal: celulas por linha")
+    p.add_argument("--hex-y", type=int, default=10, help="so hexagonal: numero de linhas")
     p.add_argument("--segundos-por-tick", type=float, default=1.0,
                    help="resolucao temporal; a banda e reescalada para MB/tick (ver gerar_cenario.py)")
     p.add_argument("--tamanho-imagem", type=float, default=200, help="MB por imagem (artigo: 200)")
     p.add_argument("--tamanho-faixa", help="MIN,MAX em MB: sorteia o tamanho de cada imagem")
+    p.add_argument("--imagens-dockerhub", help="JSON com imagens reais (cenarios/dockerhub_top50.json)")
+    p.add_argument("--popularidade", choices=["uniforme", "zipf"], default="uniforme")
+    p.add_argument("--sem-detalhe-links", action="store_true", help="nao grava links_por_tick.csv")
+    g = p.add_argument_group("carga de trabalho do artigo (--chegadas > 0; ver carga_trabalho.py)")
+    g.add_argument("--chegadas", type=float, default=0, help="requisicoes por segundo; 0 = todos de uma vez")
+    g.add_argument("--duracao", type=float, default=3600)
+    g.add_argument("--deadline-min", type=float, default=25)
+    g.add_argument("--deadline-max", type=float, default=25)
+    g.add_argument("--tempo-vida", type=float, default=30)
+    g.add_argument("--cache-mb", type=float, default=0)
     p.add_argument("--banda-link", type=float, default=None, help="MB/s dos links sem banda propria (padrao 125)")
     p.add_argument("--ignorar-contagem", action="store_true")
     p.add_argument("--ks", default="1,2,4,8")
@@ -243,7 +285,7 @@ def main():
     ks, metodos, seeds = lista(a.ks, int), lista(a.metodos), lista(a.seeds, int)
     raiz = os.path.join("resultados", a.nome or a.topologia)
     os.makedirs(raiz, exist_ok=True)
-    os.makedirs(os.path.join("cenarios", "gerados"), exist_ok=True)
+    os.makedirs(os.path.join("cenarios", "gerados", os.path.basename(raiz)), exist_ok=True)
 
     tarefas = [(k, m, s) for k in ks for m in metodos for s in seeds]
     print(f"{len(tarefas)} execucoes ({len(ks)} K x {len(metodos)} metodos x {len(seeds)} seeds)")

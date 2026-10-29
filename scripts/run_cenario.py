@@ -18,6 +18,12 @@ Definicao de comunidade (a MESMA particao para FluidC e aleatorio, para a compar
     Link "inter"  = extremos em comunidades diferentes.
     Link "acesso" = liga um registry (10 Gbps) ao seu no da rede.
 
+Carga de trabalho do artigo (--chegadas > 0): em vez de provisionar todos os servicos no inicio, requisicoes
+chegam por um processo de Poisson durante --duracao segundos, com deadline, tempo de vida e cache LRU
+(detalhes e suposicoes em carga_trabalho.py). Saida extra: requisicoes.csv (1 linha por requisicao) e o
+bloco "carga" no resumo.json; nesse modo "servicos_*", "nao_iniciados" e "tempo_provisionamento*" passam
+a se referir as requisicoes (tempo da chegada ate o container rodar).
+
 Unidades: capacidade em MB/tick; utilizacao = demanda / capacidade (0 a 1); tempo em ticks.
     A duracao do tick e o "segundos_por_tick" do <cenario>.info.json (padrao 1 s, quando capacidade
     em MB/tick = MB/s); o resumo traz tambem "tempo_provisionamento_s", ja convertido para segundos.
@@ -31,6 +37,8 @@ import statistics
 
 import networkx as nx
 import edge_sim_py as es
+
+from carga_trabalho import CargaTrabalho
 
 
 # ----------------------------------------------------------------------------- escalonador
@@ -109,10 +117,12 @@ def classificar_links(dominio, ids_hosts):
 
 # ----------------------------------------------------------------------------- coleta por tick
 class Coletor:
-    def __init__(self, tipo_link, limiar, max_ticks):
+    def __init__(self, tipo_link, limiar, max_ticks, detalhe_links=True):
         self.tipo = tipo_link
         self.limiar = limiar
         self.max_ticks = max_ticks
+        self.detalhe_links = detalhe_links
+        self.fim = None            # criterio de parada alternativo (modo carga de trabalho)
         self.ticks = []
         self.links = []
 
@@ -133,6 +143,8 @@ class Coletor:
                 grupos[g].append(util)
                 if util >= self.limiar:
                     saturados[g] += 1
+            if not self.detalhe_links:
+                continue
             a, b = link["nodes"]
             self.links.append({"tick": t, "link": link["id"], "no_a": a.id, "no_b": b.id, "tipo": tp,
                                "capacidade_MBps": capacidade, "demanda_MBps": round(demanda, 3),
@@ -155,6 +167,8 @@ class Coletor:
             "acesso_ativos": len(grupos["acesso"]), "acesso_saturados": saturados["acesso"],
             "acesso_util_max": maximo(grupos["acesso"]),
         })
+        if self.fim:
+            return self.fim(model) or t >= self.max_ticks
         todos = es.Service.count() > 0 and all(s._available for s in es.Service.all())
         return todos or t >= self.max_ticks
 
@@ -178,26 +192,34 @@ def percentil(valores, p):
     return v[i]
 
 
-def tabela_fluxos(model, tipo_link, dominio):
-    linhas = []
+def linha_fluxo(model, f, tipo_link, dominio):
+    """Resumo de um download de camada (None para fluxos de outro tipo)."""
+    if f.metadata.get("type") != "layer":
+        return None
+    caminho = f.path
+    ids = [model.topology[caminho[i]][caminho[i + 1]]["id"] for i in range(len(caminho) - 1)]
+    tipos = [tipo_link[i] for i in ids]
+    com_destino = dominio.get(f.target.base_station.network_switch.id)
+    com_registry = dominio.get(f.source.base_station.network_switch.id)
+    return {
+        "fluxo": f.id, "registry": f.metadata["container_registry"].id,
+        "origem_servidor": f.source.id, "destino_servidor": f.target.id,
+        "inicio": f.start, "fim": f.end, "duracao": (f.end - f.start) if f.end is not None else None,
+        "saltos": len(ids), "links_intra": tipos.count("intra"),
+        "links_inter": tipos.count("inter"), "cruza_comunidade": tipos.count("inter") > 0,
+        "comunidade_destino": com_destino, "comunidade_registry": com_registry,
+        "registry_na_comunidade_do_destino": com_destino == com_registry,
+        "MB": f.metadata["object"].size,
+    }
+
+
+def tabela_fluxos(model, tipo_link, dominio, ja_registrados=()):
+    """Fluxos ainda na lista do EdgeSimPy + os ja removidos pela carga de trabalho (ja_registrados)."""
+    linhas = list(ja_registrados)
     for f in es.NetworkFlow.all():
-        if f.metadata.get("type") != "layer":
-            continue
-        caminho = f.path
-        ids = [model.topology[caminho[i]][caminho[i + 1]]["id"] for i in range(len(caminho) - 1)]
-        tipos = [tipo_link[i] for i in ids]
-        com_destino = dominio.get(f.target.base_station.network_switch.id)
-        com_registry = dominio.get(f.source.base_station.network_switch.id)
-        linhas.append({
-            "fluxo": f.id, "registry": f.metadata["container_registry"].id,
-            "origem_servidor": f.source.id, "destino_servidor": f.target.id,
-            "inicio": f.start, "fim": f.end, "duracao": (f.end - f.start) if f.end is not None else None,
-            "saltos": len(ids), "links_intra": tipos.count("intra"),
-            "links_inter": tipos.count("inter"), "cruza_comunidade": tipos.count("inter") > 0,
-            "comunidade_destino": com_destino, "comunidade_registry": com_registry,
-            "registry_na_comunidade_do_destino": com_destino == com_registry,
-            "MB": f.metadata["object"].size,
-        })
+        linha = linha_fluxo(model, f, tipo_link, dominio)
+        if linha:
+            linhas.append(linha)
     return linhas
 
 
@@ -227,6 +249,17 @@ def main():
     p.add_argument("--taxa", type=int, default=0, help="servicos provisionados por tick (0 = todos de uma vez)")
     p.add_argument("--limiar-saturacao", type=float, default=0.99)
     p.add_argument("--max-ticks", type=int, default=3600)
+    p.add_argument("--sem-detalhe-links", action="store_true",
+                   help="nao grava links_por_tick.csv (simulacoes longas: o arquivo fica com milhoes de linhas)")
+    g = p.add_argument_group("carga de trabalho do artigo (ativada com --chegadas > 0; ver carga_trabalho.py)")
+    g.add_argument("--chegadas", type=float, default=0, help="requisicoes por segundo (artigo: ~5); 0 = desligado")
+    g.add_argument("--duracao", type=float, default=3600, help="segundos de chegadas (artigo: 1 hora)")
+    g.add_argument("--deadline-min", type=float, default=25, help="deadline minimo em s (artigo: 25)")
+    g.add_argument("--deadline-max", type=float, default=25, help="deadline maximo em s (sorteio uniforme)")
+    g.add_argument("--tempo-vida", type=float, default=30, help="SUPOSICAO: segundos que o container roda")
+    g.add_argument("--cache-mb", type=float, default=0, help="cache de camadas por servidor, LRU (artigo: 600); 0 = sem limite")
+    g.add_argument("--popularidade", choices=["uniforme", "zipf"], default="uniforme")
+    g.add_argument("--zipf-s", type=float, default=1.0)
     a = p.parse_args()
 
     base = os.path.splitext(os.path.basename(a.dataset))[0]
@@ -234,13 +267,23 @@ def main():
     os.makedirs(saida, exist_ok=True)
 
     # o coletor precisa dos tipos de link, que so existem depois do initialize -> criamos antes e preenchemos depois
-    coletor = Coletor({}, a.limiar_saturacao, a.max_ticks)
+    coletor = Coletor({}, a.limiar_saturacao, a.max_ticks, detalhe_links=not a.sem_detalhe_links)
+    info_path = a.dataset.replace(".json", ".info.json")
+    info = json.load(open(info_path)) if os.path.exists(info_path) else {}
+    fluxos_removidos = []
+    carga = None
+    if a.chegadas > 0:
+        carga = CargaTrabalho(a.chegadas, a.duracao, a.deadline_min, a.deadline_max, a.tempo_vida, a.cache_mb,
+                              a.popularidade, a.zipf_s, a.seed, float(info.get("segundos_por_tick", 1)),
+                              registrar_fluxo=lambda f: fluxos_removidos.append(
+                                  linha_fluxo(sim, f, coletor.tipo, dominio)))
+        coletor.fim = carga.terminou
 
     sim = es.Simulator(
         tick_duration=1,
         tick_unit="seconds",
         stopping_criterion=coletor,
-        resource_management_algorithm=criar_escalonador(a.scheduler, a.seed, a.taxa),
+        resource_management_algorithm=carga or criar_escalonador(a.scheduler, a.seed, a.taxa),
         network_flow_scheduling_algorithm=es.max_min_fairness,
         dump_interval=float("inf"),
     )
@@ -252,14 +295,21 @@ def main():
         service.being_provisioned = False
         service.server = None
 
-    info_path = a.dataset.replace(".json", ".info.json")
-    info = json.load(open(info_path)) if os.path.exists(info_path) else {}
     dominio, ids_hosts, origem_particao = mapear_dominios(sim.topology, info)
     coletor.tipo = classificar_links(dominio, ids_hosts)
+    if carga:
+        carga.preparar()
     sim.run_model()
 
-    servicos = tabela_servicos()
-    fluxos = tabela_fluxos(sim, coletor.tipo, dominio)
+    fluxos = tabela_fluxos(sim, coletor.tipo, dominio, [f for f in fluxos_removidos if f])
+    if carga:
+        # no modo carga, "servicos" sao as requisicoes e o tempo vai da chegada ate o container rodar
+        reqs = carga.linhas()
+        servicos = [{"servico": r["requisicao"], "nao_iniciado": not r["iniciou_no_prazo"],
+                     "tempo_provisionamento": (round(r["tempo_ate_rodar_s"] / carga.spt)
+                                               if r["tempo_ate_rodar_s"] is not None else None)} for r in reqs]
+    else:
+        servicos = tabela_servicos()
     tempos = [s["tempo_provisionamento"] for s in servicos if s["tempo_provisionamento"] is not None]
     por_registry = {}
     for f in fluxos:
@@ -304,8 +354,12 @@ def main():
             "util_max_intra": pico("intra_util_max"), "util_max_inter": pico("inter_util_max"),
         },
     }
+    if carga:
+        resumo["carga"] = carga.resumo()
+        escrever_csv(os.path.join(saida, "requisicoes.csv"), reqs)
     escrever_csv(os.path.join(saida, "ticks.csv"), coletor.ticks)
-    escrever_csv(os.path.join(saida, "links_por_tick.csv"), coletor.links)
+    if coletor.detalhe_links:
+        escrever_csv(os.path.join(saida, "links_por_tick.csv"), coletor.links)
     escrever_csv(os.path.join(saida, "fluxos.csv"), fluxos)
     escrever_csv(os.path.join(saida, "servicos.csv"), servicos)
     with open(os.path.join(saida, "resumo.json"), "w") as f:
