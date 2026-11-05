@@ -30,7 +30,7 @@
   against random placement on the two topologies of the original work (GARR and
   Erdős-Rényi) and extend the evaluation with a hexagonal cellular topology, the
   50 most downloaded Docker Hub images with their real layers, and a workload
-  with Poisson arrivals, deadlines and an LRU layer cache. Across 1,360
+  with Poisson arrivals, deadlines and an LRU layer cache. Across 1,600
   simulations, the community-based strategy provisioned containers faster than
   random placement in all 28 combinations of topology, image set and number of
   registries, with gains of up to 66\%, consistent with the up to 70\% reported
@@ -47,7 +47,7 @@
   topologias do trabalho original (GARR e Erdős-Rényi) e estendemos a avaliação
   com uma topologia celular hexagonal, as 50 imagens mais baixadas do Docker Hub
   com suas camadas reais e uma carga de trabalho com chegadas de Poisson,
-  \textit{deadline} e \textit{cache} LRU de camadas. Em 1.360 simulações, a
+  \textit{deadline} e \textit{cache} LRU de camadas. Em 1.600 simulações, a
   estratégia baseada em comunidades provisionou os \textit{containers} mais
   rápido que o posicionamento aleatório nas 28 combinações de topologia,
   conjunto de imagens e número de \textit{registries}, com ganhos de até 66\%,
@@ -246,20 +246,25 @@ simultaneamente. Avaliamos $K \in \{1, 2, 4, 8\}$ em dois modos:
   cujo \textit{container} não estava em execução até o \textit{deadline}. O artigo
   não informa por quanto tempo cada \textit{container} executa; adotamos 30~s,
   pois sem liberar espaço os servidores lotam em poucos minutos. Cada simulação
-  tem 10 minutos de chegadas, e usamos 10 \textit{seeds} por combinação.
+  tem 10 minutos de chegadas; usamos 30 \textit{seeds} por combinação a 5
+  requisições/s e 10 nas demais taxas. Para verificar se a duração afeta o
+  resultado, repetimos a taxa de 5 requisições/s com uma hora de chegadas, como
+  no artigo, para as 10 primeiras \textit{seeds}.
 \end{itemize}
 
 Para cada par (FluidC, aleatório) de uma mesma \textit{seed}, calculamos o ganho
 $1 - t_{\mathrm{FluidC}}/t_{\mathrm{aleatório}}$ e contamos as vitórias, empates
 e derrotas do FluidC (V/E/D). A significância é avaliada com um teste de
-permutação pareado exato (troca de sinais das diferenças, bicaudal).
+permutação pareado (troca de sinais das diferenças, bicaudal), exato para até 22
+pares e com 200 mil permutações sorteadas acima disso.
 
 \section{Resultados}
 \label{sec:resultados}
 
-No total, executamos 1.360 simulações: 1.120 no modo rajada (4 topologias com
+No total, executamos 1.600 simulações: 1.120 no modo rajada (4 topologias com
 imagens fictícias e 3 com imagens reais, 4 valores de $K$, 2 estratégias e 20
-\textit{seeds}) e 240 com a carga de trabalho do artigo. Nenhuma simulação falhou.
+\textit{seeds}) e 480 com a carga de trabalho do artigo, das quais 80 com uma
+hora de chegadas. Nenhuma simulação falhou.
 
 \subsection{Modo rajada com as imagens do artigo}
 
@@ -341,25 +346,34 @@ combinações têm diferença significativa ($p < 0{,}05$).
 
 A Figura~\ref{fig:carga} e a Tabela~\ref{tab:carga} mostram a fração de
 requisições não iniciadas no prazo. Com 5 requisições/s, a taxa do artigo, o
-FluidC não perdeu nenhuma requisição em nenhuma \textit{seed}, com tempo médio até
-o \textit{container} executar de 0,5 a 0,6~s. O posicionamento aleatório também
-não perdeu requisições na maioria das \textit{seeds}, mas em 2 ou 3 de cada 10 o
-\textit{registry} ficou atrás de um enlace fraco e as perdas chegaram a 18\% com
-$K \geq 2$ e a 87--95\% com $K = 1$. Como só essas poucas \textit{seeds} diferem,
-a diferença ainda não é estatisticamente significativa ($p = 0{,}25$).
+FluidC não perdeu nenhuma requisição em nenhuma das 30 \textit{seeds}, para
+nenhum valor de $K$, com tempo médio até o \textit{container} executar entre 0,49
+e 0,65~s. O posicionamento aleatório também não perdeu requisições na maioria das
+\textit{seeds}, mas em 8 a 12 das 30, conforme $K$, o \textit{registry} ficou
+atrás de um enlace fraco e as perdas chegaram a 96\% ($K = 1$), 85\% ($K = 2$),
+62\% ($K = 4$) e 18\% ($K = 8$). O FluidC nunca perdeu para o aleatório, e a
+diferença é significativa para todos os valores de $K$ ($p < 0{,}01$).
+
+Com uma hora de chegadas, o resultado se repetiu \textit{seed} a \textit{seed}:
+o FluidC continuou sem perder requisições, e o posicionamento aleatório perdeu
+requisições exatamente nas mesmas \textit{seeds} que com 10 minutos, com perdas
+que diferem em no máximo 5 pontos percentuais. A duração de 10 minutos, portanto,
+não altera a comparação.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth]{figuras/carga.pdf}
 \caption{Requisições não iniciadas no prazo em função da taxa de chegada (GARR do
-artigo, imagens do Docker Hub; média $\pm$ desvio-padrão de 10 \textit{seeds}).}
+artigo, imagens do Docker Hub; média $\pm$ desvio-padrão de 30 \textit{seeds} a
+5 requisições/s e de 10 nas demais taxas).}
 \label{fig:carga}
 \end{figure}
 
 \begin{table}[ht]
 \centering
 \caption{Carga de trabalho: requisições não iniciadas no prazo (\%, FluidC /
-aleatório) e $p$-valor do teste pareado (10 \textit{seeds}).}
+aleatório) e $p$-valor do teste pareado (30 \textit{seeds} a 5 requisições/s e 10
+nas demais taxas).}
 \label{tab:carga}
 \small
 \begin{adjustbox}{max width=\textwidth}
@@ -367,10 +381,10 @@ aleatório) e $p$-valor do teste pareado (10 \textit{seeds}).}
 \toprule
 $K$ & 5 req./s & 10 req./s & 20 req./s \\
 \midrule
-1 & 0,0 / 27,7 ($p = 0{,}25$) & 31,3 / 51,5 ($p = 0{,}08$) & 88,5 / 91,6 ($p = 0{,}018$) \\
-2 & 0,0 / 2,2 ($p = 0{,}25$) & 22,1 / 38,0 ($p = 0{,}006$) & 85,0 / 88,3 ($p = 0{,}002$) \\
-4 & 0,0 / 1,9 ($p = 0{,}25$) & 20,3 / 36,4 ($p = 0{,}002$) & 82,1 / 87,0 ($p = 0{,}004$) \\
-8 & 0,0 / 2,6 ($p = 0{,}50$) & 20,0 / 32,5 ($p = 0{,}018$) & 80,6 / 85,1 ($p = 0{,}004$) \\
+1 & 0,0 / 31,0 ($p < 0{,}001$) & 31,3 / 51,5 ($p = 0{,}08$) & 88,5 / 91,6 ($p = 0{,}018$) \\
+2 & 0,0 / 9,3 ($p = 0{,}002$) & 22,1 / 38,0 ($p = 0{,}006$) & 85,0 / 88,3 ($p = 0{,}002$) \\
+4 & 0,0 / 7,6 ($p = 0{,}002$) & 20,3 / 36,4 ($p = 0{,}002$) & 82,1 / 87,0 ($p = 0{,}004$) \\
+8 & 0,0 / 2,5 ($p = 0{,}008$) & 20,0 / 32,5 ($p = 0{,}018$) & 80,6 / 85,1 ($p = 0{,}004$) \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
@@ -405,9 +419,9 @@ As principais ameaças à validade são:
   \textit{containers} (30~s), o \textit{deadline} fixo de 25~s e a capacidade dos
   servidores (quatro \textit{containers}) são suposições nossas, que afetam
   diretamente a fração de requisições não iniciadas a 10 e 20 requisições/s.
-  \item \textbf{Duração e repetições da carga.} As simulações da carga têm 10
-  minutos, e não uma hora como no artigo, e com 10 \textit{seeds} a diferença a
-  5 requisições/s não é significativa.
+  \item \textbf{Repetições da carga.} As taxas de 10 e 20 requisições/s usam
+  10 \textit{seeds}, e a verificação com uma hora de chegadas foi feita apenas
+  a 5 requisições/s.
   \item \textbf{Topologias.} A GARR do artigo tem 111 enlaces, e não 112, após
   descartar um enlace duplicado. Na Erdős-Rényi, sortear novamente os grafos
   desconexos favorece grafos com um pouco mais de enlaces.
@@ -442,10 +456,11 @@ digital.
 Reproduzimos no EdgeSimPy o posicionamento de \textit{registries} baseado em
 comunidades de \cite{knob2021} e confirmamos sua vantagem sobre o posicionamento
 aleatório em quatro topologias, com imagens fictícias e reais e sob uma carga de
-trabalho com chegadas contínuas. Como trabalhos futuros, pretendemos: implementar
-o escalonador PESS; executar a carga de trabalho com uma hora de simulação e mais
-\textit{seeds}; validar os parâmetros não informados no artigo original; e, com
-essa base, propor e avaliar uma nova estratégia de posicionamento.
+trabalho com chegadas contínuas, em que ela não perdeu nenhuma requisição na taxa
+do artigo, com 10 minutos ou uma hora de simulação. Como trabalhos futuros,
+pretendemos: implementar o escalonador PESS; validar os parâmetros não
+informados no artigo original; e, com essa base, propor e avaliar uma nova
+estratégia de posicionamento.
 
 \bibliographystyle{sbc}
 \bibliography{sbc-template}

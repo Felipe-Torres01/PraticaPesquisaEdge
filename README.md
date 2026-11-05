@@ -141,6 +141,18 @@ for L in 5 10 20; do
       --chegadas $L --duracao 600 --deadline-min 25 --deadline-max 25 --tempo-vida 30 --cache-mb 600 \
       --sem-detalhe-links --nome carga_garr70_l$L
 done
+# 5 req/s com 30 seeds: mesma pasta, então as seeds 1 a 10 acima são reaproveitadas
+python scripts/experimento.py $GARR70 $DH --ks 1,2,4,8 \
+    --seeds 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30 \
+    --segundos-por-tick 0.1 --max-ticks 30000 --timeout 3600 --jobs 6 \
+    --chegadas 5 --duracao 600 --deadline-min 25 --deadline-max 25 --tempo-vida 30 --cache-mb 600 \
+    --sem-detalhe-links --nome carga_garr70_l5
+# 5 req/s com 1 hora de chegadas. Cada simulação usa bastante memória: com 8 GB de RAM, no máximo
+# --jobs 3 (com 10 em paralelo a memória acabou e o Claude Code/Windows travaram)
+python scripts/experimento.py $GARR70 $DH --ks 1,2,4,8 --seeds 1,2,3,4,5,6,7,8,9,10 \
+    --segundos-por-tick 0.1 --max-ticks 60000 --timeout 10800 --jobs 3 \
+    --chegadas 5 --duracao 3600 --deadline-min 25 --deadline-max 25 --tempo-vida 30 --cache-mb 600 \
+    --sem-detalhe-links --nome carga_garr70_l5_1h
 
 # análises
 python scripts/analise_estrategias.py resultados/garr resultados/garr70 resultados/erdos_renyi resultados/hexagonal \
@@ -150,6 +162,8 @@ python scripts/analise_estrategias.py resultados/dh_garr70 resultados/dh_erdos_r
     --rotulos "GARR artigo (70 nós),Erdős-Rényi (100 nós),Hexagonal (100 nós)" --saida resultados/estrategias_dockerhub
 python scripts/analise_carga.py resultados/carga_garr70_l5 resultados/carga_garr70_l10 resultados/carga_garr70_l20 \
     --saida resultados/carga_garr70
+python scripts/analise_carga.py resultados/carga_garr70_l5_1h --saida resultados/carga_garr70_1h
+python scripts/figuras_artigo.py      # figuras do artigo em artigo/figuras/
 ```
 
 A comparação é pareada: na mesma seed, os dois métodos usam o mesmo grafo, os mesmos serviços e as
@@ -201,16 +215,17 @@ Leitura:
 ## Resultados (carga de trabalho do artigo)
 
 GARR do artigo (70 nós), top 50 do Docker Hub, deadline de 25 s, cache LRU de 600 MB por servidor,
-tempo de vida de 30 s, 10 minutos de chegadas por simulação, 10 seeds (`resultados/carga_garr70/`).
+tempo de vida de 30 s, 10 minutos de chegadas por simulação, 30 seeds a 5 req/s e 10 seeds nas demais
+taxas (`resultados/carga_garr70/`).
 Métrica: % de requisições cujo container não estava rodando até o deadline (média ± desvio-padrão).
 Pareado: diferença aleatório − FluidC em pontos percentuais, seed a seed.
 
 | Chegadas | K | FluidC | Aleatório | Diferença (V/E/D) | p |
 |---|---|---|---|---|---|
-| 5 req/s | 1 | 0,0 ± 0,0 % | 27,7 ± 44,6 % | 27,7 pp (3/7/0) | 0,25 |
-| 5 req/s | 2 | 0,0 ± 0,0 % | 2,2 ± 5,1 % | 2,2 pp (3/7/0) | 0,25 |
-| 5 req/s | 4 | 0,0 ± 0,0 % | 1,9 ± 5,0 % | 1,9 pp (3/7/0) | 0,25 |
-| 5 req/s | 8 | 0,0 ± 0,0 % | 2,6 ± 5,9 % | 2,6 pp (2/8/0) | 0,50 |
+| 5 req/s | 1 | 0,0 ± 0,0 % | 31,0 ± 43,0 % | 31,0 pp (12/18/0) | < 0,001 |
+| 5 req/s | 2 | 0,0 ± 0,0 % | 9,3 ± 22,6 % | 9,3 pp (10/20/0) | 0,002 |
+| 5 req/s | 4 | 0,0 ± 0,0 % | 7,6 ± 15,4 % | 7,6 pp (10/20/0) | 0,002 |
+| 5 req/s | 8 | 0,0 ± 0,0 % | 2,5 ± 5,3 % | 2,5 pp (8/22/0) | 0,008 |
 | 10 req/s | 1 | 31,3 ± 4,6 % | 51,5 ± 31,5 % | 20,1 pp (7/0/3) | 0,08 |
 | 10 req/s | 2 | 22,1 ± 4,7 % | 38,0 ± 18,0 % | 15,9 pp (9/0/1) | 0,006 |
 | 10 req/s | 4 | 20,3 ± 4,8 % | 36,4 ± 16,5 % | 16,1 pp (10/0/0) | 0,002 |
@@ -223,11 +238,13 @@ Pareado: diferença aleatório − FluidC em pontos percentuais, seed a seed.
 ![Carga por taxa](resultados/carga_garr70/carga_por_taxa.png)
 
 Leitura:
-- **5 req/s (a carga do artigo):** o FluidC não perdeu nenhuma requisição em nenhuma seed, com tempo até
-  rodar estável (~0,5–0,6 s). O aleatório é bimodal: na maioria das seeds também zera, mas em 2–3 de cada
-  10 o registry cai atrás de um link fraco e as perdas vão de 0,1% a 18% (K ≥ 2) ou de 87% a 95% (K = 1). Com 10
-  seeds isso **ainda não é estatisticamente significativo** (p = 0,25: só 3 pares diferem de zero);
-  precisa de mais seeds.
+- **5 req/s (a carga do artigo):** o FluidC não perdeu nenhuma requisição em nenhuma das 30 seeds, com
+  tempo até rodar estável (0,49–0,65 s). O aleatório é bimodal: na maioria das seeds também zera, mas em
+  8 a 12 das 30 o registry cai atrás de um link fraco e as perdas chegam a 96% (K = 1), 85% (K = 2),
+  62% (K = 4) e 18% (K = 8). O FluidC nunca perde, e a diferença é significativa para todo K (p < 0,01).
+- **1 hora de chegadas** (5 req/s, seeds 1 a 10, `resultados/carga_garr70_1h/`): o resultado se repete
+  seed a seed. O FluidC segue com 0% de perda, e o aleatório perde nas mesmas seeds que com 10 minutos,
+  com diferença de no máximo 5 pontos. Ou seja, simular 10 minutos não altera a comparação.
 - **10 req/s:** logo acima da capacidade de computação (~9 req/s com tempo de vida de 30 s), parte das
   requisições se perde nos dois métodos, mas o FluidC perde 12–20 pontos a menos (significativo para
   K ≥ 2).

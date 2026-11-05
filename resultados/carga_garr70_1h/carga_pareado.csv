@@ -1,0 +1,5 @@
+taxa_req_s,k,pares,diferenca_media_pp,diferenca_dp_pp,fluidc_venceu,empate,fluidc_perdeu,p_valor_permutacao
+5.0,1,10,28.375,45.702,3,7,0,0.25
+5.0,2,10,2.234,5.05,3,7,0,0.25
+5.0,4,10,1.746,4.785,4,6,0,0.125
+5.0,8,10,2.677,6.014,2,8,0,0.5
