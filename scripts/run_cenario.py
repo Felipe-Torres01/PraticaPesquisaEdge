@@ -38,12 +38,13 @@ import statistics
 import networkx as nx
 import edge_sim_py as es
 
+import escalonador_pess
 from carga_trabalho import CargaTrabalho
 
 
 # ----------------------------------------------------------------------------- escalonador
 def criar_escalonador(nome, semente, taxa):
-    """Define ONDE cada servico sobe. 'random' = Random Scheduler do artigo; 'worstfit' = o do experimento anterior.
+    """Define ONDE cada servico sobe. 'random' = Random Scheduler do artigo; 'pess' = adaptacao do PESS; 'worstfit' = o do experimento anterior.
     taxa > 0 limita quantos servicos sao provisionados por tick (0 = todos no tick 1)."""
     rng = random.Random(semente)
 
@@ -61,6 +62,12 @@ def criar_escalonador(nome, semente, taxa):
                 continue
             if nome == "random":
                 alvo = rng.choice(candidatos)
+            elif nome == "pess":
+                # a requisicao entra pela estacao-base do usuario da aplicacao (ver escalonador_pess.py)
+                origem = service.application.users[0].base_station.network_switch
+                hosts_sw = [r.server.base_station.network_switch for r in es.ContainerRegistry.all() if r.server]
+                alvo = escalonador_pess.escolher(service.model.topology, origem, candidatos, service.cpu_demand,
+                                                 rng, excluir=hosts_sw)
             else:
                 alvo = max(candidatos, key=lambda s: (s.memory - s.memory_demand))
             service.provision(target_server=alvo)
@@ -244,7 +251,8 @@ def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("dataset")
     p.add_argument("--saida", help="pasta de saida (padrao: resultados/<nome do dataset>)")
-    p.add_argument("--scheduler", choices=["random", "worstfit"], default="random")
+    p.add_argument("--scheduler", choices=["random", "pess", "worstfit"], default="random",
+                   help="random = Random Scheduler do artigo; pess = adaptacao do PESS (escalonador_pess.py)")
     p.add_argument("--seed", type=int, default=1)
     p.add_argument("--taxa", type=int, default=0, help="servicos provisionados por tick (0 = todos de uma vez)")
     p.add_argument("--limiar-saturacao", type=float, default=0.99)
@@ -260,6 +268,10 @@ def main():
     g.add_argument("--cache-mb", type=float, default=0, help="cache de camadas por servidor, LRU (artigo: 600); 0 = sem limite")
     g.add_argument("--popularidade", choices=["uniforme", "zipf"], default="uniforme")
     g.add_argument("--zipf-s", type=float, default=1.0)
+    g.add_argument("--sem-limite-capacidade", action="store_true",
+                   help="modo fiel ao Knob: qualquer no aceita qualquer container")
+    g.add_argument("--vida-ate-deadline", action="store_true",
+                   help="modo fiel ao Knob: o container roda ate o seu deadline (ignora --tempo-vida)")
     a = p.parse_args()
 
     base = os.path.splitext(os.path.basename(a.dataset))[0]
@@ -276,7 +288,9 @@ def main():
         carga = CargaTrabalho(a.chegadas, a.duracao, a.deadline_min, a.deadline_max, a.tempo_vida, a.cache_mb,
                               a.popularidade, a.zipf_s, a.seed, float(info.get("segundos_por_tick", 1)),
                               registrar_fluxo=lambda f: fluxos_removidos.append(
-                                  linha_fluxo(sim, f, coletor.tipo, dominio)))
+                                  linha_fluxo(sim, f, coletor.tipo, dominio)),
+                              escalonador=a.scheduler if a.scheduler in ("random", "pess") else "random",
+                              sem_limite=a.sem_limite_capacidade, vida_ate_deadline=a.vida_ate_deadline)
         coletor.fim = carga.terminou
 
     sim = es.Simulator(

@@ -1,0 +1,1969 @@
+{
+  "fonte": "Docker Hub, busca ordenada por pull_count (mesma da pagina hub.docker.com/search)",
+  "coletado_em": "2026-10-29",
+  "imagens": [
+    {
+      "posicao_ranking": 1,
+      "nome": "stakater/reloader",
+      "tag": "merge-1263-ubi",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 15.89,
+      "camadas": [
+        {
+          "digest": "sha256:c21d220f888f2ba4ed5ec2e5ac7dee310f24afd3e5098da7d5ecb5b5d4d08e8c",
+          "tamanho_MB": 4.388
+        },
+        {
+          "digest": "sha256:cc7b67729d61ea8ca5d3961b4d4c3b5318dc568b9b8e262476ab9da311d74e5f",
+          "tamanho_MB": 11.501
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 2,
+      "nome": "fluent/fluent-bit",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 51.046,
+      "camadas": [
+        {
+          "digest": "sha256:2cc7ee286bf3a9e6af5f71756d7fc8e22e23ce65fec9047d774511ffcef79fa8",
+          "tamanho_MB": 0.125
+        },
+        {
+          "digest": "sha256:c172f21841dff4c8cf45cde46589c1c2616cefe7e819965e92e6d3475c428aa0",
+          "tamanho_MB": 0.013
+        },
+        {
+          "digest": "sha256:218cf840d0d95a86231eb9d33d26ac8a520a4299c6096cb70a0c2fb2a87c9e0a",
+          "tamanho_MB": 0.288
+        },
+        {
+          "digest": "sha256:f6069939f718601b38d25ec5ed5631ed047e4da24acec2e252f8f29d251be718",
+          "tamanho_MB": 0.255
+        },
+        {
+          "digest": "sha256:d6b1b89eccacc15c2420b2776d72c1dae334a00805ed9af54bf2f71e4d536f28",
+          "tamanho_MB": 0.032
+        },
+        {
+          "digest": "sha256:2780920e5dbfbe103d03a583ed75345306e572ec5a48cb10361f046767d9f29a",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:7c12895b777bcaa8ccae0605b4de635b68fc32d60fa08f421dc3818bf55ee212",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:3214acf345c0cc6bbdb56b698a41ccdefc624a09d6beb0d38b5de0b2303ecaf4",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:52630fc75a18675c530ed9eba5f55eca09b03e91bd5bc15307918bbc1a7e7296",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:dd64bf2dd177757451a98fcdc999a339c35dee5d9872d8f4dc69c8f3c4dd0112",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:b839dfae01f66e15c6a8b63520557ed315bdfe036342fa7a0c537259f10d7a9a",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:ebddc55facdc6b1f7e0f30816a5fc7cc62f38abdf76c0a8b0a0ce52085754795",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:a0921f9d8de9decce942bd69e8ef8d6767504afbabfb639a74917884cf1a5942",
+          "tamanho_MB": 0.142
+        },
+        {
+          "digest": "sha256:b96fe2995f90d0ef0bf14f9b4a67b5f4e77d478e6108166e0565adc9efd6e4a3",
+          "tamanho_MB": 5.079
+        },
+        {
+          "digest": "sha256:810e2b405a0884835290e120ef380aa14dd1f53198a0cfa2260147e736d82cd5",
+          "tamanho_MB": 3.079
+        },
+        {
+          "digest": "sha256:bd8962e292918c50c90edebd9684c053bc386b9c5503acd8fec75d0c6f93a0b7",
+          "tamanho_MB": 0.373
+        },
+        {
+          "digest": "sha256:cac2ae0193cb073e7492050b05fc342a888651b4bbc966908c8793f889c299ba",
+          "tamanho_MB": 0.096
+        },
+        {
+          "digest": "sha256:dd0d9bfd3bee080ad25a464362ec4f37ec5ca625695a4d7179fe69d207dc068d",
+          "tamanho_MB": 0.158
+        },
+        {
+          "digest": "sha256:7cc70dfd88cf2327bb827123c9156f7cb95de95b2f98f3a7a931296aacec5786",
+          "tamanho_MB": 0.901
+        },
+        {
+          "digest": "sha256:8224d91da70b7992430d3b04040ea38ecdef4a7b719bee38397c89aaa886e198",
+          "tamanho_MB": 0.084
+        },
+        {
+          "digest": "sha256:1a4be5562d92d659f95e0b44b245ea5208bf5317481b9a351b07fad7fe5265ec",
+          "tamanho_MB": 0.052
+        },
+        {
+          "digest": "sha256:44cf63cf9e5fbca3a221afbcf8385025b7b677a2480e744ca263d713b8ad37cd",
+          "tamanho_MB": 0.138
+        },
+        {
+          "digest": "sha256:fd386a65907a254a3d3861b2e1b26be68d99cdc32fa61af09b7da75807a61152",
+          "tamanho_MB": 7.622
+        },
+        {
+          "digest": "sha256:b3f9540290ee2ff54239355a6c94123db910c996b12971d8816d9870e4d4b823",
+          "tamanho_MB": 32.608
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 3,
+      "nome": "library/nginx",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 63.911,
+      "camadas": [
+        {
+          "digest": "sha256:6fc242d221a673263eabd14a9ad9584d3177c96e5cb504c891497338e2f912f5",
+          "tamanho_MB": 29.855
+        },
+        {
+          "digest": "sha256:a071113ac575190a0fee0c046bcf51632356f07419bdffaa55798f54e5b2e23b",
+          "tamanho_MB": 34.051
+        },
+        {
+          "digest": "sha256:9f604dae09b216f6c87919d0e59d5a4ddc4387ef071cf63c645628f93808e37b",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:6e2ab1f3ef4e0ea3bbe1d208dfa048969199e3dab99e93c051b7c2d09c8efb3e",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:c139fe92686de21a8c49d9cb40415d1dddd95fbbee4d696cebe37693236fe6d4",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:d322f1bf41d8e99dc47f550cbf85e79ca18bc45db12fd1b7a8b34bf79cbd7d5a",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:a670537bed7086aeb8b663aad5e09cd584e19c6598cd2b6d905c5f2f2513938b",
+          "tamanho_MB": 0.001
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 4,
+      "nome": "library/memcached",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 32.28,
+      "camadas": [
+        {
+          "digest": "sha256:6fc242d221a673263eabd14a9ad9584d3177c96e5cb504c891497338e2f912f5",
+          "tamanho_MB": 29.855
+        },
+        {
+          "digest": "sha256:209627aaf9465cf5a23ad44dd127f8268ad9c8a1de9294041e12ffa63472cf3a",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:3b2c866e3863828773fe0f0bd6310b610682c1fc23a258b227c7582657aaecc8",
+          "tamanho_MB": 0.137
+        },
+        {
+          "digest": "sha256:ab327c05fb9921f89553c63529b100aab88272876203a4bd7c245ecdae0c5e4d",
+          "tamanho_MB": 2.286
+        },
+        {
+          "digest": "sha256:cbb146c0330eed945cc3884b6b187955d0fcba57d8927a36d8855c19ab6c77b6",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:318826f315496f8db59036a364b3700186570f5b5bd39b4f53b3dbb54809877e",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 5,
+      "nome": "library/busybox",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 2.226,
+      "camadas": [
+        {
+          "digest": "sha256:37bb94b0940bd40749eced2b83080d1b9912f281ac499a7247e4ce7c385792cc",
+          "tamanho_MB": 2.226
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 6,
+      "nome": "istio/proxyv2",
+      "tag": "1.32.0-rc.0-distroless",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 55.734,
+      "camadas": [
+        {
+          "digest": "sha256:2a98a287fa1e42d2ff3bdc7811d9d97d52f061e976a41ea257170a80b455da46",
+          "tamanho_MB": 4.965
+        },
+        {
+          "digest": "sha256:3419f757bc098fd5a7317c65c9472bfa84179fb995850f74c690411496c29113",
+          "tamanho_MB": 0.005
+        },
+        {
+          "digest": "sha256:3cfc0855ca2d28ec05a98be5705c0e23a6f7232ad8d264daf3903a52d9412d19",
+          "tamanho_MB": 40.048
+        },
+        {
+          "digest": "sha256:26b6dad1cca773b9554a693e3d90f6bbef14c922b33c9e67fe417352a1a77843",
+          "tamanho_MB": 10.716
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 7,
+      "nome": "library/alpine",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 3.853,
+      "camadas": [
+        {
+          "digest": "sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788",
+          "tamanho_MB": 3.853
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 8,
+      "nome": "istio/pilot",
+      "tag": "1.32.0-rc.0",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 74.272,
+      "camadas": [
+        {
+          "digest": "sha256:7a48b8f0e5c73d0cc2a85b008978396aa19d253dc1b96fdb0b769ee6dcbeca4a",
+          "tamanho_MB": 29.768
+        },
+        {
+          "digest": "sha256:9bd2a5f9f1f3671d689240b04c72be8841c1d73a6c7c885978ccc5d8510efff9",
+          "tamanho_MB": 9.729
+        },
+        {
+          "digest": "sha256:2fa5c1de4c476be4a97a8a7387a0d9459d3cb78bf8217d57a27a269c61fcf402",
+          "tamanho_MB": 0.004
+        },
+        {
+          "digest": "sha256:99650d1bb220af92b9e6dc7c19ca5dff83b5a07bc349014c466ad9913a13f783",
+          "tamanho_MB": 34.771
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 9,
+      "nome": "library/postgres",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 162.499,
+      "camadas": [
+        {
+          "digest": "sha256:6fc242d221a673263eabd14a9ad9584d3177c96e5cb504c891497338e2f912f5",
+          "tamanho_MB": 29.855
+        },
+        {
+          "digest": "sha256:d06edb2e3f4381c3f48bd849b2e403288adc70a77f12a5a0535a66531ac3ca4c",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:3795839385bcd7267538fe0f4bca17aa29049249a5b63f0b28c5327429e7083f",
+          "tamanho_MB": 6.443
+        },
+        {
+          "digest": "sha256:cea4f0db46a656825838c0545bcd2853cc2400bbcb0711bedbe91ecd16093a22",
+          "tamanho_MB": 1.257
+        },
+        {
+          "digest": "sha256:9b1a18996a228981ed4e313b9f85d67799878c51af3c82028b270818eb01389e",
+          "tamanho_MB": 8.204
+        },
+        {
+          "digest": "sha256:fbc84e7117120aa752fda692fcaee46052606965d690e115b6f5dc64ed4195b7",
+          "tamanho_MB": 1.312
+        },
+        {
+          "digest": "sha256:87999517529809971a5a8553191bf5245b8f8d47b1652362d7cfdc25130261ae",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:d89068781d718b514cf01a07a5ee1408eb6044d81ca1afcd4106fa5a51e9ab90",
+          "tamanho_MB": 0.003
+        },
+        {
+          "digest": "sha256:ef90fb83cca58f51742bd2fe57f2031d81959b30366ee6f76802b238f417db8b",
+          "tamanho_MB": 115.398
+        },
+        {
+          "digest": "sha256:7e6d71cb0490a9004f4b5e3767dd1ddb34d947b1d516363ab52d322245ad0da7",
+          "tamanho_MB": 0.019
+        },
+        {
+          "digest": "sha256:7c25aa4e8a77b6bc2bf1743fb094c7b74315406b4bf1dd2017db34c93761b595",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:00ff7a4924f238c77b5f1cbe7635b83ca0a7538d2f3ae3b95c092a0bb84382e2",
+          "tamanho_MB": 0.006
+        },
+        {
+          "digest": "sha256:d0fbcb0db440d15079aa9b0457892134352a906fb77624905c8d981b19fd12db",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 10,
+      "nome": "library/redis",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 55.599,
+      "camadas": [
+        {
+          "digest": "sha256:6fc242d221a673263eabd14a9ad9584d3177c96e5cb504c891497338e2f912f5",
+          "tamanho_MB": 29.855
+        },
+        {
+          "digest": "sha256:b8720a38ca9f16f63f99fff1c111446b67ca8cbfd3f5cdef62353f183e5685a7",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:bc7279d6ce3b4503d44d39cf37273cc81aca17468a7941e7bca9977526454066",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:19e360b0158626f14b048d3fd2ac2f51cf5bafc3bfabe75bb6a1b2626660abbc",
+          "tamanho_MB": 25.739
+        },
+        {
+          "digest": "sha256:d6fa8912a888fbdb57c0263f7a28dc46c08929936f70b5b41f2700dec8caba5d",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:551d0d9b414526febe08c08161717cb90adcfb5a5f3f88c19aac27105a3be569",
+          "tamanho_MB": 0.002
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 11,
+      "nome": "datadog/agent",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 294.332,
+      "camadas": [
+        {
+          "digest": "sha256:7f34a3dd5d45630655f38b20101990a127f330acedd795a9e3fa24f8c2dcd478",
+          "tamanho_MB": 294.332
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 12,
+      "nome": "library/ubuntu",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 42.14,
+      "camadas": [
+        {
+          "digest": "sha256:edafa32f5d9e4d9629f0dbc6c01e63c79ff08133c01cfb7d3363aa8bd8a614cf",
+          "tamanho_MB": 42.14
+        },
+        {
+          "digest": "sha256:f3f25b84a7d74315d94ee4108231f8f5e0cd2a44725a7204d5dd6ce91c151697",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 13,
+      "nome": "library/python",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 418.919,
+      "camadas": [
+        {
+          "digest": "sha256:a1d156b0aab5fb07d822a7f4681f6d3ed1689073531c34f5668818c233633f11",
+          "tamanho_MB": 49.408
+        },
+        {
+          "digest": "sha256:7fac3b752bd4f060dcf33c0f54d1fad29fce8ff42b8fb544f9ec95372f0933bf",
+          "tamanho_MB": 25.634
+        },
+        {
+          "digest": "sha256:c0168c6e6744fc499abc90618818f9e4aaf652a587fb6345b3882dc57de1495c",
+          "tamanho_MB": 67.819
+        },
+        {
+          "digest": "sha256:425148f8d5eb4d6dad76e4d080661ed0ad6ed5c270bf028517e6dde8bd0952cc",
+          "tamanho_MB": 237.134
+        },
+        {
+          "digest": "sha256:a934796fe6d83eacabc39a568a5e4c0e4a159cb37b3848a79c20d103e29aeae7",
+          "tamanho_MB": 6.086
+        },
+        {
+          "digest": "sha256:e1d0a8aac20b6375ef511ceeea0bf70d74ea118cc018acef7c7952ceddb05d8d",
+          "tamanho_MB": 32.838
+        },
+        {
+          "digest": "sha256:887f492106ee35a3f5f207ed7bc49a0c2121c8a45956bb517bf479ffde67bc51",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 14,
+      "nome": "containrrr/watchtower",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 5.633,
+      "camadas": [
+        {
+          "digest": "sha256:57241801ebfd1f06a11c32db392fc4f03570d65506fa3c9fd299bfbc3d5619d0",
+          "tamanho_MB": 0.124
+        },
+        {
+          "digest": "sha256:3d4f475b92a277ff447dd926494c72cc481316cfe94a29255c598a43bd14686d",
+          "tamanho_MB": 0.313
+        },
+        {
+          "digest": "sha256:1f05004da6d7b543302961e1838d1f9f0a74d603d94d3af1de5aa8d8c0ee57ea",
+          "tamanho_MB": 5.196
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 15,
+      "nome": "library/node",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 444.797,
+      "camadas": [
+        {
+          "digest": "sha256:a1d156b0aab5fb07d822a7f4681f6d3ed1689073531c34f5668818c233633f11",
+          "tamanho_MB": 49.408
+        },
+        {
+          "digest": "sha256:7fac3b752bd4f060dcf33c0f54d1fad29fce8ff42b8fb544f9ec95372f0933bf",
+          "tamanho_MB": 25.634
+        },
+        {
+          "digest": "sha256:c0168c6e6744fc499abc90618818f9e4aaf652a587fb6345b3882dc57de1495c",
+          "tamanho_MB": 67.819
+        },
+        {
+          "digest": "sha256:425148f8d5eb4d6dad76e4d080661ed0ad6ed5c270bf028517e6dde8bd0952cc",
+          "tamanho_MB": 237.134
+        },
+        {
+          "digest": "sha256:51510215cbf81fed887cbac1cc36e13a42182ae8bcce789d27ade124277afd67",
+          "tamanho_MB": 0.003
+        },
+        {
+          "digest": "sha256:1cd4cfd2e25ab603967000fdbdbec8a90504e224319f94daa886c1074a686c17",
+          "tamanho_MB": 64.798
+        },
+        {
+          "digest": "sha256:5322b180191f4ada262c38b1f4b5622502be18778629e524cae7d4263b859d00",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 16,
+      "nome": "curlimages/curl",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 10.851,
+      "camadas": [
+        {
+          "digest": "sha256:76790e7f0590be62240d6ece867f68c84525e57046b2eb404312360946f3344c",
+          "tamanho_MB": 10.851
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 17,
+      "nome": "istio/operator",
+      "tag": "1.23.6-distroless",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 29.506,
+      "camadas": [
+        {
+          "digest": "sha256:4bc2be9a99a7339a6472beeb28a701b74c32ac612adb319353b2685f1e37c85f",
+          "tamanho_MB": 0.543
+        },
+        {
+          "digest": "sha256:c78834c584b531ec5144955ada68c0076923bcfeab3527c68490830bc5149144",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:ae15211e9ce19e0798695000be804cf1b5a7501fb7c4544f69f5a1b470d96354",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:89732bc7504122601f40269fc9ddfb70982e633ea9caf641ae45736f2846b004",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:1b892bd0c6f2117d592070bb79c184d25844511dd5634fb5a54da617c0bdbd3e",
+          "tamanho_MB": 28.598
+        },
+        {
+          "digest": "sha256:4d86cf4107e3f0e1901977ffc7ada42e9913b625e6439670d6c0983640bcc402",
+          "tamanho_MB": 0.364
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 18,
+      "nome": "envoyproxy/envoy",
+      "tag": "tools-dev-331d45c5ae597edfcb725a3c699fe6b2bb2984c3",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 181.34,
+      "camadas": [
+        {
+          "digest": "sha256:98c4455a98982b35380ec62f90d5cf0edff02eeb4b3bb18595d871fdeb0c0c67",
+          "tamanho_MB": 29.752
+        },
+        {
+          "digest": "sha256:819109ceebd4234943a1dd4ba81a50be0e4e1b6ecba384bf529f84d9f17352e8",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:5effe2d0374f1c3c2dcf3059edbe3da493e3985233915c62076e803a4d060522",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:cb4090e5bd734a23942881979b1452fe8480eaf9c540c969a461efe278e62ed6",
+          "tamanho_MB": 4.769
+        },
+        {
+          "digest": "sha256:c464944ef9a982322d438cfc3d46ab6e26dc425a751f08e83d185145f2ea2dc1",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:798f7b2ba9cea625cf8b51c9236e038beaa1159199d073dc00e0d735aff13521",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:c0dc9822daa540f15e44438233b0eacdb3e9aba5515ba50d8e6a30969d5598a2",
+          "tamanho_MB": 0.005
+        },
+        {
+          "digest": "sha256:5af019de19111f796a5b65a66d60133bd402e64bd89bca6492535dab619a7df6",
+          "tamanho_MB": 38.35
+        },
+        {
+          "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:cb4c2b7f586e792670093c3bf9a32c9b2fa1bf5810ef930a3ac5b403ca8c3724",
+          "tamanho_MB": 108.462
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 19,
+      "nome": "bitnami/kubectl",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 78.81,
+      "camadas": [
+        {
+          "digest": "sha256:593b2cd940d70082e3efc48bfd6b241f1d85b1c54d8e9289327127df8aeefe71",
+          "tamanho_MB": 78.81
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 20,
+      "nome": "grafana/grafana",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 503.1,
+      "camadas": [
+        {
+          "digest": "sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788",
+          "tamanho_MB": 3.853
+        },
+        {
+          "digest": "sha256:bcd7fa5168a74de1190f23b06e7298c6a48b79bf5546fe7e1f3381730c827740",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:d69c4cfa651ff80bb1293f4986c8944d488fd7c75d4b95a05f99686304464b3d",
+          "tamanho_MB": 6.007
+        },
+        {
+          "digest": "sha256:1bd0660b80e5ceb8024403beaa140f9ad2c99997bb51dc1befdda2547f252ef7",
+          "tamanho_MB": 8.735
+        },
+        {
+          "digest": "sha256:f4e5155cc91f0b9762f9820d19d46a753a4b24812e492cf0bc2aca1f290766b2",
+          "tamanho_MB": 0.079
+        },
+        {
+          "digest": "sha256:9a60019a88162006fc624ec2e4cb3c5f0428891cd0c98eb777696771822cee15",
+          "tamanho_MB": 0.034
+        },
+        {
+          "digest": "sha256:1ff600371a0f6727e6b6c01de86ba0053dd4adc5afe7e73a7044eadc7beec7b6",
+          "tamanho_MB": 295.048
+        },
+        {
+          "digest": "sha256:aa465df46998545c28c66dc5a36de9547af5aa3b3465ee23b93168db1246c5be",
+          "tamanho_MB": 189.343
+        },
+        {
+          "digest": "sha256:06da073526e3f0d5f6fe954f12f96318b85879f5ab08421e4112a0abfa879386",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:4a2b3a64321ac26fe742a30e32c8305668cc34a39f118f6a870c67d05063c00a",
+          "tamanho_MB": 0.001
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 21,
+      "nome": "library/mysql",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 299.035,
+      "camadas": [
+        {
+          "digest": "sha256:1610bd8e525d37f7b01147980f0f660538a95e978eee8351a908a00d143c2910",
+          "tamanho_MB": 47.188
+        },
+        {
+          "digest": "sha256:ac16b2e289d5e3b3f467ebc4e9a0bcf7f86912e39fae80a3c564f15a88c2466b",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:c61a0b298231054a50162fd8ba5f1663d9575339fda1abfa97cfea17bd5e8f87",
+          "tamanho_MB": 0.784
+        },
+        {
+          "digest": "sha256:2801c41ee6ad0d666bc4309612d991d09531f3297dd8ddbb463813c8967325c1",
+          "tamanho_MB": 6.187
+        },
+        {
+          "digest": "sha256:def0bf29cc7b751404f7f318d68ec3aa529a8beda7975fcf62dbb9a8caa7fbab",
+          "tamanho_MB": 0.003
+        },
+        {
+          "digest": "sha256:0ad863d106ceb7d3f7b41654346e301454334b7e494c49d03608dfd53ea74c0a",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:f6e8373886396224aa79aacfa24c7067210b3b03249af3d15df749586398d458",
+          "tamanho_MB": 63.788
+        },
+        {
+          "digest": "sha256:618abfb0ceb2f256a50c49283e301ffe6d90bf670639af6c3285bc316dde4a9a",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:53add8b74cb923c03864601ead8537c16e654fbdbeab2dcf44019ce56afda85e",
+          "tamanho_MB": 181.079
+        },
+        {
+          "digest": "sha256:f031910ef3c1d0e215ef20ed21e6aca465b9a868e5458ef2b096921e8b15d309",
+          "tamanho_MB": 0.005
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 22,
+      "nome": "jenkins/jenkins",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 242.263,
+      "camadas": [
+        {
+          "digest": "sha256:8d0037029946d2c6dabce18eceda79c533c5797ed1ee86f94084cb8cddaeea91",
+          "tamanho_MB": 49.394
+        },
+        {
+          "digest": "sha256:ed428600c341b98dce6464c489b172a5f0f912fada6ff09ef34e613bbb26fef0",
+          "tamanho_MB": 55.994
+        },
+        {
+          "digest": "sha256:762fb2307e5528c40d2d8147205b42edc448e2ce61d257bbc91823b7c1c3e940",
+          "tamanho_MB": 5.629
+        },
+        {
+          "digest": "sha256:e84afae49741d393bae31b6c49fb873a4e3e5252424164a6919f750f3888ef06",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:149866ebb432cce61a6168aebd349d03791a6a94e0f8f3da86cafa3dc91df54d",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:f6c426cfbc0b763e189693ba5e877a7db3660f85aaebacbddcf1adf8e75d44d5",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:9328fec877ba86adeedf5b98f47acb2daa8ddfe9abb99f8c577ab1f82e20c324",
+          "tamanho_MB": 6.451
+        },
+        {
+          "digest": "sha256:16012e66b187cae463314f0ea56662f2686b8e88d8ed485554fe18493cb86198",
+          "tamanho_MB": 72.343
+        },
+        {
+          "digest": "sha256:abcf85f78ab1038bed439356df25fa1692c50aa106f1fdf23349dde22cd21054",
+          "tamanho_MB": 52.447
+        },
+        {
+          "digest": "sha256:bd5214efba2d31c261a31d7fdfff6e912ffae9230bf80cfa04ea83aef59dadb4",
+          "tamanho_MB": 0.003
+        },
+        {
+          "digest": "sha256:2a8ad8cc382d7c1e61caeb2e19fb12dde3b1bd4e0dc6669b93354bbcfa191182",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:89be2fd102d4046b3c9b45fb05591fadb1fe3c28ebdbc26296a406176a54c725",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 23,
+      "nome": "library/mongo",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 385.666,
+      "camadas": [
+        {
+          "digest": "sha256:edafa32f5d9e4d9629f0dbc6c01e63c79ff08133c01cfb7d3363aa8bd8a614cf",
+          "tamanho_MB": 42.14
+        },
+        {
+          "digest": "sha256:f3f25b84a7d74315d94ee4108231f8f5e0cd2a44725a7204d5dd6ce91c151697",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:ce49395e697634a4386c0ff8cda9cdbbf9580450e1747a25818990513b5e2fba",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:f241cf8d7013f648df1e161ea066a2a3f6d316e92458d73fd85288da9b5c2553",
+          "tamanho_MB": 1.541
+        },
+        {
+          "digest": "sha256:0be95fbdf58ca2380dee1dac9bd7db72852c43e72183835c384c5f56ae436fda",
+          "tamanho_MB": 0.938
+        },
+        {
+          "digest": "sha256:d2e72a39651c632179691f7e4a2a5afad12a287981607a906c16f1e22acc3ffe",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:ffcd860d5e154dfcd8f2e1082d615975073a6ab76aa03a1ae07454eea5bb8dfc",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:cac1b769635f6f89a5bdf46937d1d229fefad9347b9ace5be4d2f1b4861718b6",
+          "tamanho_MB": 341.04
+        },
+        {
+          "digest": "sha256:83ff6ac63f37b0a6a4230c5f3c0b218330b5c14e872d063255b871282bf113e8",
+          "tamanho_MB": 0.005
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 24,
+      "nome": "grafana/loki",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 48.09,
+      "camadas": [
+        {
+          "digest": "sha256:b84bc69f1cbd71810f3883583be2e0bc4da4b7b2dc8b963a0fa52925c14b51cf",
+          "tamanho_MB": 0.124
+        },
+        {
+          "digest": "sha256:5b3013706a463509f05fabda3a5f854b1c5f3429561cf9374db6e6681da5493f",
+          "tamanho_MB": 0.013
+        },
+        {
+          "digest": "sha256:7e7bfd057be8b284ab3ec164ef5667119d00b3ac0beff3fe52eb7a4a4255fff4",
+          "tamanho_MB": 0.295
+        },
+        {
+          "digest": "sha256:bf8083c5c1ec791cb9b3d44a2e69f8cc7e53e05bc65996aa6f2481da26579a25",
+          "tamanho_MB": 0.264
+        },
+        {
+          "digest": "sha256:9d2753d762cc58b055d94d102989775221df5156b7bec5861353454c308ad197",
+          "tamanho_MB": 0.032
+        },
+        {
+          "digest": "sha256:2780920e5dbfbe103d03a583ed75345306e572ec5a48cb10361f046767d9f29a",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:7c12895b777bcaa8ccae0605b4de635b68fc32d60fa08f421dc3818bf55ee212",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:3214acf345c0cc6bbdb56b698a41ccdefc624a09d6beb0d38b5de0b2303ecaf4",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:52630fc75a18675c530ed9eba5f55eca09b03e91bd5bc15307918bbc1a7e7296",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:dd64bf2dd177757451a98fcdc999a339c35dee5d9872d8f4dc69c8f3c4dd0112",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:b839dfae01f66e15c6a8b63520557ed315bdfe036342fa7a0c537259f10d7a9a",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:411e1c946a02ee44c9adc542515ae29ff58d65149a4a201cbd688297c9900ee4",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:f769d9bdcbc2657e544bb16f42b4e74b2b0bddbca5cfab9c89850992ccfb3256",
+          "tamanho_MB": 0.141
+        },
+        {
+          "digest": "sha256:aea7a685aae62ee8fa33a23e6f7dd7292d792953e226fb8dca04bc50b0916374",
+          "tamanho_MB": 47.217
+        },
+        {
+          "digest": "sha256:a9782e5a7e37a5ce067d29ce92722d64886e7517b35da8cd48852d7014c6fcbb",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:e6add121e26cab580f90ac5413498c2fd39885b02ea1ae2bd4a61a4852c96978",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:3961ae489acc236d0185d8f81338016edc799d21dea67d2ec4282ec0fb131065",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:6a428f5075bcb278afff94ca650f8384d90429d1d358ee719c08a41003ca4fb3",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 25,
+      "nome": "library/httpd",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 45.324,
+      "camadas": [
+        {
+          "digest": "sha256:6fc242d221a673263eabd14a9ad9584d3177c96e5cb504c891497338e2f912f5",
+          "tamanho_MB": 29.855
+        },
+        {
+          "digest": "sha256:22ce773c1ed1394d5dce9c11e2f0337820ae95a692f9bc6f48beef3a9e7df923",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:580ce4f97bc3602c6d3a4e760441b87ab736b20448b17daf51fc4da74c0afbc6",
+          "tamanho_MB": 2.006
+        },
+        {
+          "digest": "sha256:4a12aab7af459ff676a40d61ddadcb9c9e16894628c9d93775238baeb052a71b",
+          "tamanho_MB": 13.462
+        },
+        {
+          "digest": "sha256:f39e6d442c0c61fcdd1d48a295c4066e451bdf11cc5dc47f35fd76a16e09ecaf",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 26,
+      "nome": "timberio/vector",
+      "tag": "latest-distroless-libc",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 70.934,
+      "camadas": [
+        {
+          "digest": "sha256:2cc7ee286bf3a9e6af5f71756d7fc8e22e23ce65fec9047d774511ffcef79fa8",
+          "tamanho_MB": 0.125
+        },
+        {
+          "digest": "sha256:c172f21841dff4c8cf45cde46589c1c2616cefe7e819965e92e6d3475c428aa0",
+          "tamanho_MB": 0.013
+        },
+        {
+          "digest": "sha256:617b009a71d625ef77982b400cb9939dd5ed9809ebf50681a0520b7c08c0ca89",
+          "tamanho_MB": 0.289
+        },
+        {
+          "digest": "sha256:a99dd1dd5eaf3e2099256f1a75c8e4c02a1d3a81b8e2bfd1735b1dd166b68a12",
+          "tamanho_MB": 0.257
+        },
+        {
+          "digest": "sha256:d6b1b89eccacc15c2420b2776d72c1dae334a00805ed9af54bf2f71e4d536f28",
+          "tamanho_MB": 0.032
+        },
+        {
+          "digest": "sha256:2780920e5dbfbe103d03a583ed75345306e572ec5a48cb10361f046767d9f29a",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:7c12895b777bcaa8ccae0605b4de635b68fc32d60fa08f421dc3818bf55ee212",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:3214acf345c0cc6bbdb56b698a41ccdefc624a09d6beb0d38b5de0b2303ecaf4",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:52630fc75a18675c530ed9eba5f55eca09b03e91bd5bc15307918bbc1a7e7296",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:dd64bf2dd177757451a98fcdc999a339c35dee5d9872d8f4dc69c8f3c4dd0112",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:b839dfae01f66e15c6a8b63520557ed315bdfe036342fa7a0c537259f10d7a9a",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:ebddc55facdc6b1f7e0f30816a5fc7cc62f38abdf76c0a8b0a0ce52085754795",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:ec1b04bf2eb2122e86781f791b03ea0cf6588694e0f4a88245250224c186cdf0",
+          "tamanho_MB": 0.142
+        },
+        {
+          "digest": "sha256:b96fe2995f90d0ef0bf14f9b4a67b5f4e77d478e6108166e0565adc9efd6e4a3",
+          "tamanho_MB": 5.079
+        },
+        {
+          "digest": "sha256:810e2b405a0884835290e120ef380aa14dd1f53198a0cfa2260147e736d82cd5",
+          "tamanho_MB": 3.079
+        },
+        {
+          "digest": "sha256:bd8962e292918c50c90edebd9684c053bc386b9c5503acd8fec75d0c6f93a0b7",
+          "tamanho_MB": 0.373
+        },
+        {
+          "digest": "sha256:cac2ae0193cb073e7492050b05fc342a888651b4bbc966908c8793f889c299ba",
+          "tamanho_MB": 0.096
+        },
+        {
+          "digest": "sha256:dd0d9bfd3bee080ad25a464362ec4f37ec5ca625695a4d7179fe69d207dc068d",
+          "tamanho_MB": 0.158
+        },
+        {
+          "digest": "sha256:7cc70dfd88cf2327bb827123c9156f7cb95de95b2f98f3a7a931296aacec5786",
+          "tamanho_MB": 0.901
+        },
+        {
+          "digest": "sha256:8224d91da70b7992430d3b04040ea38ecdef4a7b719bee38397c89aaa886e198",
+          "tamanho_MB": 0.084
+        },
+        {
+          "digest": "sha256:1a4be5562d92d659f95e0b44b245ea5208bf5317481b9a351b07fad7fe5265ec",
+          "tamanho_MB": 0.052
+        },
+        {
+          "digest": "sha256:7eb2caa5e7d19a4b489d860f24bf4a345a9257448e5d85d320e39f363d0db3d1",
+          "tamanho_MB": 60.14
+        },
+        {
+          "digest": "sha256:3ff602d3a678c9b73b870d13144134ebb8eae4d0db16a8728205a3240fd0c986",
+          "tamanho_MB": 0.006
+        },
+        {
+          "digest": "sha256:1b9f6104da0c9afb5f57d4c7ff335b53d990e4613b2c6c51765b4ee7fcb08819",
+          "tamanho_MB": 0.039
+        },
+        {
+          "digest": "sha256:8ab3a63d680f2e895fade8ba80d92ddb278ecc4a6e08aee94009c626e2004ad1",
+          "tamanho_MB": 0.004
+        },
+        {
+          "digest": "sha256:f8ffad7791605dabd76d1ab4444e1d2e153b1f1a02ba5b3f2753dd578a793b1b",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:dc7863a8f41e2b4cfc1885d025e1bf38ff6de73fb45d00190fe8da9dc36a43ac",
+          "tamanho_MB": 0.064
+        },
+        {
+          "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 27,
+      "nome": "prom/node-exporter",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 13.405,
+      "camadas": [
+        {
+          "digest": "sha256:c93f261857c30539c2598b304472fa5c9a1a511a0c0274fb574661623b38d2e2",
+          "tamanho_MB": 0.8
+        },
+        {
+          "digest": "sha256:bef5f31762794971fec40f2b021df2b6a109fa099274230f4e5f15945c001a93",
+          "tamanho_MB": 0.325
+        },
+        {
+          "digest": "sha256:f5ee56b8245c5f6f4d7bc820672c1f65c00e9f524e38c72e1c6c6c236e4cfc2c",
+          "tamanho_MB": 12.28
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 28,
+      "nome": "library/rabbitmq",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 131.008,
+      "camadas": [
+        {
+          "digest": "sha256:edafa32f5d9e4d9629f0dbc6c01e63c79ff08133c01cfb7d3363aa8bd8a614cf",
+          "tamanho_MB": 42.14
+        },
+        {
+          "digest": "sha256:f3f25b84a7d74315d94ee4108231f8f5e0cd2a44725a7204d5dd6ce91c151697",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:11ae41266281c739e86f5724d3c939869647ce2be80dac5df6992dbd3231e2ac",
+          "tamanho_MB": 50.575
+        },
+        {
+          "digest": "sha256:10060cd7bfd9870ca7f81ecc2d7c8489b944f0830e4dbd4246f41f6be944f91c",
+          "tamanho_MB": 9.101
+        },
+        {
+          "digest": "sha256:990841195efcb4aedfe3dcb5cf42961d701011211a9b8323b20383b6f433a12b",
+          "tamanho_MB": 0.009
+        },
+        {
+          "digest": "sha256:7797119c3e7f813add18bc252f7a401b1d14f5b76107db3355243d143eacc56a",
+          "tamanho_MB": 29.181
+        },
+        {
+          "digest": "sha256:6a9b3f7a2f5f096fc3d0a1036f5e3a5275c4ab3442ee5ced9c7fc21c647f9d82",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:d8e8a6a1fa8af864e87bd268671e75c3ef75428ef8379382f1b12eca566f0828",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:217ebafa30b8f750ac710b99638975212edf5d6fa927ebc94d045e7d95281dfd",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:4bb02c92e46b3c6eb0d3f41f323694c0f40e67820b17b51d5921f8f83a982102",
+          "tamanho_MB": 0.001
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 29,
+      "nome": "amazon/aws-for-fluent-bit",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 138.99,
+      "camadas": [
+        {
+          "digest": "sha256:9653aa1582ef32674aa011f26c881e60e6136564952476129f41b0f5fee0c8ae",
+          "tamanho_MB": 62.974
+        },
+        {
+          "digest": "sha256:0a00d503b8f15f60fcc6534f98a55575dbddda5f18f2e7b062b7a47a22465278",
+          "tamanho_MB": 35.298
+        },
+        {
+          "digest": "sha256:87cb9b7b523c643014bdf5c56db6126975a1f90218ad67ac26c09af152c09adc",
+          "tamanho_MB": 12.514
+        },
+        {
+          "digest": "sha256:415fa9dbcf31655327c2f447653455f0ffb345e9a42f0827a8623b68a7f17bcb",
+          "tamanho_MB": 11.416
+        },
+        {
+          "digest": "sha256:e69991f8c821d50f20fe6a484700ac85b612c9f1efef1ee64d5887a3264018af",
+          "tamanho_MB": 8.351
+        },
+        {
+          "digest": "sha256:a3248a201f2c131363384c9e014631bf06d4ffb297cb78bd209b4d092ce2d09b",
+          "tamanho_MB": 8.408
+        },
+        {
+          "digest": "sha256:8a213815757f1106ed86b3d2d5bf4a4610f5f9a91a9742051e300778787a7bfa",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:5da80893665df50d86b382bf49e19a07da608702d4d01a34391c190252b563a2",
+          "tamanho_MB": 0.005
+        },
+        {
+          "digest": "sha256:a08a03c3ea6efc15da1316f0fe4f9b73d2d19925800d110832673a42a7d424fb",
+          "tamanho_MB": 0.007
+        },
+        {
+          "digest": "sha256:07d074aa0898cca2fc21103e964319e851717f454f07d83c7244be710b0e014d",
+          "tamanho_MB": 0.007
+        },
+        {
+          "digest": "sha256:f348ccf2da6c59074a95c99eebb93043d996bd25127728dbe25a19302e33923f",
+          "tamanho_MB": 0.008
+        },
+        {
+          "digest": "sha256:ffc2e93b83db3882f95370375531a0d0b7f2194e05db8f0b283e2872a76251b7",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:d2665fa40df14f6c618e465553848ceffa001bf5b4bc5c996985a765dcbe80cd",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:face81ea4c5c2d33a785a0656f5e8bec63294493e36a6b298030827298ca5da9",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:face81ea4c5c2d33a785a0656f5e8bec63294493e36a6b298030827298ca5da9",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 30,
+      "nome": "bitnami/postgresql",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 135.659,
+      "camadas": [
+        {
+          "digest": "sha256:5d88f606c9a5a120cafeb2bfcdfc6a2de79cb8d065fd53e26a4cb64464eb890c",
+          "tamanho_MB": 135.659
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 31,
+      "nome": "gitlab/gitlab-runner",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 112.58,
+      "camadas": [
+        {
+          "digest": "sha256:f2b4ef06ff01a67d4bed7657a4ae379a7d07934b7c3e743454a22a0d5275fb2b",
+          "tamanho_MB": 29.766
+        },
+        {
+          "digest": "sha256:0b61fcc42d4b56e8acc841387bf35e7f22519f37548678b6bc9309da8e6c0e80",
+          "tamanho_MB": 44.46
+        },
+        {
+          "digest": "sha256:6e65cbbadd76837dd8223d833747147bd3f1b87c36f34fe053535cb627400e49",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:1e0a2105628461912232a35fae6c91d75607cf5d18c156e5d02d5c87b1f46d08",
+          "tamanho_MB": 38.352
+        },
+        {
+          "digest": "sha256:8b91668bbeaa496b622baf7c2d39a94ed62d93a8e411650b0d1cbd9184a03793",
+          "tamanho_MB": 0.002
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 32,
+      "nome": "library/docker",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 122.006,
+      "camadas": [
+        {
+          "digest": "sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788",
+          "tamanho_MB": 3.853
+        },
+        {
+          "digest": "sha256:a71b0c095ee8f31ff0a9447309e85f808367b1122c75e0356ff231a722d87655",
+          "tamanho_MB": 8.2
+        },
+        {
+          "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:cffe68be57c630fbaa214ba63287e4d95925608af1f8135029c889faba1fd4f9",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:335f14bb4f7daee1feb8e7e8cfe9df0f5a40f77513d6d250f91b1c2e14ad495f",
+          "tamanho_MB": 20.288
+        },
+        {
+          "digest": "sha256:552fcdedd26330070ccaa40f0323894f649d8243ac86ced87ccbb5740be54c88",
+          "tamanho_MB": 23.824
+        },
+        {
+          "digest": "sha256:d07dfa8df4d19a6df163cb82622dcd15c33380a9453936fed2450ebbd1234d06",
+          "tamanho_MB": 11.309
+        },
+        {
+          "digest": "sha256:8b815a471d8d9c1447a7b722f089fb5637da5551fac7f77ff6d77fade03f9c68",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:ee498a1860a58ca22c70842c8452e40a4a17054dca5632cf144c188f39bf42cf",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:bd4566122f6780524803d9c99f3972356f9f4376af28b34ed139882644e0bd52",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:d42cfa6127b3b8086154d09ef8f3db7a0fa4c613c2d0d6f65f8054642621d92b",
+          "tamanho_MB": 1.497
+        },
+        {
+          "digest": "sha256:1a55a75a1a2afdbf660056feb476d9c71ab74cf432d0554f52a8cace30f8576d",
+          "tamanho_MB": 0.081
+        },
+        {
+          "digest": "sha256:bc42f9148672f16d61df1d1cb91a875037bdbbfaf0a71a2cec5035bec97e5b05",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:33883f23fecac1b82ba9b2047e4742d134cc0fd0d71ecfe59e39017f6d034321",
+          "tamanho_MB": 52.945
+        },
+        {
+          "digest": "sha256:fccb65b60fa570fb57495df30a32ce5b07368abe6bac5d07eccbe3c2d1d054b1",
+          "tamanho_MB": 0.002
+        },
+        {
+          "digest": "sha256:08baed64d192dec04c7d925959c3cdfe064529d03f145ec54947fd67bcbfd782",
+          "tamanho_MB": 0.003
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 33,
+      "nome": "rancher/rancher-agent",
+      "tag": "head",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 125.745,
+      "camadas": [
+        {
+          "digest": "sha256:86910c2808f457bccda0208939f1296cc7c9a227a077bb9cced34d2294911264",
+          "tamanho_MB": 1.137
+        },
+        {
+          "digest": "sha256:2a0fe751e46beb10ff24fcc7736df19899db5c7c74ae720e55665483d4b87c53",
+          "tamanho_MB": 52.65
+        },
+        {
+          "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:e54f377f4a8f54f3853ea0f562909b0e30703fad6eb5096640bcb1caed74c0ef",
+          "tamanho_MB": 0.029
+        },
+        {
+          "digest": "sha256:702699ed792ee1b8214c6c1ca0860796fe2329ce6a5c4ad95350d2333d3bcea6",
+          "tamanho_MB": 71.926
+        },
+        {
+          "digest": "sha256:a4d5bee637895da55b952eed50d5bd4c08d129f7c194869f1595aee5a2119168",
+          "tamanho_MB": 0.002
+        },
+        {
+          "digest": "sha256:f31d716256f7320e531e4811f18f253aabb1835346df595e681610c07369f96d",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:bcdf78b4980571658eeec2107c2fd6f2a72fbf756e960b6503e45f6fc65fbf11",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 34,
+      "nome": "library/traefik",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 55.389,
+      "camadas": [
+        {
+          "digest": "sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788",
+          "tamanho_MB": 3.853
+        },
+        {
+          "digest": "sha256:49888146e07b53cc44d84f58588dec3aabdeac3eb0e4715dc0f921465b3ca6f4",
+          "tamanho_MB": 0.412
+        },
+        {
+          "digest": "sha256:0d632b01ad5cccd6ba822f66eae79d9f5c5c6e624e7ac81566dc9384b5931cfc",
+          "tamanho_MB": 51.123
+        },
+        {
+          "digest": "sha256:b31563044f2c72a6ae51618cb2875bc661db1fbb122b4cf69d62e085c1f4a3b4",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 35,
+      "nome": "newrelic/infrastructure-bundle",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 224.41,
+      "camadas": [
+        {
+          "digest": "sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788",
+          "tamanho_MB": 3.853
+        },
+        {
+          "digest": "sha256:04927999b1ef396cb708e8b6d40e74fa31cd476c73bb75b0cb9307ee9b4f3034",
+          "tamanho_MB": 12.356
+        },
+        {
+          "digest": "sha256:3d4287b4493c31d46fb8c606a02a70a8db80dfd0262dc3b6229f488edc16b09d",
+          "tamanho_MB": 7.789
+        },
+        {
+          "digest": "sha256:409466bbe61c9c29fb3cf44580f855d33fc42e3ed63027be90b8dce9680c6328",
+          "tamanho_MB": 1.926
+        },
+        {
+          "digest": "sha256:348cb8995a3aef4bafc0f8c174ccc4d8f9b728de9fce8e11d09036b7dcff63a0",
+          "tamanho_MB": 0.013
+        },
+        {
+          "digest": "sha256:d0a2198585a038982d7025333ea8022280e9bd379ce414c63c9ce38253b1a8a0",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:2a5547c398afaaa5d2bf83853a4e41f68dc6c9fe65c98796f5d63af957b4bdbd",
+          "tamanho_MB": 0.009
+        },
+        {
+          "digest": "sha256:131374f2f108c15d27b025e62cf4408bf4b655df3041a2446b71b43c4e53225e",
+          "tamanho_MB": 0.29
+        },
+        {
+          "digest": "sha256:58df05b9e4ee47bb769f83a7ea02ca3e16ac60db1af8f77103ff7fc8c1412101",
+          "tamanho_MB": 19.811
+        },
+        {
+          "digest": "sha256:5ca8c3c4b475b7ab21465d9cb59626ef8d90b70af65d637445f185c69ed7b4b0",
+          "tamanho_MB": 32.273
+        },
+        {
+          "digest": "sha256:08abd9f059757dffe2608947320ae82d4f6012d98ce441e377d76b7eaea787c5",
+          "tamanho_MB": 13.167
+        },
+        {
+          "digest": "sha256:6dffbe03a247eec033a65f83af4d6aa43d9170444824aaa0db8ae3861f8f8d07",
+          "tamanho_MB": 62.129
+        },
+        {
+          "digest": "sha256:d1a67257b23f3033d200caa9b8abadde44f0db6fbb18adf6a1d149492ccd4b69",
+          "tamanho_MB": 70.793
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 36,
+      "nome": "library/hello-world",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 0.002,
+      "camadas": [
+        {
+          "digest": "sha256:4f55086f7dd096d48b0e49be066971a8ed996521c2e190aa21b2435a847198b4",
+          "tamanho_MB": 0.002
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 37,
+      "nome": "v2tec/watchtower",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 3.315,
+      "camadas": []
+    },
+    {
+      "posicao_ranking": 38,
+      "nome": "bitnami/redis",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 49.825,
+      "camadas": [
+        {
+          "digest": "sha256:b6bce26d5030274c769e0bf3a24a5e170f13ad6042f14e70ab06168e571f04e0",
+          "tamanho_MB": 49.825
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 39,
+      "nome": "library/mariadb",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 119.866,
+      "camadas": [
+        {
+          "digest": "sha256:edafa32f5d9e4d9629f0dbc6c01e63c79ff08133c01cfb7d3363aa8bd8a614cf",
+          "tamanho_MB": 42.14
+        },
+        {
+          "digest": "sha256:f3f25b84a7d74315d94ee4108231f8f5e0cd2a44725a7204d5dd6ce91c151697",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:5fa09961a6920b5c61f4ad53fa99fc282f5775903d7c4d3b12393738b80ddbe2",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:eb4ac1139df83582acbcd112aae13e1b344678b5b98ffafdb7d7b7c85e1708e3",
+          "tamanho_MB": 5.755
+        },
+        {
+          "digest": "sha256:c598a1c1ed3112617066692f6d25b2343224e4d67ceaaae07306b916daa28989",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:70de3befaafcbd71def6bc3ae2dcc50304d385dbcc05d9532ad3278eb38870b9",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:92792a7f027aaf1c21ac375b1869aabe09ba530f8f8ff392d205609238482deb",
+          "tamanho_MB": 71.956
+        },
+        {
+          "digest": "sha256:597a2e2573f82784685fcd55159b82db7ffa332bace07da9684a5a367ea3f0a5",
+          "tamanho_MB": 0.004
+        },
+        {
+          "digest": "sha256:262127dad2ccb8dfb5a984d6d62a4eba7a55345a061dc9634b283134d62c1080",
+          "tamanho_MB": 0.008
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 40,
+      "nome": "openpolicyagent/gatekeeper",
+      "tag": "dev",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 49.111,
+      "camadas": [
+        {
+          "digest": "sha256:a5789fc40e828c4e7467626e3f69ec5dea8e5da22fe660db8ae6d16f777b0bbf",
+          "tamanho_MB": 0.084
+        },
+        {
+          "digest": "sha256:990a9c434e5e0f11549a8d4a41a1991e621b04e30cd63269adbc97b1dc38fd7e",
+          "tamanho_MB": 0.012
+        },
+        {
+          "digest": "sha256:39dc083afc39bd8dc43d456fe7ff7d39292e593bb2769972c11bb2e5f9119386",
+          "tamanho_MB": 0.446
+        },
+        {
+          "digest": "sha256:bf7a4185f01524837d19abde915ffde84e64368b250f5b5e9f6f75aea62a11d4",
+          "tamanho_MB": 0.029
+        },
+        {
+          "digest": "sha256:2780920e5dbfbe103d03a583ed75345306e572ec5a48cb10361f046767d9f29a",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:7c12895b777bcaa8ccae0605b4de635b68fc32d60fa08f421dc3818bf55ee212",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:3214acf345c0cc6bbdb56b698a41ccdefc624a09d6beb0d38b5de0b2303ecaf4",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:52630fc75a18675c530ed9eba5f55eca09b03e91bd5bc15307918bbc1a7e7296",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:dd64bf2dd177757451a98fcdc999a339c35dee5d9872d8f4dc69c8f3c4dd0112",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:b839dfae01f66e15c6a8b63520557ed315bdfe036342fa7a0c537259f10d7a9a",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:dcaa5a89b0ccda4b283e16d0b4d0891cd93d5fe05c6798f7806781a6a2d84354",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:96ed2737ae312e0bc637b40783f7c2f23416cb72ca957aa01855f1614278e64b",
+          "tamanho_MB": 0.143
+        },
+        {
+          "digest": "sha256:3d10c24e3f29d2137e8dacc68e4ca0fd661d75259c021a2d919bdaf0fd85e345",
+          "tamanho_MB": 48.395
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 41,
+      "nome": "seabreeze/sbz-helloworld",
+      "tag": "1.1-alpine",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 7.89,
+      "camadas": [
+        {
+          "digest": "sha256:ff3a5c916c92643ff77519ffa742d3ec61b7f591b6b7504599d95a4a41134e28",
+          "tamanho_MB": 2.066
+        },
+        {
+          "digest": "sha256:b430473be128c1302a75e8381dfbaa45182fec81db4f75b749e4896d7816c2ea",
+          "tamanho_MB": 5.821
+        },
+        {
+          "digest": "sha256:7d4e05a01906143afc15671a53151ea9755dac230db376a8b8364b21ca774dbc",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:8aeac9a3205fce5e21ab65ccce330fe389a9aaf47e4b682970b1772ae25a1d73",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:770f90f7756e1d474f4d3de4e60bad85ec602a9df3fb529ef56490e218c97c3f",
+          "tamanho_MB": 0.002
+        },
+        {
+          "digest": "sha256:6232127d539e948edfe4a0fd78c4d19c10f0fe80480efd1564f3f9827dabaa9a",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 42,
+      "nome": "bitnami/sealed-secrets-controller",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 33.505,
+      "camadas": [
+        {
+          "digest": "sha256:2cc7ee286bf3a9e6af5f71756d7fc8e22e23ce65fec9047d774511ffcef79fa8",
+          "tamanho_MB": 0.125
+        },
+        {
+          "digest": "sha256:c172f21841dff4c8cf45cde46589c1c2616cefe7e819965e92e6d3475c428aa0",
+          "tamanho_MB": 0.013
+        },
+        {
+          "digest": "sha256:218cf840d0d95a86231eb9d33d26ac8a520a4299c6096cb70a0c2fb2a87c9e0a",
+          "tamanho_MB": 0.288
+        },
+        {
+          "digest": "sha256:f6069939f718601b38d25ec5ed5631ed047e4da24acec2e252f8f29d251be718",
+          "tamanho_MB": 0.255
+        },
+        {
+          "digest": "sha256:d6b1b89eccacc15c2420b2776d72c1dae334a00805ed9af54bf2f71e4d536f28",
+          "tamanho_MB": 0.032
+        },
+        {
+          "digest": "sha256:2780920e5dbfbe103d03a583ed75345306e572ec5a48cb10361f046767d9f29a",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:7c12895b777bcaa8ccae0605b4de635b68fc32d60fa08f421dc3818bf55ee212",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:3214acf345c0cc6bbdb56b698a41ccdefc624a09d6beb0d38b5de0b2303ecaf4",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:52630fc75a18675c530ed9eba5f55eca09b03e91bd5bc15307918bbc1a7e7296",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:dd64bf2dd177757451a98fcdc999a339c35dee5d9872d8f4dc69c8f3c4dd0112",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:b839dfae01f66e15c6a8b63520557ed315bdfe036342fa7a0c537259f10d7a9a",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:ebddc55facdc6b1f7e0f30816a5fc7cc62f38abdf76c0a8b0a0ce52085754795",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:a0921f9d8de9decce942bd69e8ef8d6767504afbabfb639a74917884cf1a5942",
+          "tamanho_MB": 0.142
+        },
+        {
+          "digest": "sha256:cbf833667a89140d3aee5bbe4072afb1740224aaba7f766e2cc17abff6c5db23",
+          "tamanho_MB": 32.65
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 43,
+      "nome": "portainer/portainer",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 86.795,
+      "camadas": [
+        {
+          "digest": "sha256:772227786281c0b444f1e277718af2d64b09f40f752da5b57a8a18c73f1dfa65",
+          "tamanho_MB": 0.117
+        },
+        {
+          "digest": "sha256:96fd13befc87e9f0a93432826441e0523d027715bf46696879e13a9b70679fc6",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:0bad1d247b5bbb19969580aa01e32cbb16190bbfd27df61863d640f9427a50ee",
+          "tamanho_MB": 86.675
+        },
+        {
+          "digest": "sha256:b5d1b01b1d397bbfbcee3c10291fde57b03171602a9a64af4e329c5d39714dd9",
+          "tamanho_MB": 0.003
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 44,
+      "nome": "grafana/promtail",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 67.292,
+      "camadas": [
+        {
+          "digest": "sha256:18dbadc1f2f937d7ebdfa4481fb1f6f43b26e93f5bdc4cef3cef98d7f0ae77aa",
+          "tamanho_MB": 30.599
+        },
+        {
+          "digest": "sha256:8d0ca11b89c9b77a0ce38b15de20fd5b49e8e8c3de0c354dd886c1078b9b201c",
+          "tamanho_MB": 3.403
+        },
+        {
+          "digest": "sha256:55161589749b98f5ddab0a1aca6f669d2aa81264b64426a3252a6af897b6088b",
+          "tamanho_MB": 33.289
+        },
+        {
+          "digest": "sha256:9f2ca3aca6812f5583825d6fee8e54b857b0700b3d7cfd26b307d6bcf7028e0a",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 45,
+      "nome": "cfcommunity/slack-notification-resource",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 10.817,
+      "camadas": [
+        {
+          "digest": "sha256:f18232174bc91741fdf3da96d85011092101a032a93a388b79e99e69c2d5c870",
+          "tamanho_MB": 3.642
+        },
+        {
+          "digest": "sha256:def8c4ebeccab34abf17b173b457483dadd08dc8308b25c6565a8b45fb1ea01e",
+          "tamanho_MB": 7.168
+        },
+        {
+          "digest": "sha256:a428bb0103923877d88ca18b1b13adef4110349ecb9e2147be13998b922c77a4",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:b9af798ef04f744b2fb78126f0e91af18b9c7850af379fb384dde4df36708689",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:c1af06c03224abd3b0ece0bf1bd3c78047cb4213fb6935df4a928765394a7bd2",
+          "tamanho_MB": 0.003
+        },
+        {
+          "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:9421f71be854899417cebc63b3d1591fda878f19f0d462aaa3d823e49ffb1607",
+          "tamanho_MB": 0.003
+        },
+        {
+          "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 46,
+      "nome": "library/golang",
+      "tag": "latest",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 316.457,
+      "camadas": [
+        {
+          "digest": "sha256:a1d156b0aab5fb07d822a7f4681f6d3ed1689073531c34f5668818c233633f11",
+          "tamanho_MB": 49.408
+        },
+        {
+          "digest": "sha256:7fac3b752bd4f060dcf33c0f54d1fad29fce8ff42b8fb544f9ec95372f0933bf",
+          "tamanho_MB": 25.634
+        },
+        {
+          "digest": "sha256:c0168c6e6744fc499abc90618818f9e4aaf652a587fb6345b3882dc57de1495c",
+          "tamanho_MB": 67.819
+        },
+        {
+          "digest": "sha256:b3560024de9caf4f31eb81decf4a997d9ca03b1ac0657e866593c4b17aac565f",
+          "tamanho_MB": 102.445
+        },
+        {
+          "digest": "sha256:82e0bb27ae78502103ed383ed33346f88a83943fb7bd93977850d5890ee8fb3b",
+          "tamanho_MB": 71.15
+        },
+        {
+          "digest": "sha256:5b534a18e2e5f6b1357329d379c890936bcac773dd508384ca3cd87c03f1750c",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 47,
+      "nome": "percona/percona-xtradb-cluster-operator",
+      "tag": "1.20.0-community-bundle",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 0.037,
+      "camadas": [
+        {
+          "digest": "sha256:76e7898480c5b4cfb40928cae59aa3d2686f5d4fc7f4547a598a94e5b206d76d",
+          "tamanho_MB": 0.036
+        },
+        {
+          "digest": "sha256:124f9ada2257599b4e087fa2c85ecb0489c701f317f2c969b63c817a3ba887e1",
+          "tamanho_MB": 0.0
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 48,
+      "nome": "library/openjdk",
+      "tag": "28-ea-trixie",
+      "oficial": true,
+      "pull_count": "1B+",
+      "tamanho_MB": 402.221,
+      "camadas": [
+        {
+          "digest": "sha256:a1d156b0aab5fb07d822a7f4681f6d3ed1689073531c34f5668818c233633f11",
+          "tamanho_MB": 49.408
+        },
+        {
+          "digest": "sha256:7fac3b752bd4f060dcf33c0f54d1fad29fce8ff42b8fb544f9ec95372f0933bf",
+          "tamanho_MB": 25.634
+        },
+        {
+          "digest": "sha256:c0168c6e6744fc499abc90618818f9e4aaf652a587fb6345b3882dc57de1495c",
+          "tamanho_MB": 67.819
+        },
+        {
+          "digest": "sha256:b260d3c3be18ae4e5668092bd89f48ecb489573ef290976b7a0f3cf9c55c3065",
+          "tamanho_MB": 16.068
+        },
+        {
+          "digest": "sha256:582305e72e3d3bd4b75ae2eb088bc5e3f2bf36a28c5abaee3bbfddbc258448d1",
+          "tamanho_MB": 243.292
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 49,
+      "nome": "pivotalcf/pivnet-resource",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 44.104,
+      "camadas": [
+        {
+          "digest": "sha256:6e0aa5e7af40303f56126b1469d1f37525b3a55a788836a6c9b773f6ce8bc446",
+          "tamanho_MB": 26.711
+        },
+        {
+          "digest": "sha256:d47239a868b3375462d644f2ffb1b20114623fac03109d2950bdf0d57ab487d2",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:49cbb10cca8504e3dbd65eb5db3c1dd0cd27070154386f819c5936de321c14b1",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:56927f71887fd402b45dd545b3846a998318081131f2b07bca03a3217c595cec",
+          "tamanho_MB": 2.756
+        },
+        {
+          "digest": "sha256:341b0ffaea195392f915320e0febd57a1153341a0629eb4b1adb39fd9a6dee1d",
+          "tamanho_MB": 4.258
+        },
+        {
+          "digest": "sha256:a32c764a016059a41ad6a2470400b7dd725fae9e16a098e2b27479eecc1ff637",
+          "tamanho_MB": 4.496
+        },
+        {
+          "digest": "sha256:a84c0e4d004b113f41f486d6ad796de9216513c00f5ff39eb1a44270e541cd5e",
+          "tamanho_MB": 5.882
+        }
+      ]
+    },
+    {
+      "posicao_ranking": 50,
+      "nome": "linuxserver/radarr",
+      "tag": "latest",
+      "oficial": false,
+      "pull_count": "1B+",
+      "tamanho_MB": 90.946,
+      "camadas": [
+        {
+          "digest": "sha256:c72266279417a5faff6e617848db39c83244c06962365b1b589acaf68eb04b97",
+          "tamanho_MB": 6.265
+        },
+        {
+          "digest": "sha256:f6a4c3e338ed76d3e90c1ce7a15013a45c9b55febc952bc905eed245ce0bb8d2",
+          "tamanho_MB": 0.006
+        },
+        {
+          "digest": "sha256:36ae26c163fabdfcee849d115a11fdfd29f9ce0e2ce11591557fdefa3a46d497",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:0fce4af119545ff96a475ca34e1998b05a6679afcb19aacd17e1592bf52330b2",
+          "tamanho_MB": 0.001
+        },
+        {
+          "digest": "sha256:0f1ebc65af7490d12f97ddd6ab1df01275098e83d10a3eed69fe55e1dbdbc68c",
+          "tamanho_MB": 0.0
+        },
+        {
+          "digest": "sha256:9ba80e72bcf91d6818c07b928e768c51752674f9eb7dc01f98dfe10ca6302379",
+          "tamanho_MB": 6.086
+        },
+        {
+          "digest": "sha256:6518ec658ff1145a6b3af6b0a1817dec74d6c1b84b05cb05c9ebdb3e5a9205e6",
+          "tamanho_MB": 0.005
+        },
+        {
+          "digest": "sha256:190a78b8ecc1fce1cd4ba304b2233d376e009852b4525b7142e313ef1f728b99",
+          "tamanho_MB": 78.58
+        },
+        {
+          "digest": "sha256:6482aeab42a9b4a00d58bb53057eb66d085e4cc394a43dc8e1f525c319c07c1c",
+          "tamanho_MB": 0.001
+        }
+      ]
+    }
+  ]
+}

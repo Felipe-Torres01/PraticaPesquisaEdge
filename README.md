@@ -28,6 +28,9 @@ Todos os comandos abaixo rodam a partir da raiz do repositório.
 | `scripts/experimento.py` | Varredura K × método × seeds (chama `gerar_cenario.py` e `run_cenario.py`) |
 | `scripts/analise_estrategias.py` | Consolida as varreduras: média, desvio-padrão, IC95%, ganho pareado por seed, vitórias/empates/derrotas e gráficos |
 | `scripts/analise_carga.py` | Consolida a varredura de taxa de chegada (modo carga de trabalho) |
+| `scripts/escalonador_pess.py` | Adaptação do escalonador PESS (Doriguzzi-Corin et al., 2020), usado na tese do Knob |
+| `scripts/comparacao_knob.py` | Compara o cenário fiel com a Tabela 4.3 da tese do Knob (tabela, testes pareados e figura) |
+| `scripts/figuras_artigo.py` | Gera as figuras do artigo (`artigo/figuras/*.pdf`) a partir dos CSVs consolidados |
 
 ## Topologias
 
@@ -73,10 +76,21 @@ que os links são idênticos. Tem o mesmo número de nós da Erdős-Rényi, mas 
   - Correções feitas na leitura: camadas de 0 MB viram 1 KB; a imagem sem lista de camadas
     (`v2tec/watchtower`) vira uma camada única com o tamanho total; e digests repetidos dentro da mesma
     imagem entram uma vez só (ver "Armadilhas do EdgeSimPy").
+  - **Duas coletas.** `dockerhub_top50_v1.json` é a coleta usada em todos os experimentos com Docker Hub
+    deste README. Ela pegou tags de desenvolvimento em alguns repositórios e, na percona, um pacote de
+    metadados de 0,04 MB (`-community-bundle`) no lugar da imagem real. O `coletar_dockerhub.py` agora
+    usa a `latest` só se for uma imagem de verdade (> 1 MB) e, senão, a tag estável mais recente (sem
+    `rc`, `dev`, `beta`, `bundle`, `merge-`, `head`...). O resultado é o `dockerhub_top50.json` atual:
+    mesmas 50 imagens, percona com 145 MB. Envoy e openjdk continuam com tags de desenvolvimento,
+    porque não publicam outras.
 
 ## Banda e resolução temporal
 
 - Links com a banda do arquivo (GARR do artigo) ou 1 Gbps (demais); acesso ao registry de 10 Gbps.
+- `--fator-banda F` multiplica a banda de todos os enlaces da rede. A tese do Knob limita a GARR a 10%
+  da banda do mapa (média de ~1,4 Gbps por enlace): `--fator-banda 0.1`.
+- `--banda-uniforme` ignora a banda do arquivo e usa `--banda-link` em todos os enlaces (Tabela II do
+  artigo: 1 Gbps).
 - `--segundos-por-tick`: a cada tick, o EdgeSimPy desconta `bandwidth` MB de cada fluxo, sem considerar
   o `tick_duration`. A banda vai para o dataset em MB/tick (banda × s/tick) e o tempo em segundos é
   ticks × s/tick. Todos os experimentos usam **0,1 s/tick**.
@@ -102,6 +116,31 @@ que os links são idênticos. Tem o mesmo número de nós da Erdős-Rényi, mas 
 O tempo de vida é necessário: cada servidor do template aceita 4 containers, e sem liberar espaço os
 servidores lotam em poucos minutos. Com 30 s, a GARR do artigo sustenta ~9 req/s.
 
+## Cenário fiel à tese do Knob
+
+Os detalhes do experimento original não estão no artigo, mas na tese do primeiro autor (Knob, PUCRS,
+2022, seção 4.5 e Tabela 4.3, p. 79). Seguindo a tese:
+
+| Parâmetro | Valor | Opção |
+|---|---|---|
+| Imagens | 13 × 200 MB, uma camada | padrão do `gerar_cenario.py` |
+| Cache | 600 MB por nó, LRU | `--cache-mb 600` |
+| Chegadas | ~5 req/s | `--chegadas 5` |
+| Deadline | 25 s ("o menor deadline usado"; a distribuição não é informada) | `--deadline-min 25 --deadline-max 25` |
+| Capacidade dos nós | não modelada ("o impacto da aplicação no nó não é considerado") | `--sem-limite-capacidade` |
+| Vida do container | até o próprio deadline | `--vida-ate-deadline` |
+| Topologia aleatória | 100 nós, 242 enlaces de 1 Gbps | `--topologia aleatoria --nos 100 --links 242` |
+| GARR | 70 nós, banda limitada a 10% | `--fator-banda 0.1` |
+| Escalonadores | aleatório e PESS | `--scheduler random` / `--scheduler pess` |
+
+**PESS** (`scripts/escalonador_pess.py`): adaptação do *Progressive Embedding of Security Services*
+(Doriguzzi-Corin et al., IEEE TNSM 2020). Ele calcula o caminho de menor custo entre a estação-base da
+requisição e o nó de maior banda agregada (custo de enlace = 1/banda residual) e põe o container no nó
+de maior CPU residual desse caminho, com empates sorteados. Sem limite de capacidade, todos os nós do
+caminho empatam, e os do centro, que estão em quase todos os caminhos, recebem a maior parte. Na GARR,
+62% dos containers ficaram nos 6 nós mais usados (a tese relata 67%), contra 11% do aleatório. É uma
+adaptação: um container por requisição, sem restrições de latência ou segurança.
+
 ## Armadilhas do EdgeSimPy (encontradas e contornadas)
 
 1. **Banda é MB por tick**, não MB/s (ver `--segundos-por-tick`).
@@ -120,7 +159,7 @@ servidores lotam em poucos minutos. Com 30 s, a GARR do artigo sustenta ~9 req/s
 ```bash
 SEEDS=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
 COM="--ks 1,2,4,8 --seeds $SEEDS --segundos-por-tick 0.1 --max-ticks 36000 --jobs 6"
-DH="--imagens-dockerhub cenarios/dockerhub_top50.json"
+DH="--imagens-dockerhub cenarios/dockerhub_top50_v1.json"   # coleta usada nos resultados abaixo
 GARR70="--topologia garr --garr-arquivo cenarios/garr/garr-topology.json --ignorar-contagem"
 
 # rajada, imagens fictícias
@@ -251,6 +290,59 @@ Leitura:
 - **20 req/s:** a computação satura e os dois perdem mais de 80%; o FluidC ainda fica 3–5 pontos melhor.
 - A taxa de acerto do cache de 600 MB fica em 11–15% nos dois métodos: com 50 imagens sorteadas de
   modo uniforme, o cache comporta poucas imagens por servidor.
+
+## Resultados (cenário fiel × tese do Knob)
+
+`resultados/comparacao_knob/` (`python scripts/comparacao_knob.py`). % de requisições não iniciadas no
+prazo; os nossos valores são a média de 10 seeds, e os "tese" vêm da Tabela 4.3 da tese. p = teste
+pareado aleatório × FluidC.
+
+| Cenário | K | FluidC | FluidC (tese) | Aleatório | Aleatório (tese) | p |
+|---|---|---|---|---|---|---|
+| Aleatória, esc. aleatório | 1 | 16,6 | 13,3 | 74,9 | 19,4 | 0,002 |
+| | 2 | 3,7 | 0,1 | 39,2 | 1,1 | 0,002 |
+| | 4 | 0,1 | 0,0 | 10,9 | 0,0 | 0,031 |
+| | 8 | 0,0 | 0,0 | 0,0 | 0,0 | empate |
+| GARR 10%, esc. aleatório | 1 | 39,0 | 47,9 | 75,9 | 47,9 | 0,008 |
+| | 2 | 21,1 | 44,4 | 62,7 | 44,6 | 0,002 |
+| | 4 | 20,6 | 31,3 | 47,4 | 38,1 | 0,004 |
+| | 8 | 20,6 | 7,9 | 36,8 | 33,4 | 0,006 |
+| GARR 10%, PESS | 1 | 2,9 | 40,5 | 68,1 | 40,5 | 0,002 |
+| | 2 | 3,9 | 25,0 | 43,6 | 35,2 | 0,004 |
+| | 4 | 3,9 | 3,2 | 23,9 | 24,3 | 0,002 |
+| | 8 | 3,7 | 0,9 | 19,5 | 17,6 | 0,012 |
+
+![Comparação com a tese](resultados/comparacao_knob/comparacao_knob.png)
+
+Leitura:
+- **O que se reproduz:** em 11 de 12 combinações o FluidC perde menos requisições que o aleatório,
+  com diferença significativa; na 12ª, os dois zeram, como na tese. O FluidC na topologia aleatória e
+  o aleatório na GARR com K ≥ 2 ficam perto dos valores publicados. Como na tese, a vantagem do FluidC
+  se mantém com o PESS.
+- **O que difere:**
+  - (i) o nosso aleatório na topologia aleatória é bem mais pessimista com K ≤ 2: o registry sorteado
+    tem ~6 enlaces de 1 Gbps, próximo da demanda, e a tese não diz quantos sorteios fez;
+  - (ii) na GARR com escalonador aleatório, o nosso FluidC estaciona em ~21% a partir de K = 2 (a nossa
+    hipótese é que o gargalo vira o enlace de borda de 100 Mbps);
+  - (iii) com o PESS, o nosso FluidC é bem melhor que o da tese com K ≤ 2.
+- **Outras diferenças conhecidas:** o EdgeSimPy escolhe o registry por número de saltos, não por
+  banda; e o cenário fiel tem 10 minutos de chegadas, não 1 hora.
+- **Tempo médio:** em 16 simulações com posicionamento aleatório na GARR, a rede congestionou tanto que
+  havia downloads pendentes 40 min depois da última chegada. A % de não iniciadas conta essas
+  requisições corretamente, mas o tempo médio dessas simulações é um limite inferior.
+
+Comandos (com 8 GB de RAM, no máximo `--jobs 2`; simulações congestionadas passam de 1 GB cada):
+
+```bash
+FIEL="--ks 1,2,4,8 --seeds 1,2,3,4,5,6,7,8,9,10 --segundos-por-tick 0.1 --max-ticks 30000 --timeout 7200 \
+      --jobs 2 --chegadas 5 --duracao 600 --deadline-min 25 --deadline-max 25 --cache-mb 600 \
+      --sem-limite-capacidade --vida-ate-deadline --sem-detalhe-links"
+GARR10="--topologia garr --garr-arquivo cenarios/garr/garr-topology.json --ignorar-contagem --fator-banda 0.1"
+python scripts/experimento.py --topologia aleatoria --nos 100 --links 242 $FIEL --scheduler random --nome fiel_aleatoria_random
+python scripts/experimento.py $GARR10 $FIEL --scheduler random --nome fiel_garr10_random
+python scripts/experimento.py $GARR10 $FIEL --scheduler pess --nome fiel_garr10_pess
+python scripts/comparacao_knob.py
+```
 
 ## Resultados anteriores
 

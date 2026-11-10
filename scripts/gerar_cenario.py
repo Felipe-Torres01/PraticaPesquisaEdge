@@ -85,6 +85,18 @@ def montar_grafo(args):
     return topologia.verificar(g)
 
 
+def ajustar_banda(g, args):
+    """Opcoes de banda dos enlaces da rede (o enlace de acesso do registry nao muda):
+    --banda-uniforme forca todos os enlaces para --banda-link (Tabela II do artigo: 1 Gbps);
+    --fator-banda multiplica a banda de cada enlace. A tese do Knob limita a GARR a 10% da banda
+    do mapa do consorcio (media de ~2 Gbps por enlace), o que corresponde a --fator-banda 0.1."""
+    for _, _, d in g.edges(data=True):
+        if args.banda_uniforme:
+            d["bandwidth"] = float(args.banda_link)
+        d["bandwidth"] = d["bandwidth"] * args.fator_banda
+    return g
+
+
 def tamanhos_imagens(args):
     """Tamanho (MB) de cada imagem. Com --tamanho-faixa MIN,MAX sorteia uniformemente por imagem,
     com gerador proprio da seed: FluidC e aleatorio veem exatamente as mesmas imagens."""
@@ -141,7 +153,7 @@ def pesos_popularidade(args, catalogo):
 def gerar(args):
     m = carregar_modelos(args.template)
     rng = random.Random(args.seed)          # usado so para servicos/usuarios (igual entre metodos)
-    g = montar_grafo(args)
+    g = ajustar_banda(montar_grafo(args), args)
     n_nos = g.number_of_nodes()
     catalogo = catalogo_imagens(args)
     tamanhos = [round(sum(c[1] for c in img["camadas"]), 3) for img in catalogo]
@@ -314,6 +326,7 @@ def gerar(args):
         "tamanho_imagem_mb": (tamanhos[0] if len(set(tamanhos)) == 1 else None),
         "tamanhos_imagens_mb": tamanhos,
         "banda_link_MBps": args.banda_link, "banda_registry_MBps": args.banda_registry,
+        "fator_banda": args.fator_banda, "banda_uniforme": args.banda_uniforme,
         "segundos_por_tick": spt,
         "prob": (args.prob if args.topologia == "erdos_renyi" else None),
         "semente_grafo": g.graph.get("semente_grafo"),
@@ -361,6 +374,10 @@ def main():
     p.add_argument("--hex-y", type=int, default=10, help="so hexagonal: numero de linhas")
     p.add_argument("--banda-link", type=float, default=topologia.BANDA_PADRAO,
                    help="MB/s dos links sem banda propria no arquivo (125 = 1 Gbps)")
+    p.add_argument("--fator-banda", type=float, default=1.0,
+                   help="multiplica a banda de todos os enlaces da rede (Knob: GARR a 10%% -> 0.1)")
+    p.add_argument("--banda-uniforme", action="store_true",
+                   help="ignora a banda do arquivo e usa --banda-link em todos os enlaces da rede")
     p.add_argument("--banda-registry", type=float, default=BANDA_REGISTRY,
                    help="MB/s do link de acesso do registry (1250 = 10 Gbps)")
     p.add_argument("--segundos-por-tick", type=float, default=1.0,

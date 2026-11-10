@@ -30,12 +30,16 @@
   against random placement on the two topologies of the original work (GARR and
   Erdős-Rényi) and extend the evaluation with a hexagonal cellular topology, the
   50 most downloaded Docker Hub images with their real layers, and a workload
-  with Poisson arrivals, deadlines and an LRU layer cache. Across 1,600
+  with Poisson arrivals, deadlines and an LRU layer cache. Across 1,840
   simulations, the community-based strategy provisioned containers faster than
   random placement in all 28 combinations of topology, image set and number of
   registries, with gains of up to 66\%, consistent with the up to 70\% reported
   in the original work. Under the original workload it never missed a deadline,
-  whereas random placement occasionally led to catastrophic losses.
+  whereas random placement occasionally led to catastrophic losses. In a
+  scenario that follows the parameters of the first author's thesis, including
+  an adaptation of the PESS scheduler, it lost fewer requests than random
+  placement in 11 of 12 comparisons (the twelfth tied at zero), although some
+  absolute values differ from the published ones.
 \end{abstract}
 
 \begin{resumo}
@@ -47,13 +51,17 @@
   topologias do trabalho original (GARR e Erdős-Rényi) e estendemos a avaliação
   com uma topologia celular hexagonal, as 50 imagens mais baixadas do Docker Hub
   com suas camadas reais e uma carga de trabalho com chegadas de Poisson,
-  \textit{deadline} e \textit{cache} LRU de camadas. Em 1.600 simulações, a
+  \textit{deadline} e \textit{cache} LRU de camadas. Em 1.840 simulações, a
   estratégia baseada em comunidades provisionou os \textit{containers} mais
   rápido que o posicionamento aleatório nas 28 combinações de topologia,
   conjunto de imagens e número de \textit{registries}, com ganhos de até 66\%,
   coerentes com os até 70\% relatados no trabalho original. Sob a carga original,
   ela não perdeu nenhum \textit{deadline}, enquanto o posicionamento aleatório
-  ocasionalmente levou a perdas catastróficas.
+  ocasionalmente levou a perdas catastróficas. Em um cenário que segue os
+  parâmetros da tese do primeiro autor, incluindo uma adaptação do escalonador
+  PESS, ela perdeu menos requisições que o posicionamento aleatório em 11 das 12
+  comparações (a décima segunda empatou em zero), embora alguns valores absolutos
+  difiram dos publicados.
 \end{resumo}
 
 \section{Introdução}
@@ -163,6 +171,19 @@ fazemos a atualização. A segunda fase escolhe, em cada comunidade, o nó de ma
 centralidade de autovetor no subgrafo da comunidade. O \textbf{posicionamento
 aleatório} sorteia $K$ nós distintos.
 
+\textbf{Escalonadores.} O escalonador \textbf{aleatório} escolhe o servidor de
+cada \textit{container} de modo uniforme. Implementamos também uma adaptação do
+\textbf{PESS} (\textit{Progressive Embedding of Security Services})
+\cite{doriguzzi2020}, que \cite{knob2022} usa como escalonador ``realista''. O
+PESS original calcula o caminho de menor custo entre o ponto de entrada do usuário
+e um ponto de saída, com custo de enlace inversamente proporcional à banda
+residual, e posiciona a função no nó de maior capacidade residual desse caminho.
+Na nossa adaptação, o ponto de entrada é a estação-base da requisição, o ponto de
+saída é o nó de maior banda agregada da rede, cada requisição é um único
+\textit{container}, e empates são sorteados. Nas simulações da GARR, ela colocou
+em média 62\% dos \textit{containers} nos 6 nós mais usados, próximo dos 67\%
+relatados na tese, contra 11\% do escalonador aleatório.
+
 \textbf{Cenários.} Cada nó da topologia recebe uma estação-base e um servidor de
 borda. Cada \textit{registry} fica em um servidor dedicado, ligado ao nó escolhido
 por um enlace de 10~Gbps e sem capacidade para executar serviços. Todos os
@@ -239,7 +260,7 @@ simultaneamente. Avaliamos $K \in \{1, 2, 4, 8\}$ em dois modos:
   com imagem e estação-base sorteadas de modo uniforme, e um escalonador aleatório
   escolhe o servidor entre os que têm capacidade. A métrica é o tempo médio de
   provisionamento dos 60 serviços. Usamos 20 \textit{seeds} por combinação.
-  \item \textbf{Carga de trabalho do artigo:} requisições chegam por um processo
+  \item \textbf{Carga contínua com imagens reais:} requisições chegam por um processo
   de Poisson com 5 requisições/s (o valor do artigo), 10 e 20 requisições/s, com
   \textit{deadline} de 25~s, \textit{cache} LRU de 600~MB por servidor e as
   imagens do Docker Hub, na GARR do artigo. A métrica é a fração de requisições
@@ -250,6 +271,17 @@ simultaneamente. Avaliamos $K \in \{1, 2, 4, 8\}$ em dois modos:
   requisições/s e 10 nas demais taxas. Para verificar se a duração afeta o
   resultado, repetimos a taxa de 5 requisições/s com uma hora de chegadas, como
   no artigo, para as 10 primeiras \textit{seeds}.
+  \item \textbf{Cenário fiel à tese:} os detalhes do cenário original não estão no
+  artigo, mas na tese do primeiro autor \cite[seç.~4.5]{knob2022}, que encontramos
+  durante o trabalho. Seguindo-a, usamos as 13 imagens de 200~MB, \textit{cache}
+  LRU de 600~MB, 5 requisições/s, \textit{deadline} de 25~s (o menor citado),
+  nós sem limite de capacidade (a tese não considera o impacto da aplicação no nó)
+  e \textit{container} em execução até o próprio \textit{deadline}. As topologias
+  são a aleatória com 100 nós e 242 enlaces de 1~Gbps ($G(n,m)$) e a GARR do
+  artigo com a banda limitada a 10\% da do arquivo (média de 1,4~Gbps por enlace),
+  como na tese. Avaliamos três combinações, as mesmas da Tabela~4.3 da tese:
+  topologia aleatória com escalonador aleatório e GARR com escalonador aleatório e
+  com PESS, com 10 \textit{seeds} e 10 minutos de chegadas cada.
 \end{itemize}
 
 Para cada par (FluidC, aleatório) de uma mesma \textit{seed}, calculamos o ganho
@@ -261,10 +293,12 @@ pares e com 200 mil permutações sorteadas acima disso.
 \section{Resultados}
 \label{sec:resultados}
 
-No total, executamos 1.600 simulações: 1.120 no modo rajada (4 topologias com
+No total, executamos 1.840 simulações: 1.120 no modo rajada (4 topologias com
 imagens fictícias e 3 com imagens reais, 4 valores de $K$, 2 estratégias e 20
-\textit{seeds}) e 480 com a carga de trabalho do artigo, das quais 80 com uma
-hora de chegadas. Nenhuma simulação falhou.
+\textit{seeds}), 480 com a carga contínua com imagens reais (80 delas com uma hora
+de chegadas) e 240 no cenário fiel à tese. Todas foram concluídas; as que foram
+interrompidas por falta de memória no computador usado foram repetidas, e o
+simulador é determinístico (uma repetição produziu resultados idênticos).
 
 \subsection{Modo rajada com as imagens do artigo}
 
@@ -342,7 +376,7 @@ novamente. O ganho relativo do FluidC, porém, muda pouco: continua alto na GARR
 (26--38\%) e decrescente com $K$ na Erdős-Rényi e na hexagonal. Todas as 12
 combinações têm diferença significativa ($p < 0{,}05$).
 
-\subsection{Carga de trabalho do artigo}
+\subsection{Carga contínua com imagens reais}
 
 A Figura~\ref{fig:carga} e a Tabela~\ref{tab:carga} mostram a fração de
 requisições não iniciadas no prazo. Com 5 requisições/s, a taxa do artigo, o
@@ -399,6 +433,81 @@ taxa de acerto do \textit{cache} de 600~MB ficou entre 11\% e 15\% nas duas
 estratégias: com 50 imagens sorteadas de modo uniforme, cada servidor guarda
 poucas imagens.
 
+\subsection{Comparação direta com a tese (cenário fiel)}
+
+A Tabela~\ref{tab:knob} e a Figura~\ref{fig:knob} comparam o cenário fiel com a
+Tabela~4.3 da tese \cite{knob2022}. Usamos como métrica principal a fração de
+requisições não iniciadas no prazo: em 16 simulações com posicionamento aleatório
+na GARR a rede ficou tão congestionada que parte dos \textit{downloads} não
+terminou nem 40 minutos depois da última chegada; essas requisições contam
+corretamente como não iniciadas, mas o tempo médio dessas simulações só inclui as
+que terminaram e é, portanto, um limite inferior.
+
+\begin{table}[ht]
+\centering
+\caption{Cenário fiel: requisições não iniciadas no prazo (\%), nossas (média de
+10 \textit{seeds}) e da Tabela~4.3 da tese, e $p$-valor do teste pareado
+aleatório $\times$ FluidC. Na GARR com $K = 1$ a tese reporta o mesmo valor para
+os dois métodos.}
+\label{tab:knob}
+\small
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{llrrrrl}
+\toprule
+Cenário & $K$ & FluidC & FluidC (tese) & Aleatório & Aleatório (tese) & $p$ \\
+\midrule
+Aleatória, & 1 & 16,6 & 13,3 & 74,9 & 19,4 & 0,002 \\
+escalonador & 2 & 3,7 & 0,1 & 39,2 & 1,1 & 0,002 \\
+aleatório & 4 & 0,1 & 0,0 & 10,9 & 0,0 & 0,031 \\
+ & 8 & 0,0 & 0,0 & 0,0 & 0,0 & empate \\
+\midrule
+GARR, & 1 & 39,0 & 47,9 & 75,9 & 47,9 & 0,008 \\
+escalonador & 2 & 21,1 & 44,4 & 62,7 & 44,6 & 0,002 \\
+aleatório & 4 & 20,6 & 31,3 & 47,4 & 38,1 & 0,004 \\
+ & 8 & 20,6 & 7,9 & 36,8 & 33,4 & 0,006 \\
+\midrule
+GARR, & 1 & 2,9 & 40,5 & 68,1 & 40,5 & 0,002 \\
+escalonador & 2 & 3,9 & 25,0 & 43,6 & 35,2 & 0,004 \\
+PESS & 4 & 3,9 & 3,2 & 23,9 & 24,3 & 0,002 \\
+ & 8 & 3,7 & 0,9 & 19,5 & 17,6 & 0,012 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figuras/comparacao_knob.pdf}
+\caption{Cenário fiel: nossos resultados (linhas, média $\pm$ desvio-padrão de 10
+\textit{seeds}) e os da tese (marcadores $\times$). Na GARR com posicionamento
+aleatório, o tempo médio é um limite inferior (ver texto).}
+\label{fig:knob}
+\end{figure}
+
+\textbf{O que se reproduz.} Em 11 das 12 combinações o FluidC perdeu menos
+requisições que o posicionamento aleatório, com diferença significativa
+($p < 0{,}05$); na décima segunda (aleatória, $K = 8$) os dois não perderam
+nenhuma, como na tese. Os valores do FluidC na topologia aleatória e os do
+posicionamento aleatório na GARR com $K \geq 2$ ficaram próximos dos publicados
+(por exemplo, 23,9\% contra 24,3\% com PESS e $K = 4$), e, como na tese, a
+vantagem do FluidC se mantém com o PESS, que concentra os \textit{containers} no
+centro da rede.
+
+\textbf{O que difere.} (i) Na topologia aleatória, nosso posicionamento
+aleatório é bem mais pessimista com $K \leq 2$: o \textit{registry} sorteado cai
+em nós com cerca de seis enlaces de 1~Gbps, próximo da demanda de
+\textit{download} (cerca de 6~Gbps após o \textit{cache}), e a fila cresce; a
+tese não informa quantos sorteios fez. (ii) Na GARR com escalonador aleatório,
+nosso FluidC estaciona em cerca de 21\% a partir de $K = 2$, enquanto o da tese
+cai para 7,9\% com $K = 8$; nossa hipótese é que, no nosso cenário, o gargalo
+passa a ser o enlace de borda de 100~Mbps (1~Gbps a 10\%) dos nós sorteados pelo
+escalonador, e não o \textit{registry}. (iii) Com o PESS, nosso FluidC é muito
+melhor que o da tese com $K \leq 2$ (2,9\% contra 40,5\%), provavelmente porque
+na nossa adaptação o PESS concentra os \textit{containers} ao redor do mesmo nó
+central em que o FluidC coloca o \textit{registry}. Também diferem a escolha do \textit{registry} por
+cada servidor (por número de saltos no EdgeSimPy, por banda disponível na tese) e
+a duração das simulações (10 minutos contra uma hora).
+
 \section{Discussão e Ameaças à Validade}
 \label{sec:discussao}
 
@@ -406,29 +515,40 @@ poucas imagens.
 os resultados são qualitativamente consistentes com \cite{knob2021}: o
 posicionamento baseado em comunidades reduziu o tempo de provisionamento em todas
 as configurações, com ganho máximo de 66\% (GARR do Topology Zoo, $K = 4$),
-próximo dos até 70\% relatados. A extensão mostra que a vantagem se mantém com
-imagens reais e em uma topologia celular, e que, sob a carga do artigo, ela
-aparece menos na média e mais na eliminação do risco de configurações
-catastróficas.
+próximo dos até 70\% relatados, e, no cenário fiel à tese, perdeu menos
+requisições que o posicionamento aleatório com os dois escalonadores. A
+reprodução quantitativa é parcial: parte dos valores absolutos coincide com os
+publicados e parte difere, pelas razões discutidas na
+Seção~\ref{sec:resultados}. A extensão mostra que a vantagem se mantém com imagens
+reais e em uma topologia celular, e que, sob carga contínua, ela aparece menos na
+média e mais na eliminação do risco de configurações catastróficas.
 
 As principais ameaças à validade são:
 \begin{itemize}
-  \item \textbf{Escalonador.} Usamos um escalonador aleatório; o artigo também
-  avalia o escalonador PESS, que ainda não implementamos.
-  \item \textbf{Parâmetros não informados.} O tempo de execução dos
-  \textit{containers} (30~s), o \textit{deadline} fixo de 25~s e a capacidade dos
-  servidores (quatro \textit{containers}) são suposições nossas, que afetam
-  diretamente a fração de requisições não iniciadas a 10 e 20 requisições/s.
+  \item \textbf{Escalonador PESS.} Usamos uma adaptação simplificada (um
+  \textit{container} por requisição, ponto de saída no nó de maior banda, sem
+  restrições de latência e segurança); o código usado na tese não está disponível,
+  e outra adaptação pode concentrar os \textit{containers} de outra forma.
+  \item \textbf{Parâmetros não informados.} Na carga contínua com imagens reais,
+  o tempo de execução dos \textit{containers} (30~s) e a capacidade dos servidores
+  (quatro \textit{containers}) são suposições nossas. No cenário fiel, a tese cita
+  25~s como o menor \textit{deadline}, mas não sua distribuição; usamos 25~s para
+  todas as requisições, o que é a hipótese mais exigente.
+  \item \textbf{Escolha do \textit{registry} e duração.} No EdgeSimPy cada
+  servidor baixa do \textit{registry} mais próximo em saltos, e não pelo caminho de
+  maior banda como na tese; e o cenário fiel tem 10 minutos de chegadas, e não uma
+  hora (a verificação de que a duração não muda o resultado foi feita só na carga
+  contínua com imagens reais).
   \item \textbf{Repetições da carga.} As taxas de 10 e 20 requisições/s usam
   10 \textit{seeds}, e a verificação com uma hora de chegadas foi feita apenas
   a 5 requisições/s.
   \item \textbf{Topologias.} A GARR do artigo tem 111 enlaces, e não 112, após
   descartar um enlace duplicado. Na Erdős-Rényi, sortear novamente os grafos
   desconexos favorece grafos com um pouco mais de enlaces.
-  \item \textbf{Imagens.} A coleta do Docker Hub usa a \textit{tag}
-  \texttt{latest} quando disponível e, nos demais casos, a versão mais recente, o
-  que incluiu algumas versões de desenvolvimento; uma das imagens veio com tamanho
-  aparentemente incorreto (0,04~MB).
+  \item \textbf{Imagens.} A coleta do Docker Hub usada nos experimentos pegou, em
+  alguns repositórios, \textit{tags} de desenvolvimento e, em um deles, um pacote
+  de metadados de 0,04~MB no lugar da imagem real (145~MB). Corrigimos a coleta
+  depois dos experimentos; a correção muda o tamanho de 1 das 50 imagens.
   \item \textbf{Simulador.} As armadilhas da Seção~\ref{sec:implementacao} mostram
   que detalhes do EdgeSimPy podem mascarar o efeito do posicionamento; os
   contornamos e documentamos, mas outros comportamentos podem existir.
@@ -457,10 +577,13 @@ Reproduzimos no EdgeSimPy o posicionamento de \textit{registries} baseado em
 comunidades de \cite{knob2021} e confirmamos sua vantagem sobre o posicionamento
 aleatório em quatro topologias, com imagens fictícias e reais e sob uma carga de
 trabalho com chegadas contínuas, em que ela não perdeu nenhuma requisição na taxa
-do artigo, com 10 minutos ou uma hora de simulação. Como trabalhos futuros,
-pretendemos: implementar o escalonador PESS; validar os parâmetros não
-informados no artigo original; e, com essa base, propor e avaliar uma nova
-estratégia de posicionamento.
+do artigo, com 10 minutos ou uma hora de simulação. No cenário fiel à tese, com os
+escalonadores aleatório e PESS, a vantagem qualitativa se confirmou, com parte dos
+valores absolutos diferente dos publicados. Como trabalhos futuros, pretendemos:
+obter o código do PESS usado na tese ou validar nossa adaptação; repetir o
+cenário fiel com uma hora de chegadas e escolha de \textit{registry} por banda;
+validar com os autores os parâmetros não informados; e, com essa base, propor e
+avaliar uma nova estratégia de posicionamento.
 
 \bibliographystyle{sbc}
 \bibliography{sbc-template}

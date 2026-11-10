@@ -17,6 +17,12 @@ o que ele NAO detalha esta marcado como SUPOSICAO e virou parametro):
       as camadas usadas ha mais tempo (LRU), nunca as que um container rodando ou em provisionamento usa.
       SUPOSICAO: o limite e por servidor e pode ser excedido temporariamente se tudo estiver em uso.
 
+Modo fiel ao Knob (tese PUCRS 2022, sec. 4.5): --sem-limite-capacidade (o simulador dele nao considera
+o impacto da aplicacao no no, entao qualquer no aceita qualquer container) e --vida-ate-deadline (o deadline
+e "o instante em que a aplicacao nao precisa mais do container": o container roda ate o deadline, e se nao
+estiver rodando ate la conta como nao iniciado). --escalonador pess usa a adaptacao de escalonador_pess.py;
+a origem de cada requisicao (estacao-base) e sorteada com gerador proprio, sem mudar os demais sorteios.
+
 Os objetos Service do dataset sao reaproveitados como "slots": quando uma requisicao e atendida, um Service
 ocioso recebe a imagem dela e e provisionado; quando o container termina, o Service volta ao pool. Por isso
 o dataset precisa de --servicos >= capacidade total (servidores x 4 no template); o gerar_cenario cria isso.
@@ -29,10 +35,13 @@ import random
 
 import edge_sim_py as es
 
+import escalonador_pess
+
 
 class CargaTrabalho:
     def __init__(self, taxa, duracao, deadline_min, deadline_max, tempo_vida, cache_mb,
-                 popularidade, zipf_s, semente, segundos_por_tick, registrar_fluxo=None):
+                 popularidade, zipf_s, semente, segundos_por_tick, registrar_fluxo=None,
+                 escalonador="random", sem_limite=False, vida_ate_deadline=False):
         self.taxa = taxa
         self.duracao = duracao
         self.deadline = (deadline_min, max(deadline_min, deadline_max))
@@ -42,6 +51,10 @@ class CargaTrabalho:
         self.zipf_s = zipf_s
         self.spt = segundos_por_tick
         self.rng = random.Random(f"carga-{semente}")
+        self.rng_origem = random.Random(f"origem-{semente}")   # separado: nao altera os outros sorteios
+        self.escalonador = escalonador
+        self.sem_limite = sem_limite
+        self.vida_ate_deadline = vida_ate_deadline
         self.registrar_fluxo = registrar_fluxo
         self.requisicoes = []      # todas, na ordem de chegada
         self.fila = []             # requisicoes esperando servidor
@@ -74,7 +87,13 @@ class CargaTrabalho:
                 "deadline_s": round(dl, 3), "limite_tick": chegada + math.floor(dl / self.spt),
                 "imagem": digests[img], "servidor": None, "inicio_tick": None, "fim_tick": None,
                 "status": "pendente"})
+        bordas = sorted((s for s in es.EdgeServer.all() if s not in self.hospedeiros), key=lambda s: s.id)
+        for req in self.requisicoes:
+            req["origem"] = self.rng_origem.choice(bordas).id
+        self.switch_do_servidor = {s.id: s.base_station.network_switch for s in es.EdgeServer.all()}
         self.livres = list(es.Service.all())
+        if self.sem_limite:
+            return
         capacidade = sum(int(s.cpu // max(1, self.livres[0].cpu_demand)) for s in es.EdgeServer.all()
                          if s not in self.hospedeiros) if self.livres else 0
         if len(self.livres) < capacidade:
@@ -92,8 +111,8 @@ class CargaTrabalho:
         # todo container tem a mesma demanda de CPU/memoria: a lista de servidores com espaco e a mesma
         # para qualquer requisicao, entao e calculada uma vez por tick (com fila longa isso domina o custo)
         modelo_servico = es.Service.all()[0]
-        candidatos = [s for s in es.EdgeServer.all()
-                      if s not in self.hospedeiros and s.has_capacity_to_host(service=modelo_servico)]
+        candidatos = [s for s in es.EdgeServer.all() if s not in self.hospedeiros and
+                      (self.sem_limite or s.has_capacity_to_host(service=modelo_servico))]
         pendentes = []
         for req in self.fila:
             if agora > req["limite_tick"]:
@@ -103,7 +122,10 @@ class CargaTrabalho:
                 pendentes.append(req)
                 continue
             alvo = self._colocar(req, agora, candidatos)
-            if not alvo.has_capacity_to_host(service=modelo_servico):
+            if alvo is None:
+                pendentes.append(req)
+                continue
+            if not self.sem_limite and not alvo.has_capacity_to_host(service=modelo_servico):
                 candidatos.remove(alvo)
         self.fila = pendentes
         if self.cache_mb:
@@ -113,7 +135,16 @@ class CargaTrabalho:
     def _colocar(self, req, agora, candidatos):
         servico = self.livres.pop()
         servico.image_digest = req["imagem"]
-        alvo = self.rng.choice(candidatos)
+        if self.escalonador == "pess":
+            topo = servico.model.topology
+            alvo = escalonador_pess.escolher(
+                topo, self.switch_do_servidor[req["origem"]], candidatos, servico.cpu_demand, self.rng,
+                excluir=[h.base_station.network_switch for h in self.hospedeiros], sem_limite=self.sem_limite)
+        else:
+            alvo = self.rng.choice(candidatos)
+        if alvo is None:                     # PESS sem no viavel: requisicao continua na fila
+            self.livres.append(servico)
+            return None
         presentes = {l.digest for l in alvo.container_layers}
         for dig in self.camadas_da_imagem[req["imagem"]]:
             self.ultimo_uso[(alvo, dig)] = agora
@@ -130,7 +161,10 @@ class CargaTrabalho:
                 req["fim_tick"] = servico._Service__migrations[-1]["end"]
                 req["status"] = "rodando"
                 req["no_prazo"] = req["fim_tick"] <= req["limite_tick"]
-                req["sai_tick"] = req["fim_tick"] + math.ceil(self.tempo_vida / self.spt)
+                if self.vida_ate_deadline:   # roda ate o deadline; se ficou pronto depois, sai na hora
+                    req["sai_tick"] = max(req["fim_tick"], req["limite_tick"])
+                else:
+                    req["sai_tick"] = req["fim_tick"] + math.ceil(self.tempo_vida / self.spt)
             if req["status"] == "rodando" and agora >= req["sai_tick"]:
                 self._desalocar(servico)
                 req["status"] = "concluida"
@@ -196,6 +230,13 @@ class CargaTrabalho:
         provisionando = any(r["status"] == "provisionando" for r in self.ativas.values())
         return acabou_chegada and not self.fila and not provisionando and t * self.spt >= self.duracao
 
+    def _concentracao(self, n):
+        """% das requisicoes colocadas que foram para os n servidores mais usados."""
+        from collections import Counter
+        c = Counter(r["servidor"] for r in self.requisicoes if r["servidor"] is not None)
+        total = sum(c.values())
+        return round(100 * sum(v for _, v in c.most_common(n)) / total, 2) if total else None
+
     def linhas(self):
         saida = []
         for r in self.requisicoes:
@@ -223,6 +264,10 @@ class CargaTrabalho:
         return {
             "taxa_req_s": self.taxa, "duracao_s": self.duracao, "deadline_s": list(self.deadline),
             "tempo_vida_s": self.tempo_vida, "cache_MB": self.cache_mb, "popularidade": self.popularidade,
+            "escalonador": self.escalonador, "sem_limite_capacidade": self.sem_limite,
+            "vida_ate_deadline": self.vida_ate_deadline,
+            "nos_usados": len({r["servidor"] for r in self.requisicoes if r["servidor"] is not None}),
+            "pct_nos_top6": self._concentracao(6),
             "requisicoes": total, "iniciadas_no_prazo": no_prazo,
             "nao_iniciadas": total - no_prazo,
             "pct_nao_iniciadas": round(100 * (total - no_prazo) / total, 3) if total else None,

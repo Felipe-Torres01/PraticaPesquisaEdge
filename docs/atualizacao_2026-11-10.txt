@@ -1,0 +1,103 @@
+ATUALIZACAO DO PROJETO - 10/11/2026
+PESS, cenario fiel a tese do Knob e comparacao direta com os numeros publicados
+Pratica em Pesquisa (PUCRS) - reproducao e extensao de Knob et al. (2021)
+==========================================================================================
+
+Pessoal, segue o que foi feito nesta rodada. O PESS e as correcoes do Docker Hub ja estao feitos,
+entao quem ia pegar essas tarefas nao precisa mais.
+
+
+1. A DESCOBERTA QUE MUDOU A REPRODUCAO
+-------------------------------------
+Os detalhes do experimento do Knob nao estao no artigo, mas na TESE de doutorado dele
+(PUCRS, 2022, secao 4.5). La tem os parametros exatos e, principalmente, a Tabela 4.3
+(p. 79) com os numeros de referencia: % de containers nao iniciados e tempo medio para cada
+topologia, escalonador e K. Com isso deu para comparar numero a numero.
+
+O que a tese diz e a gente fazia diferente:
+- GARR com a banda LIMITADA A 10% do mapa (media ~1,4 Gbps por enlace). A gente usava 100%,
+  por isso a nossa GARR quase nao congestionava.
+- Os nos NAO tem limite de capacidade ("o impacto da aplicacao no no nao e considerado").
+- O container roda ATE O PROPRIO DEADLINE (o deadline e "o instante em que a aplicacao nao
+  precisa mais do container"). A gente tinha suposto 30 s de vida e 4 containers por servidor.
+- A carga usa as 13 imagens de 200 MB (nao as do Docker Hub).
+
+
+2. O QUE FOI FEITO
+------------------
+a) Escalonador PESS (scripts/escalonador_pess.py)
+   - O PESS vem de Doriguzzi-Corin et al. (IEEE TNSM 2020), "Progressive Embedding of Security
+     Services". Ele calcula o caminho de menor custo (custo = 1/banda residual) entre o usuario
+     e um ponto de saida e poe a funcao no no de maior capacidade residual desse caminho.
+   - Nossa adaptacao: ponto de entrada = estacao-base da requisicao; ponto de saida = no de
+     maior banda da rede; 1 container por requisicao; empates sorteados.
+   - Validacao: na GARR ele pos 62% dos containers nos 6 nos mais usados. A tese diz 67%.
+     O aleatorio da 11%. Chegamos perto sem forcar nenhum parametro.
+   - Opcao nova: --scheduler pess (modo rajada e modo carga).
+
+b) Modo fiel a tese
+   - --sem-limite-capacidade e --vida-ate-deadline (carga) e --fator-banda 0.1 (GARR a 10%).
+   - Tambem --banda-uniforme (todos os enlaces com 1 Gbps, como na Tabela II do artigo).
+
+c) Coleta do Docker Hub corrigida (scripts/coletar_dockerhub.py)
+   - A percona tinha vindo com 0,04 MB porque a tag era um pacote de metadados
+     ("-community-bundle"); a imagem real tem 145 MB. Tambem vinham tags rc/dev/merge.
+   - Agora pega a latest so se for imagem real e, senao, a tag estavel mais recente.
+   - A coleta nova e cenarios/dockerhub_top50.json; a antiga (usada nos experimentos ja feitos)
+     ficou como dockerhub_top50_v1.json. Muda so 1 das 50 imagens de verdade.
+
+d) Comparacao com a tese (scripts/comparacao_knob.py) e artigo/README atualizados.
+
+e) Correcao: o experimento.py nao derruba mais a varredura inteira quando uma simulacao estoura
+   o tempo (aconteceu com o notebook suspenso no meio de uma simulacao).
+
+
+3. RESULTADO: NOSSO x TESE DO KNOB (cenario fiel, 10 seeds, % nao iniciadas)
+--------------------------------------------------------------------------
+  Cenario                    K   FluidC  FluidC(tese)  Aleat.  Aleat.(tese)   p
+  Aleatoria, esc. aleatorio  1    16,6     13,3         74,9    19,4        0,002
+                             2     3,7      0,1         39,2     1,1        0,002
+                             4     0,1      0,0         10,9     0,0        0,031
+                             8     0,0      0,0          0,0     0,0        empate
+  GARR 10%, esc. aleatorio   1    39,0     47,9         75,9    47,9        0,008
+                             2    21,1     44,4         62,7    44,6        0,002
+                             4    20,6     31,3         47,4    38,1        0,004
+                             8    20,6      7,9         36,8    33,4        0,006
+  GARR 10%, PESS             1     2,9     40,5         68,1    40,5        0,002
+                             2     3,9     25,0         43,6    35,2        0,004
+                             4     3,9      3,2         23,9    24,3        0,002
+                             8     3,7      0,9         19,5    17,6        0,012
+
+Como ler:
+- REPRODUZ o principal: em 11 de 12 casos o FluidC perde menos requisicoes que o aleatorio, com
+  diferenca significativa (no 12o os dois zeram, como na tese). Com o PESS a vantagem continua.
+- Bate bem: o FluidC na topologia aleatoria e o aleatorio na GARR com K >= 2
+  (ex.: 23,9% x 24,3% com PESS e K = 4).
+- Difere: (i) nosso aleatorio na topologia aleatoria e bem pior com K <= 2 (o registry sorteado
+  fica no limite de banda; a tese nao diz quantos sorteios fez); (ii) na GARR com escalonador
+  aleatorio nosso FluidC para em ~21% a partir de K = 2 (hipotese: gargalo no enlace de borda de
+  100 Mbps); (iii) com o PESS nosso FluidC e bem melhor que o da tese com K <= 2.
+- Resposta da pergunta de pesquisa: reproducao QUALITATIVA confirmada; QUANTITATIVA parcial.
+
+Grafico: resultados/comparacao_knob/comparacao_knob.png (e artigo/figuras/comparacao_knob.pdf).
+
+
+4. PROBLEMAS DE EXECUCAO (para quem for rodar)
+----------------------------------------------
+- No modo fiel, simulacoes congestionadas passam de 1 GB de RAM cada. Num PC de 8 GB use
+  --jobs 2 (com 3 a memoria acabou). Feche navegador/programas Java enquanto roda.
+- Desligue a suspensao do Windows: o notebook dormiu de madrugada no meio das simulacoes.
+- Simulacoes interrompidas foram refeitas; o simulador e deterministico (repetimos uma e deu
+  identico byte a byte), entao os resultados sao confiaveis.
+
+
+5. O QUE FALTA
+--------------
+1) Professor: perguntar se existe o codigo do PESS usado na tese e confirmar a distribuicao
+   dos deadlines (a tese so diz que o menor era 25 s). Usamos 25 s fixo.
+2) Artigo: preencher "XX citacoes" (Google Scholar) e decidir o titulo ("Replicacao e
+   Extensao de..."?). O artigo agora tem a secao de comparacao com a tese.
+3) Opcional: cenario fiel com 1 hora de chegadas e escolha de registry por banda (como na tese).
+4) Opcional: carga contínua com 30 seeds em 10 e 20 req/s e popularidade zipf.
+5) Proxima etapa: propor a estrategia nova de posicionamento (ex.: levar em conta a banda de
+   borda dos nos, que parece ser o gargalo do FluidC na GARR).

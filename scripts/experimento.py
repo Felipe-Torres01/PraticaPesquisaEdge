@@ -32,7 +32,12 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 
 
 def executar(cmd, timeout):
-    r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+    """Roda um passo; estouro de tempo vira falha so desta execucao (antes derrubava a varredura inteira
+    sem gravar os CSVs -- aconteceu com o notebook suspenso no meio de uma simulacao)."""
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return -1, "", f"timeout: passou de {timeout} s (tempo de relogio)"
     return r.returncode, r.stdout, r.stderr
 
 
@@ -60,6 +65,10 @@ def uma_execucao(a, k, metodo, seed, raiz):
         gerar += ["--nos", str(a.nos), "--links", str(a.links)]
     if a.banda_link:
         gerar += ["--banda-link", str(a.banda_link)]
+    if a.fator_banda != 1.0:
+        gerar += ["--fator-banda", str(a.fator_banda)]
+    if a.banda_uniforme:
+        gerar += ["--banda-uniforme"]
     gerar += ["--segundos-por-tick", str(a.segundos_por_tick), "--tamanho-imagem", str(a.tamanho_imagem)]
     if a.tamanho_faixa:
         gerar += ["--tamanho-faixa", a.tamanho_faixa]
@@ -79,6 +88,10 @@ def uma_execucao(a, k, metodo, seed, raiz):
                   "--deadline-min", str(a.deadline_min), "--deadline-max", str(a.deadline_max),
                   "--tempo-vida", str(a.tempo_vida), "--cache-mb", str(a.cache_mb),
                   "--popularidade", a.popularidade]
+        if a.sem_limite_capacidade:
+            rodar += ["--sem-limite-capacidade"]
+        if a.vida_ate_deadline:
+            rodar += ["--vida-ate-deadline"]
     code, out, err = executar(rodar, a.timeout)
     if code != 0 or not os.path.exists(os.path.join(pasta, "resumo.json")):
         return nome, None, "run_cenario: " + (err or out)[-400:]
@@ -88,6 +101,8 @@ def uma_execucao(a, k, metodo, seed, raiz):
 def servicos_dataset(a):
     """No modo carga, os Services do dataset sao o pool de slots: precisa cobrir a capacidade total
     (4 containers por servidor no template). 120 servidores x 4 = 480 cobre todas as topologias usadas."""
+    if a.chegadas and a.sem_limite_capacidade:
+        return max(a.servicos, 1500)   # sem limite: containers simultaneos ~ taxa x deadline + fila
     return max(a.servicos, 480) if a.chegadas else a.servicos
 
 
@@ -263,14 +278,18 @@ def main():
     g.add_argument("--deadline-max", type=float, default=25)
     g.add_argument("--tempo-vida", type=float, default=30)
     g.add_argument("--cache-mb", type=float, default=0)
+    g.add_argument("--sem-limite-capacidade", action="store_true", help="modo fiel ao Knob")
+    g.add_argument("--vida-ate-deadline", action="store_true", help="modo fiel ao Knob")
     p.add_argument("--banda-link", type=float, default=None, help="MB/s dos links sem banda propria (padrao 125)")
+    p.add_argument("--fator-banda", type=float, default=1.0, help="multiplica a banda dos enlaces (GARR do Knob: 0.1)")
+    p.add_argument("--banda-uniforme", action="store_true", help="todos os enlaces com --banda-link")
     p.add_argument("--ignorar-contagem", action="store_true")
     p.add_argument("--ks", default="1,2,4,8")
     p.add_argument("--metodos", default="fluidc,aleatorio",
                    help="fluidc, aleatorio e/ou topk_global (separados por virgula)")
     p.add_argument("--seeds", default="1,2,3,4,5")
     p.add_argument("--centralidade", default="eigenvector", choices=["eigenvector", "betweenness", "degree"])
-    p.add_argument("--scheduler", default="random", choices=["random", "worstfit"])
+    p.add_argument("--scheduler", default="random", choices=["random", "pess", "worstfit"])
     p.add_argument("--servicos", type=int, default=60)
     p.add_argument("--taxa", type=int, default=0, help="servicos por tick (0 = todos de uma vez)")
     p.add_argument("--max-ticks", type=int, default=3600)

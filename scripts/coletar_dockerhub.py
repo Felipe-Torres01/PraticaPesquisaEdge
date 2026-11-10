@@ -1,5 +1,6 @@
 import argparse
 import json
+import re
 import subprocess
 import time
 import urllib.parse
@@ -54,15 +55,38 @@ def variante_amd64(lista):
     return None
 
 
+# tags de teste, desenvolvimento ou so de metadados (ex.: "-community-bundle" da percona tem 36 KB e nao
+# e a imagem do operador). Uma imagem com menos de 1 MB tambem e tratada como metadado, exceto se for a
+# unica opcao do repositorio (caso do hello-world, que realmente tem poucos KB).
+TAG_INSTAVEL = re.compile(r"(^|[-_.])(rc|alpha|beta|dev|devel|nightly|edge|head|ea|snapshot|canary|test|"
+                          r"debug|bundle|pr|merge|preview|unstable)([-_.0-9]|$)", re.IGNORECASE)
+TAMANHO_MINIMO = 1_000_000   # bytes
+
+
+def tag_estavel(nome):
+    return not TAG_INSTAVEL.search(nome)
+
+
+def imagem_real(info):
+    v = variante_amd64(info.get("images", []))
+    return v is not None and (v.get("size") or 0) >= TAMANHO_MINIMO
+
+
 def escolher_tag(ns, rep):
+    """latest se for uma imagem real; senao, a tag estavel mais recente com variante linux/amd64 real.
+    Se nada passar no filtro, cai na primeira tag com linux/amd64 (comportamento antigo)."""
     try:
         t = get(f"{HUB}/repositories/{ns}/{rep}/tags/latest")
-        if variante_amd64(t.get("images", [])):
+        if imagem_real(t):
             return "latest", t
     except Exception:
         pass
-    d = get(f"{HUB}/repositories/{ns}/{rep}/tags?page_size=25&ordering=last_updated")
-    for t in d.get("results", []):
+    d = get(f"{HUB}/repositories/{ns}/{rep}/tags?page_size=50&ordering=last_updated")
+    tags = d.get("results", [])
+    for t in tags:
+        if tag_estavel(t["name"]) and imagem_real(t):
+            return t["name"], t
+    for t in tags:
         if variante_amd64(t.get("images", [])):
             return t["name"], t
     return None, None
