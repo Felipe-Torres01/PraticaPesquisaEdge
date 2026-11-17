@@ -9,7 +9,7 @@
 
 \sloppy
 
-\title{Replicação de Estratégias de Posicionamento de \textit{Registries}\\ para Redução do Tempo de Provisionamento de \textit{Containers}\\ na Computação de Borda}
+\title{Replicação e Extensão do Posicionamento de \textit{Registries}\\ Baseado em Comunidades na Computação de Borda}
 
 \author{Felipe Torres, Gerson Gomes, Pedro Augusto Wagner\inst{1}}
 
@@ -110,8 +110,8 @@ up Application Deployment on Edge Computing'', de Luis A. D. Knob, Francescomari
 Faticanti, Tiago Ferreto e Domenico Siracusa, publicado em 2021 na
 \textit{IEEE International Conference on Cloud Engineering} (IC2E), p. 147--153,
 DOI 10.1109/IC2E52221.2021.00029, disponível em
-\url{https://ieeexplore.ieee.org/document/9610275} (XX citações segundo o Google
-Scholar) \cite{knob2021}.
+\url{https://ieeexplore.ieee.org/document/9610275} (12 citações segundo o Semantic
+Scholar, em novembro de 2026) \cite{knob2021}.
 
 O artigo trata da redução da latência de \textit{deployment} na borda a partir do
 posicionamento dos \textit{registries}, que armazenam as imagens dos
@@ -253,7 +253,7 @@ o servidor não baixa novamente uma camada que já possui.
 
 Cada servidor de borda tem 32 núcleos e 32~GB de memória, executa até quatro
 \textit{containers} (8 núcleos e 8~GB cada) e baixa até três camadas
-simultaneamente. Avaliamos $K \in \{1, 2, 4, 8\}$ em dois modos:
+simultaneamente. Avaliamos $K \in \{1, 2, 4, 8\}$ em três cenários:
 
 \begin{itemize}
   \item \textbf{Rajada:} 60 serviços pedem provisionamento ao mesmo tempo, cada um
@@ -285,7 +285,7 @@ simultaneamente. Avaliamos $K \in \{1, 2, 4, 8\}$ em dois modos:
 \end{itemize}
 
 Para cada par (FluidC, aleatório) de uma mesma \textit{seed}, calculamos o ganho
-$1 - t_{\mathrm{FluidC}}/t_{\mathrm{aleatório}}$ e contamos as vitórias, empates
+$1 - t_{\textrm{FluidC}}/t_{\textrm{aleatório}}$ e contamos as vitórias, empates
 e derrotas do FluidC (V/E/D). A significância é avaliada com um teste de
 permutação pareado (troca de sinais das diferenças, bicaudal), exato para até 22
 pares e com 200 mil permutações sorteadas acima disso.
