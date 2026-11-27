@@ -23,45 +23,54 @@
 \maketitle
 
 \begin{abstract}
-  We reproduce, in the open-source EdgeSimPy simulator, the community-based
-  registry placement strategy of Knob et al. (2021), which splits the network
-  into bandwidth-balanced communities with the Fluid Communities algorithm and
-  places one registry at the most central node of each community. We compare it
-  against random placement on the two topologies of the original work (GARR and
-  Erdős-Rényi) and extend the evaluation with a hexagonal cellular topology, the
-  50 most downloaded Docker Hub images with their real layers, and a workload
-  with Poisson arrivals, deadlines and an LRU layer cache. Across 1,840
-  simulations, the community-based strategy provisioned containers faster than
-  random placement in all 28 combinations of topology, image set and number of
-  registries, with gains of up to 66\%, consistent with the up to 70\% reported
-  in the original work. Under the original workload it never missed a deadline,
-  whereas random placement occasionally led to catastrophic losses. In a
-  scenario that follows the parameters of the first author's thesis, including
-  an adaptation of the PESS scheduler, it lost fewer requests than random
-  placement in 11 of 12 comparisons (the twelfth tied at zero), although some
-  absolute values differ from the published ones.
+  Edge computing brings processing closer to users, but downloading container
+  images can dominate application instantiation time on resource-constrained
+  edge nodes, and the placement of the registries that store these images
+  directly affects it. This work replicates, in the open-source EdgeSimPy
+  simulator, the community-based registry placement strategy of Knob et al.
+  (2021), which splits the network into bandwidth-balanced communities with the
+  Fluid Communities algorithm and places one registry at the most central node
+  of each community. Besides the original scenarios (GARR and Erdős-Rényi
+  topologies), we carry out additional evaluations with a hexagonal cellular
+  topology, the 50 most downloaded Docker Hub images with their real layers, and
+  different request arrival rates (5, 10 and 20 requests/s) with deadlines and
+  an LRU layer cache. Across 1,840 simulations, the community-based strategy
+  provisioned containers faster than random placement in all 28 combinations of
+  topology, image set and number of registries, with gains of up to 66\%,
+  consistent with the up to 70\% reported in the original work. At the original
+  arrival rate it never missed a deadline, whereas random placement occasionally
+  led to catastrophic losses, and at higher rates it lost fewer requests. In a
+  scenario that follows Knob's doctoral thesis, including an adaptation of the
+  PESS scheduler, it lost fewer requests than random placement in 11 of 12
+  comparisons (the twelfth tied at zero), although some absolute values differ
+  from the published ones.
 \end{abstract}
 
 \begin{resumo}
-  Reproduzimos, no simulador de código aberto EdgeSimPy, a estratégia de
-  posicionamento de \textit{registries} baseada em comunidades de Knob et al.
-  (2021), que divide a rede em comunidades balanceadas por banda com o algoritmo
-  de comunidades fluidas e coloca um \textit{registry} no nó mais central de cada
-  comunidade. Comparamos a estratégia com o posicionamento aleatório nas duas
-  topologias do trabalho original (GARR e Erdős-Rényi) e estendemos a avaliação
+  A computação de borda aproxima o processamento do usuário, mas, em nós de
+  borda com recursos limitados, o \textit{download} das imagens de
+  \textit{containers} pode dominar o tempo de instanciação das aplicações, e a
+  posição dos \textit{registries} que armazenam essas imagens influencia
+  diretamente esse tempo. Este trabalho replica, no simulador de código aberto
+  EdgeSimPy, a estratégia de posicionamento de \textit{registries} baseada em
+  comunidades de Knob et al. (2021), que divide a rede em comunidades
+  balanceadas por banda com o algoritmo de comunidades fluidas e coloca um
+  \textit{registry} no nó mais central de cada comunidade. Além dos cenários
+  originais (topologias GARR e Erdős-Rényi), realizamos avaliações adicionais
   com uma topologia celular hexagonal, as 50 imagens mais baixadas do Docker Hub
-  com suas camadas reais e uma carga de trabalho com chegadas de Poisson,
-  \textit{deadline} e \textit{cache} LRU de camadas. Em 1.840 simulações, a
-  estratégia baseada em comunidades provisionou os \textit{containers} mais
-  rápido que o posicionamento aleatório nas 28 combinações de topologia,
-  conjunto de imagens e número de \textit{registries}, com ganhos de até 66\%,
-  coerentes com os até 70\% relatados no trabalho original. Sob a carga original,
-  ela não perdeu nenhum \textit{deadline}, enquanto o posicionamento aleatório
-  ocasionalmente levou a perdas catastróficas. Em um cenário que segue os
-  parâmetros da tese do primeiro autor, incluindo uma adaptação do escalonador
-  PESS, ela perdeu menos requisições que o posicionamento aleatório em 11 das 12
-  comparações (a décima segunda empatou em zero), embora alguns valores absolutos
-  difiram dos publicados.
+  com suas camadas reais e diferentes taxas de chegada de requisições (5, 10 e
+  20 requisições/s), com \textit{deadline} e \textit{cache} LRU de camadas. Em
+  1.840 simulações, a estratégia baseada em comunidades provisionou os
+  \textit{containers} mais rápido que o posicionamento aleatório nas 28
+  combinações de topologia, conjunto de imagens e número de
+  \textit{registries}, com ganhos de até 66\%, coerentes com os até 70\%
+  relatados no trabalho original. Na taxa de chegada original, ela não perdeu
+  nenhum \textit{deadline}, enquanto o posicionamento aleatório ocasionalmente
+  levou a perdas catastróficas, e nas taxas maiores perdeu menos requisições.
+  Em um cenário que segue a tese de doutorado de Knob, incluindo uma adaptação
+  do escalonador PESS, ela perdeu menos requisições que o posicionamento
+  aleatório em 11 das 12 comparações (a décima segunda empatou em zero), embora
+  alguns valores absolutos difiram dos publicados.
 \end{resumo}
 
 \section{Introdução}
@@ -84,34 +93,31 @@ alterar a infraestrutura ou o orquestrador de \textit{containers}. O trabalho de
 comunidades e o avalia em um simulador próprio, cujo código não foi
 disponibilizado.
 
-Neste trabalho, reproduzimos essa estratégia no EdgeSimPy \cite{souza2023}, um
+Neste trabalho, replicamos essa estratégia no EdgeSimPy \cite{souza2023}, um
 simulador de código aberto que modela o ciclo de vida de \textit{containers}, e
 verificamos se os resultados se mantêm em uma ferramenta independente. Nossas
 contribuições são: (i) uma implementação aberta do posicionamento baseado em
 comunidades e do cenário experimental no EdgeSimPy \cite{repositorio}; (ii) a
-reprodução dos experimentos nas topologias GARR e Erdős-Rényi; (iii) três
+replicação dos experimentos nas topologias GARR e Erdős-Rényi; (iii) três
 extensões que aproximam o cenário da prática: uma topologia celular hexagonal,
 imagens reais do Docker Hub com camadas compartilhadas e uma carga de trabalho
 com chegadas contínuas, \textit{deadline} e \textit{cache}; e (iv) o registro de
 armadilhas do simulador que afetam qualquer experimento com imagens reais.
 
 O restante do artigo está organizado assim: a Seção~\ref{sec:base} apresenta o
-artigo base; a Seção~\ref{sec:metodologia}, os objetivos e a metodologia; a
+trabalho original e os trabalhos relacionados; a Seção~\ref{sec:metodologia}, os objetivos e a metodologia; a
 Seção~\ref{sec:implementacao}, a implementação; a Seção~\ref{sec:config}, a
 configuração experimental; a Seção~\ref{sec:resultados}, os resultados; a
 Seção~\ref{sec:discussao}, a discussão e as ameaças à validade; e as
 Seções~\ref{sec:impacto} e~\ref{sec:conclusao}, o impacto e as conclusões.
 
-\section{Artigo Base e Trabalhos Relacionados}
+\section{Trabalho Original e Trabalhos Relacionados}
 \label{sec:base}
 
-O trabalho que serve de base é ``Community-based Placement of Registries to Speed
-up Application Deployment on Edge Computing'', de Luis A. D. Knob, Francescomaria
-Faticanti, Tiago Ferreto e Domenico Siracusa, publicado em 2021 na
-\textit{IEEE International Conference on Cloud Engineering} (IC2E), p. 147--153,
-DOI 10.1109/IC2E52221.2021.00029, disponível em
-\url{https://ieeexplore.ieee.org/document/9610275} (12 citações segundo o Semantic
-Scholar, em novembro de 2026) \cite{knob2021}.
+O trabalho replicado é ``Community-based Placement of Registries to Speed up
+Application Deployment on Edge Computing'' \cite{knob2021}, publicado na
+\textit{IEEE International Conference on Cloud Engineering} (IC2E) de
+2021\footnote{\url{https://doi.org/10.1109/IC2E52221.2021.00029}}.
 
 O artigo trata da redução da latência de \textit{deployment} na borda a partir do
 posicionamento dos \textit{registries}, que armazenam as imagens dos
@@ -132,9 +138,14 @@ torna adequado ao nosso problema.
 \section{Objetivos e Metodologia}
 \label{sec:metodologia}
 
-O objetivo geral é reproduzir e avaliar, no EdgeSimPy, a estratégia de
-posicionamento baseado em comunidades de \cite{knob2021}. A pergunta de pesquisa
-principal é: \textbf{os resultados obtidos ao reproduzir essa estratégia no
+O objetivo geral é replicar e avaliar, no EdgeSimPy, a estratégia de
+posicionamento baseado em comunidades de \cite{knob2021}. Seguindo a terminologia
+da ACM\footnote{\url{https://www.acm.org/publications/policies/artifact-review-and-badging-current}},
+trata-se de uma \textit{replicação}, e não de uma \textit{reprodução}: os
+experimentos foram refeitos por outra equipe e com outro aparato experimental
+(outro simulador e uma implementação própria), já que o código original não está
+disponível. A pergunta de pesquisa
+principal é: \textbf{os resultados obtidos ao replicar essa estratégia no
 EdgeSimPy são consistentes com os relatados por \cite{knob2021}, em termos de
 tempo de provisionamento e de \textit{containers} não iniciados?} Como pergunta
 secundária, investigamos se a vantagem da estratégia se mantém em condições mais
@@ -154,10 +165,9 @@ os mesmos serviços e as mesmas imagens, e só muda a posição dos
 \section{Implementação}
 \label{sec:implementacao}
 
-A implementação usa o EdgeSimPy \cite{souza2023} e a biblioteca NetworkX, ambos
-de código aberto (\url{https://github.com/EdgeSimPy/EdgeSimPy} e
-\url{https://networkx.org}), e está disponível no repositório do grupo
-\cite{repositorio}. O compartilhamento de banda entre fluxos concorrentes usa o
+A implementação usa o EdgeSimPy\footnote{\url{https://github.com/EdgeSimPy/EdgeSimPy}}
+\cite{souza2023} e a biblioteca NetworkX\footnote{\url{https://networkx.org}},
+ambos de código aberto, e está disponível publicamente \cite{repositorio}. O compartilhamento de banda entre fluxos concorrentes usa o
 algoritmo \textit{max-min fairness} já disponível no EdgeSimPy.
 
 \textbf{Posicionamento baseado em comunidades.} A primeira fase executa o FluidC
@@ -214,10 +224,10 @@ cada passo progressivamente mais lento.
 \label{sec:config}
 
 A Tabela~\ref{tab:topologias} resume as topologias. A \textbf{GARR do artigo} é
-a versão usada por \cite{knob2021}, fornecida pelo professor da disciplina, com
-banda própria em cada enlace; o arquivo tem 112 enlaces, um deles duplicado, que
-descartamos. A \textbf{GARR do Topology Zoo} \cite{knight2011} (mapa de 2011) foi
-a versão pública que usamos antes de obter a do artigo e fica como comparação.
+a versão usada por \cite{knob2021}, fornecida pelos autores do trabalho original,
+com banda própria em cada enlace; o arquivo tem 112 enlaces, um deles duplicado,
+que descartamos. A \textbf{GARR do Topology Zoo} \cite{knight2011} (mapa de 2011)
+é a versão pública da mesma rede e é mantida como comparação.
 A \textbf{Erdős-Rényi} $G(n,p)$ usa $n = 100$ e $p = 0{,}049$, o que dá em média
 242 enlaces; cada \textit{seed} gera um grafo diferente, sorteado novamente se
 sair desconexo. A \textbf{hexagonal} é uma malha de células no estilo de rede
@@ -272,8 +282,7 @@ simultaneamente. Avaliamos $K \in \{1, 2, 4, 8\}$ em três cenários:
   resultado, repetimos a taxa de 5 requisições/s com uma hora de chegadas, como
   no artigo, para as 10 primeiras \textit{seeds}.
   \item \textbf{Cenário fiel à tese:} os detalhes do cenário original não estão no
-  artigo, mas na tese do primeiro autor \cite[seç.~4.5]{knob2022}, que encontramos
-  durante o trabalho. Seguindo-a, usamos as 13 imagens de 200~MB, \textit{cache}
+  artigo, mas na tese de doutorado de Knob \cite[seç.~4.5]{knob2022}. Seguindo-a, usamos as 13 imagens de 200~MB, \textit{cache}
   LRU de 600~MB, 5 requisições/s, \textit{deadline} de 25~s (o menor citado),
   nós sem limite de capacidade (a tese não considera o impacto da aplicação no nó)
   e \textit{container} em execução até o próprio \textit{deadline}. As topologias
@@ -484,7 +493,7 @@ aleatório, o tempo médio é um limite inferior (ver texto).}
 \label{fig:knob}
 \end{figure}
 
-\textbf{O que se reproduz.} Em 11 das 12 combinações o FluidC perdeu menos
+\textbf{O que se confirma.} Em 11 das 12 combinações o FluidC perdeu menos
 requisições que o posicionamento aleatório, com diferença significativa
 ($p < 0{,}05$); na décima segunda (aleatória, $K = 8$) os dois não perderam
 nenhuma, como na tese. Os valores do FluidC na topologia aleatória e os do
@@ -517,7 +526,7 @@ posicionamento baseado em comunidades reduziu o tempo de provisionamento em toda
 as configurações, com ganho máximo de 66\% (GARR do Topology Zoo, $K = 4$),
 próximo dos até 70\% relatados, e, no cenário fiel à tese, perdeu menos
 requisições que o posicionamento aleatório com os dois escalonadores. A
-reprodução quantitativa é parcial: parte dos valores absolutos coincide com os
+replicação quantitativa é parcial: parte dos valores absolutos coincide com os
 publicados e parte difere, pelas razões discutidas na
 Seção~\ref{sec:resultados}. A extensão mostra que a vantagem se mantém com imagens
 reais e em uma topologia celular, e que, sob carga contínua, ela aparece menos na
@@ -567,13 +576,13 @@ posicionamento de \textit{registries}, sem nenhuma mudança na infraestrutura,
 reduz o tempo de provisionamento e, principalmente, evita configurações em que um
 único \textit{registry} mal posicionado compromete o atendimento. A
 implementação, os cenários e os resultados estão disponíveis publicamente
-\cite{repositorio}, e todas as etapas foram registradas no caderno de pesquisa
-digital.
+\cite{repositorio}, junto com um registro cronológico de todas as etapas do
+trabalho, o que facilita novas replicações.
 
 \section{Conclusão e Trabalhos Futuros}
 \label{sec:conclusao}
 
-Reproduzimos no EdgeSimPy o posicionamento de \textit{registries} baseado em
+Replicamos no EdgeSimPy o posicionamento de \textit{registries} baseado em
 comunidades de \cite{knob2021} e confirmamos sua vantagem sobre o posicionamento
 aleatório em quatro topologias, com imagens fictícias e reais e sob uma carga de
 trabalho com chegadas contínuas, em que ela não perdeu nenhuma requisição na taxa
