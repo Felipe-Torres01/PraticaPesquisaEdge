@@ -1,7 +1,7 @@
 # PraticaPesquisaEdge
 Repositório dedicado à pesquisa em Edge Computing utilizando o simulador EdgeSimPy. O projeto foca na modelagem de cenários de redes celulares e na simulação do posicionamento estratégico de Container Registries na borda para otimizar o tempo de provisionamento de aplicações.
 
-Reprodução e extensão de Knob et al. (2021), *Community-based Placement of Registries to Speed up
+Replicação e extensão de Knob et al. (2021), *Community-based Placement of Registries to Speed up
 Application Deployment on Edge Computing* (IEEE IC2E, DOI 10.1109/IC2E52221.2021.00029).
 
 ## Ambiente
@@ -315,7 +315,7 @@ pareado aleatório × FluidC.
 ![Comparação com a tese](resultados/comparacao_knob/comparacao_knob.png)
 
 Leitura:
-- **O que se reproduz:** em 11 de 12 combinações o FluidC perde menos requisições que o aleatório,
+- **O que se confirma:** em 11 de 12 combinações o FluidC perde menos requisições que o aleatório,
   com diferença significativa; na 12ª, os dois zeram, como na tese. O FluidC na topologia aleatória e
   o aleatório na GARR com K ≥ 2 ficam perto dos valores publicados. Como na tese, a vantagem do FluidC
   se mantém com o PESS.

@@ -2,7 +2,7 @@
 
 **Prática em Pesquisa (PUCRS), 2º semestre de 2026**
 **Integrantes:** Felipe Torres, Gerson Gomes e Pedro Augusto Wagner
-**Trabalho:** reprodução e extensão de Knob et al. (2021), *Community-based Placement of Registries to
+**Trabalho:** replicação e extensão de Knob et al. (2021), *Community-based Placement of Registries to
 Speed up Application Deployment on Edge Computing* (IEEE IC2E), no simulador EdgeSimPy.
 **Repositório:** https://github.com/Felipe-Torres01/PraticaPesquisaEdge
 
@@ -10,11 +10,15 @@ Cada entrada registra a data, quem fez, o objetivo, o que foi feito, os resultad
 decisões, e os próximos passos. Os comandos exatos de cada experimento estão no `README.md`, e os
 relatórios detalhados de cada etapa estão em `docs/atualizacao_*.txt`.
 
+> **Terminologia:** seguindo a ACM, chamamos o trabalho de *replicação* (outra equipe e outro aparato
+> experimental, já que o simulador original não foi publicado). *Reproduzir* fica para refazer os
+> nossos experimentos com o nosso próprio código, como descrito no `README.md`.
+
 ---
 
 ## Pergunta de pesquisa e plano
 
-- **Pergunta:** os resultados de Knob et al. (2021) se reproduzem num simulador aberto (EdgeSimPy)? E
+- **Pergunta:** os resultados de Knob et al. (2021) se confirmam num simulador aberto (EdgeSimPy)? E
   continuam valendo em cenários mais realistas (outras topologias, imagens reais, carga contínua)?
 - **Método do artigo:** posicionar K *registries* com o algoritmo de comunidades FluidC e, dentro de
   cada comunidade, escolher o nó de maior centralidade de autovetor. A comparação é com o
@@ -34,7 +38,7 @@ relatórios detalhados de cada etapa estão em `docs/atualizacao_*.txt`.
   não foi publicado.
 - **Próximo:** conseguir rodar uma simulação de ponta a ponta.
 
-## 01/10/2026 – Primeira reprodução no EdgeSimPy (Pedro)
+## 01/10/2026 – Primeira replicação no EdgeSimPy (Pedro)
 
 - **Feito:** escreveu `run_cenario.py`, que roda um cenário e mede o tempo de provisionamento, e
   `experimento.py`, que roda várias simulações. Também gerou o primeiro dataset com registries e o
@@ -142,9 +146,9 @@ relatórios detalhados de cada etapa estão em `docs/atualizacao_*.txt`.
 
 ## Conclusões
 
-- **Reprodução qualitativa confirmada:** o FluidC é melhor que o aleatório em todas as topologias,
+- **Replicação qualitativa confirmada:** o FluidC é melhor que o aleatório em todas as topologias,
   conjuntos de imagens, cargas e escalonadores testados.
-- **Reprodução quantitativa parcial:** os valores exatos dependem de detalhes que o artigo e a tese
+- **Replicação quantitativa parcial:** os valores exatos dependem de detalhes que o artigo e a tese
   não publicam:
   - a distribuição dos deadlines;
   - o código do PESS;
